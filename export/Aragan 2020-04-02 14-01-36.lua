@@ -1,0 +1,17 @@
+sets.exported={
+    main="Amanomurakumo",
+    sub="Nepenthe Grip",
+    ammo="Paeapua",
+    head={ name="Sakonji Kabuto +3", augments={'Enhances "Ikishoten" effect',}},
+    body={ name="Sakonji Domaru +3", augments={'Enhances "Overwhelm" effect',}},
+    hands={ name="Sakonji Kote +3", augments={'Enhances "Blade Bash" effect',}},
+    legs={ name="Sakonji Haidate +3", augments={'Enhances "Shikikoyo" effect',}},
+    feet={ name="Sak. Sune-Ate +3", augments={'Enhances "Meikyo Shisui" effect',}},
+    neck="Dakatsu Nodowa",
+    waist="Windbuffet Belt",
+    left_ear="Cessance Earring",
+    right_ear="Brutal Earring",
+    left_ring="Flamma Ring",
+    right_ring="Dim. Ring (Dem)",
+    back={ name="Takaha Mantle", augments={'STR+1','"Zanshin"+2','"Store TP"+2',}},
+}

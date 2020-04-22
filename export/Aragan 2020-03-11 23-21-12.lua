@@ -1,0 +1,17 @@
+sets.exported={
+    main="Denouements",
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head={ name="Rao Kabuto", augments={'Pet: HP+100','Pet: Accuracy+15','Pet: Damage taken -3%',}},
+    body={ name="Pitre Tobe +1", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Rao Kote", augments={'Pet: HP+100','Pet: Accuracy+15','Pet: Damage taken -3%',}},
+    legs="Tali'ah Sera. +1",
+    feet={ name="Rao Sune-Ate", augments={'Pet: HP+100','Pet: Accuracy+15','Pet: Damage taken -3%',}},
+    neck="Empath Necklace",
+    waist="Isa Belt",
+    left_ear="Handler's Earring",
+    right_ear="Handler's Earring +1",
+    left_ring="Varar Ring",
+    right_ring="Overbearing Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Pet: "Regen"+10','Pet: Damage taken -5%',}},
+}

@@ -1,0 +1,16 @@
+sets.exported={
+    main={ name="Nibiru Sainti", augments={'Melee skill +20','Ranged skill +20','Magic skill +20',}},
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Malignance Chapeau",
+    body={ name="Pitre Tobe +1", augments={'Enhances "Overdrive" effect',}},
+    hands="Heyoka Mittens",
+    legs="Track Pants +1",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash",
+    left_ear="Handler's Earring",
+    right_ear="Handler's Earring +1",
+    left_ring="Warp Ring",
+    right_ring="Varar Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Pet: "Regen"+10','Pet: Damage taken -5%',}},
+}

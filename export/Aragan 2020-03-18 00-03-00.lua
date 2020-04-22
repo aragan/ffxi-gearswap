@@ -1,0 +1,16 @@
+sets.exported={
+    main={ name="Ohtas", augments={'Accuracy+70','Pet: Accuracy+70','Pet: Haste+10%',}},
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Karagoz Capello +1",
+    body={ name="Taeon Tabard", augments={'Pet: Mag. Evasion+20','Pet: "Regen"+3','Pet: Haste+3',}},
+    hands="Heyoka Mittens",
+    legs="Track Pants +1",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash",
+    left_ear="Handler's Earring",
+    right_ear="Handler's Earring +1",
+    left_ring="Overbearing Ring",
+    right_ring="Warp Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Pet: "Regen"+10','Pet: Damage taken -5%',}},
+}

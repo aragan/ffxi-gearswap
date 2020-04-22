@@ -1,0 +1,17 @@
+sets.exported={
+    main={ name="Midnights", augments={'Pet: Attack+25','Pet: Accuracy+25','Pet: Damage taken -3%',}},
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head={ name="Pitre Taj +3", augments={'Enhances "Optimization" effect',}},
+    body={ name="Pitre Tobe +1", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Rao Kote", augments={'Pet: HP+100','Pet: Accuracy+15','Pet: Damage taken -3%',}},
+    legs="Tali'ah Sera. +1",
+    feet={ name="Rao Sune-Ate", augments={'Pet: HP+100','Pet: Accuracy+15','Pet: Damage taken -3%',}},
+    neck="Empath Necklace",
+    waist="Isa Belt",
+    left_ear="Rimeice Earring",
+    right_ear="Handler's Earring +1",
+    left_ring="Varar Ring",
+    right_ring="Overbearing Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+8 /Mag. Eva.+8','Pet: Attack+8 Pet: Rng.Atk.+8','Pet: "Regen"+10','Pet: Damage taken -5%',}},
+}
