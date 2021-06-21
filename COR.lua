@@ -107,7 +107,14 @@ function init_gear_sets()
 
     -- Fast cast sets for spells
     
-    sets.precast.FC = {head="Haruspex Hat",ear2="Loquacious Earring",hands="Thaumas Gloves",ring1="Prolix Ring"}
+    sets.precast.FC = {    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+    hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
+    legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
+    left_ear="Etiolation Earring",
+    right_ear="Loquac. Earring",
+    left_ring="Prolix Ring",
+    right_ring="Kishar Ring",
+}
 
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {neck="Magoraga Beads"})
 
@@ -198,9 +205,14 @@ function init_gear_sets()
     
     -- Midcast Sets
     sets.midcast.FastRecast = {
-        head="Whirlpool Mask",
-        body="Iuitl Vest",hands="Iuitl Wristbands",
-        legs="Manibozho Brais",feet="Iuitl Gaiters +1"}
+    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+    hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
+    legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
+    left_ear="Etiolation Earring",
+    right_ear="Loquac. Earring",
+    left_ring="Prolix Ring",
+    right_ring="Kishar Ring",
+}
         
     -- Specific spells
     sets.midcast.Utsusemi = sets.midcast.FastRecast
@@ -263,7 +275,8 @@ function init_gear_sets()
 
 
     -- Ranged gear
-    sets.midcast.RA = {sub="Nusku Shield",
+    sets.midcast.RA = {main="Kustawi +1",
+    sub="Nusku Shield",
     range="Fomalhaut",
     ammo="Chrono Bullet",
     head="Malignance Chapeau",
@@ -280,7 +293,8 @@ function init_gear_sets()
     back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
 }
 
-    sets.midcast.RA.Acc = {sub="Nusku Shield",
+    sets.midcast.RA.Acc = {main="Kustawi +1",
+    sub="Nusku Shield",
     range="Fomalhaut",
     ammo="Chrono Bullet",
     head="Malignance Chapeau",
@@ -310,15 +324,30 @@ function init_gear_sets()
     sets.idle.Town = {legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
     
     -- Defense sets
-    sets.defense.PDT = {
-        head="Whirlpool Mask",neck="Twilight Torque",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Iuitl Vest",hands="Iuitl Wristbands",ring1="Defending Ring",ring2=gear.DarkRing.physical,
-        back="Shadow Mantle",waist="Flume Belt",legs="Nahtirah Trousers",feet="Iuitl Gaiters +1"}
+    sets.defense.PDT = {head="Malignance Chapeau",
+    body="Meg. Cuirie +2",
+    hands="Meg. Gloves +2",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    waist="Flume Belt +1",
+    left_ear="Telos Earring",
+    right_ear="Genmei Earring",
+    left_ring="Defending Ring",
+    right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+    back="Moonlight Cape",
+}
 
-    sets.defense.MDT = {
-        head="Whirlpool Mask",neck="Twilight Torque",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Iuitl Vest",hands="Iuitl Wristbands",ring1="Defending Ring",ring2="Shadow Ring",
-        back="Engulfer Cape",waist="Flume Belt",legs="Nahtirah Trousers",feet="Iuitl Gaiters +1"}
+    sets.defense.MDT = {head="Malignance Chapeau",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Warder's Charm +1",
+    left_ear="Etiolation Earring",
+    right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    left_ring="Defending Ring",
+    right_ring="Shadow Ring",
+    back="Engulfer Cape +1",
+}
     
 
     sets.Kiting = {legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
@@ -400,7 +429,8 @@ function init_gear_sets()
 }
 
 
-    sets.engaged.Ranged = {sub="Nusku Shield",
+    sets.engaged.Ranged = {
+    sub="Nusku Shield",
     range="Fomalhaut",
     ammo="Chrono Bullet",
     head="Malignance Chapeau",
