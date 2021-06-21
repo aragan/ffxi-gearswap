@@ -365,21 +365,57 @@ function init_gear_sets()
     right_ring="Petrov Ring",
     back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
     }
-    sets.engaged.Melee.DW = {ammo=gear.RAbullet,
-        head="Whirlpool Mask",neck="Asperity Necklace",ear1="Dudgeon Earring",ear2="Heartseeker Earring",
-        body="Iuitl Vest",hands="Iuitl Wristbands",ring1="Rajas Ring",ring2="Epona's Ring",
-        back="Atheling Mantle",waist="Windbuffet Belt",legs="Manibozho Brais",feet="Iuitl Gaiters +1"}
+    sets.engaged.Melee.DW = {sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Mummu Jacket +2",
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Petrov Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
     
-    sets.engaged.Acc.DW = {ammo=gear.RAbullet,
-        head="Whirlpool Mask",neck="Asperity Necklace",ear1="Dudgeon Earring",ear2="Heartseeker Earring",
-        body="Iuitl Vest",hands="Iuitl Wristbands",ring1="Rajas Ring",ring2="Epona's Ring",
-        back="Atheling Mantle",waist="Hurch'lan Sash",legs="Manibozho Brais",feet="Iuitl Gaiters +1"}
+    sets.engaged.Acc.DW = {sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Mummu Jacket +2",
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Petrov Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
 
-    sets.engaged.Ranged = {ammo=gear.RAbullet,
-        head="Whirlpool Mask",neck="Twilight Torque",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Iuitl Vest",hands="Iuitl Wristbands",ring1="Defending Ring",ring2=gear.DarkRing.physical,
-        back="Shadow Mantle",waist="Flume Belt",legs="Nahtirah Trousers",feet="Iuitl Gaiters +1"}
+    sets.engaged.Ranged = {sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Mummu Jacket +2",
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Petrov Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 end
 
 -------------------------------------------------------------------------------------------------------------------
