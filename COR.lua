@@ -74,7 +74,7 @@ function init_gear_sets()
     
     sets.precast.JA['Triple Shot'] = {body="Navarch's Frac +2"}
     sets.precast.JA['Snake Eye'] = {legs="Lanun Culottes"}
-    sets.precast.JA['Wild Card'] = {feet="Lanun Bottes"}
+    sets.precast.JA['Wild Card'] = {feet="Lanun Bottes +1"}
     sets.precast.JA['Random Deal'] = {body="Lanun Frac"}
 
     
@@ -112,10 +112,13 @@ function init_gear_sets()
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {neck="Magoraga Beads"})
 
 
-    sets.precast.RA = {ammo=gear.RAbullet,
-        head="Navarch's Tricorne +2",
-        body="Laksamana's Frac",hands="Lanun Gants",
-        back="Navarch's Mantle",waist="Impulse Belt",legs="Nahtirah Trousers",feet="Wurrukatte Boots"}
+    sets.precast.RA = {range="Fomalhaut",
+    ammo="Chrono Bullet",
+    legs={ name="Adhemar Kecks", augments={'DEX+10','AGI+10','Accuracy+15',}},
+    feet="Meg. Jam. +1",
+    waist="Yemaya Belt",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
        
     -- Weaponskill sets
@@ -152,11 +155,11 @@ function init_gear_sets()
     body="Meg. Cuirie +2",
     hands="Meg. Gloves +2",
     legs={ name="Herculean Trousers", augments={'Rng.Acc.+10','Weapon skill damage +2%','AGI+4','Rng.Atk.+10',}},
-    feet="Meg. Jam. +1",
-    neck="Fotia Gorget",
-    waist="Fotia Belt",
-    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-    right_ear="Ishvara Earring",
+    feet={ name="Herculean Boots", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','Crit.hit rate+1','INT+2','"Mag.Atk.Bns."+1',}},
+    neck="Sanctity Necklace",
+    waist="Eschan Stone",
+    left_ear="Friomisi Earring",
+    right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Dingir Ring",
     right_ring="Cacoethic Ring",
     back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
@@ -168,26 +171,27 @@ function init_gear_sets()
     body="Meg. Cuirie +2",
     hands="Meg. Gloves +2",
     legs={ name="Herculean Trousers", augments={'Rng.Acc.+10','Weapon skill damage +2%','AGI+4','Rng.Atk.+10',}},
-    feet="Meg. Jam. +1",
-    neck="Fotia Gorget",
-    waist="Fotia Belt",
-    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-    right_ear="Ishvara Earring",
+    feet={ name="Herculean Boots", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','Crit.hit rate+1','INT+2','"Mag.Atk.Bns."+1',}},
+    neck="Sanctity Necklace",
+    waist="Eschan Stone",
+    left_ear="Friomisi Earring",
+    right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Dingir Ring",
     right_ring="Cacoethic Ring",
     back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
     }
 
 
-    sets.precast.WS['Wildfire'] = {ammo=gear.WSbullet,
-        head="Whirlpool Mask",neck=gear.ElementalGorget,ear1="Clearview Earring",ear2="Moonshade Earring",
-        body="Laksamana's Frac",hands="Iuitl Wristbands",ring1="Rajas Ring",ring2="Stormsoul Ring",
-        back="Terebellum Mantle",waist=gear.ElementalBelt,legs="Nahtirah Trousers",feet="Iuitl Gaiters +1"}
-
-    sets.precast.WS['Wildfire'].Brew = {ammo=gear.MAbullet,
-        head="Wayfarer Circlet",neck="Stoicheion Medal",ear1="Friomisi Earring",ear2="Hecate's Earring",
-        body="Manibozho Jerkin",hands="Iuitl Wristbands",ring1="Stormsoul Ring",ring2="Demon's Ring",
-        back="Toro Cape",waist=gear.ElementalBelt,legs="Iuitl Tights",feet="Iuitl Gaiters +1"}
+    sets.precast.WS['Wildfire'] = {range="Fomalhaut",ammo="Chrono Bullet",head={ name="Lanun Tricorne +1", augments={'Enhances "Winning Streak" effect',}},
+    body="Meg. Cuirie +2",hands="Meg. Gloves +2",legs={ name="Herculean Trousers", augments={'Rng.Acc.+10','Weapon skill damage +2%','AGI+4','Rng.Atk.+10',}},feet={ name="Herculean Boots", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','Crit.hit rate+1','INT+2','"Mag.Atk.Bns."+1',}},
+    neck="Sanctity Necklace",waist="Eschan Stone",left_ear="Friomisi Earring",right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    left_ring="Dingir Ring",right_ring="Cacoethic Ring",back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
+    sets.precast.WS['Wildfire'].Brew = {range="Fomalhaut",ammo="Chrono Bullet",head={ name="Lanun Tricorne +1", augments={'Enhances "Winning Streak" effect',}},
+    body="Meg. Cuirie +2",hands="Meg. Gloves +2",legs={ name="Herculean Trousers", augments={'Rng.Acc.+10','Weapon skill damage +2%','AGI+4','Rng.Atk.+10',}},feet={ name="Herculean Boots", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','Crit.hit rate+1','INT+2','"Mag.Atk.Bns."+1',}},
+    neck="Sanctity Necklace",waist="Eschan Stone",left_ear="Friomisi Earring",right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    left_ring="Dingir Ring",right_ring="Cacoethic Ring",back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
     
     sets.precast.WS['Leaden Salute'] = sets.precast.WS['Wildfire']
     
@@ -201,34 +205,97 @@ function init_gear_sets()
     -- Specific spells
     sets.midcast.Utsusemi = sets.midcast.FastRecast
 
-    sets.midcast.CorsairShot = {ammo=gear.QDbullet,
-        head="Blood Mask",neck="Stoicheion Medal",ear1="Friomisi Earring",ear2="Hecate's Earring",
-        body="Lanun Frac",hands="Schutzen Mittens",ring1="Hajduk Ring",ring2="Demon's Ring",
-        back="Toro Cape",waist="Aquiline Belt",legs="Iuitl Tights",feet="Lanun Bottes"}
+    sets.midcast.CorsairShot = {main="Kustawi +1",
+    sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Meg. Cuirie +2",
+    hands="Meg. Gloves +2",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Dingir Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
-    sets.midcast.CorsairShot.Acc = {ammo=gear.QDbullet,
-        head="Laksamana's Hat",neck="Stoicheion Medal",ear1="Lifestorm Earring",ear2="Psystorm Earring",
-        body="Lanun Frac",hands="Schutzen Mittens",ring1="Stormsoul Ring",ring2="Sangoma Ring",
-        back="Navarch's Mantle",waist="Aquiline Belt",legs="Iuitl Tights",feet="Iuitl Gaiters +1"}
+    sets.midcast.CorsairShot.Acc = {main="Kustawi +1",
+    sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Meg. Cuirie +2",
+    hands="Meg. Gloves +2",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Dingir Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
-    sets.midcast.CorsairShot['Light Shot'] = {ammo=gear.QDbullet,
-        head="Laksamana's Hat",neck="Stoicheion Medal",ear1="Lifestorm Earring",ear2="Psystorm Earring",
-        body="Lanun Frac",hands="Schutzen Mittens",ring1="Stormsoul Ring",ring2="Sangoma Ring",
-        back="Navarch's Mantle",waist="Aquiline Belt",legs="Iuitl Tights",feet="Iuitl Gaiters +1"}
+    sets.midcast.CorsairShot['Light Shot'] = {main="Kustawi +1",
+    sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Meg. Cuirie +2",
+    hands="Meg. Gloves +2",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Dingir Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
     sets.midcast.CorsairShot['Dark Shot'] = sets.midcast.CorsairShot['Light Shot']
 
 
     -- Ranged gear
-    sets.midcast.RA = {ammo=gear.RAbullet,
-        head="Lanun Tricorne",neck="Ocachi Gorget",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Laksamana's Frac",hands="Iuitl Wristbands",ring1="Rajas Ring",ring2="Stormsoul Ring",
-        back="Terebellum Mantle",waist="Commodore Belt",legs="Nahtirah Trousers",feet="Iuitl Gaiters +1"}
+    sets.midcast.RA = {sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Mummu Jacket +2",
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Petrov Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
-    sets.midcast.RA.Acc = {ammo=gear.RAbullet,
-        head="Laksamana's Hat",neck="Huani Collar",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Laksamana's Frac",hands="Buremte Gloves",ring1="Hajduk Ring",ring2="Beeline Ring",
-        back="Libeccio Mantle",waist="Commodore Belt",legs="Thurandaut Tights +1",feet="Laksamana's Bottes"}
+    sets.midcast.RA.Acc = {sub="Nusku Shield",
+    range="Fomalhaut",
+    ammo="Chrono Bullet",
+    head="Malignance Chapeau",
+    body="Mummu Jacket +2",
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Gaudryi Necklace",
+    waist="Yemaya Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Petrov Ring",
+    right_ring="Ilabrat Ring",
+    back={ name="Camulus's Mantle", augments={'DEX+20','Rng.Acc.+20 Rng.Atk.+20','Rng.Acc.+10','Weapon skill damage +10%','Damage taken-5%',}},
+}
 
     
     -- Sets to return to when not performing an action.
@@ -238,15 +305,9 @@ function init_gear_sets()
     
 
     -- Idle sets
-    sets.idle = {ammo=gear.RAbullet,
-        head="Whirlpool Mask",neck="Wiglen Gorget",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Iuitl Vest",hands="Iuitl Wristbands",ring1="Sheltered Ring",ring2="Paguroidea Ring",
-        back="Shadow Mantle",waist="Flume Belt",legs="Nahtirah Trousers",feet="Skadi's Jambeaux +1"}
+    sets.idle = {legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
 
-    sets.idle.Town = {main="Surcouf's Jambiya",range="Eminent Gun",ammo=gear.RAbullet,
-        head="Laksamana's Hat",neck="Wiglen Gorget",ear1="Clearview Earring",ear2="Volley Earring",
-        body="Laksamana's Frac",hands="Iuitl Wristbands",ring1="Sheltered Ring",ring2="Paguroidea Ring",
-        back="Shadow Mantle",waist="Flume Belt",legs="Nahtirah Trousers",feet="Skadi's Jambeaux +1"}
+    sets.idle.Town = {legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
     
     -- Defense sets
     sets.defense.PDT = {
@@ -260,7 +321,7 @@ function init_gear_sets()
         back="Engulfer Cape",waist="Flume Belt",legs="Nahtirah Trousers",feet="Iuitl Gaiters +1"}
     
 
-    sets.Kiting = {feet="Skadi's Jambeaux +1"}
+    sets.Kiting = {legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
 
     -- Engaged sets
 
