@@ -694,7 +694,7 @@ function init_gear_sets()
     -- Idle/resting/defense/etc sets
     --------------------------------------
 	sets.Cover = set_combine(sets.precast.JA['Rampart'], {main="Kheshig Blade", head="Rev. Coronet +2", body="Cab. Surcoat +1"})
-    sets.Doom = {legs="Shabti Cuisses +1",neck="Nicander's Necklace",left_ring="Eshmun's Ring",right_ring="Blenmot's Ring +1", waist="Gishdubar Sash"} -- +65%
+    sets.Doom = {neck="Nicander's Necklace",left_ring="Eshmun's Ring",right_ring="Blenmot's Ring +1", waist="Gishdubar Sash"} -- +65%
     sets.Petri = {back="Sand Mantle"} 
 	sets.Reraise = {head="Twilight Helm", body="Twilight Mail"}
 	sets.Sleep = {neck="Vim Torque +1",left_ear="Infused Earring",}
