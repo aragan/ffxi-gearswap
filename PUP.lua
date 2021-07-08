@@ -241,7 +241,7 @@ function init_gear_sets()
 
     Relic_Pitre = {}
     Relic_Pitre.Head_PRegen = "Pitre Taj +2" --Enhances Optimization
-    Relic_Pitre.Body_PTP = "Pitre Tobe +2" --Enhances Overdrive
+    Relic_Pitre.Body_PTP = "Pitre Tobe +3" --Enhances Overdrive
     Relic_Pitre.Hands_WSD = "Pitre Dastanas +2" --Enhances Fine-Tuning
     Relic_Pitre.Legs_PMagic = "Pitre Churidars +2" --Enhances Ventriloquy
     Relic_Pitre.Feet_PMagic = "Pitre Babouches +1" --Role Reversal
@@ -321,15 +321,15 @@ function init_gear_sets()
     sets.precast.JA["Overdrive"] = {body = Relic_Pitre.Body_PTP}
 
     sets.precast.JA["Repair"] = {
-     main={ name="Nibiru Sainti", augments={'Melee skill +20','Ranged skill +20','Magic skill +20',}},
+        main={ name="Nibiru Sainti", augments={'Melee skill +20','Ranged skill +20','Magic skill +20',}},
         ammo = "Automat. Oil +3",
         feet = Artifact_Foire.Feet_Repair_PMagic
     }
 
     sets.precast.JA["Maintenance"] = set_combine(sets.precast.JA["Repair"], {})
 
-    sets.precast.JA.Maneuver = {
-        neck = "",
+    sets.precast.JA.Maneuver = {main={ name="Midnights", augments={'Pet: Attack+25','Pet: Accuracy+25','Pet: Damage taken -3%',}},
+        neck = "Bfn. Collar +1",
         body = "Karagoz Farsetto",
         hands = Artifact_Foire.Hands_Mane_Overload,
         back = "Visucius's Mantle",
@@ -366,7 +366,21 @@ function init_gear_sets()
     sets.precast.WS["Shijin Spiral"] =
         set_combine(
         sets.precast.WS, {
-            -- Add your set here
+        main="Godhands",
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Malignance Chapeau",
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Fotia Gorget",
+    waist="Fotia Belt",
+    left_ear="Cessance Earring",
+    right_ear="Domes. Earring",
+    left_ring="Niqmaddu Ring",
+    right_ring="Epona's Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
         }
 
     )
@@ -387,8 +401,21 @@ function init_gear_sets()
         Offense Mode = Master
         Hybrid Mode = Normal
     ]]
-    sets.engaged.Master = {
-       -- Add your set here 
+    sets.engaged.Master = {main="Godhands",
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Malignance Chapeau",
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Niqmaddu Ring",
+    right_ring="Epona's Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
     -------------------------------------Acc
@@ -599,7 +626,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Rimeice Earring",
     left_ring="Varar Ring",
-    right_ring="Varar Ring",
+    right_ring="Thurandaut Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
@@ -607,8 +634,21 @@ function init_gear_sets()
         Idle Mode = Idle
         Hybrid Mode = Acc
     ]]
-    sets.idle.Pet.Engaged.Acc = {
-       -- Add your set here 
+    sets.idle.Pet.Engaged.Acc = {main={ name="Ohtas", augments={'Accuracy+70','Pet: Accuracy+70','Pet: Haste+10%',}},
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Karagoz Capello +1",
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands="Karagoz Guanti +1",
+    legs={ name="Herculean Trousers", augments={'Pet: "Dbl. Atk."+5','Pet: DEX+4','Pet: "Mag.Atk.Bns."+1',}},
+    feet="Tali'ah Crackows +1",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Enmerkar Earring",
+    right_ear="Rimeice Earring",
+    left_ring="Varar Ring",
+    right_ring="Varar Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
     --[[
@@ -626,10 +666,10 @@ function init_gear_sets()
     feet={ name="Herculean Boots", augments={'Pet: Attack+15 Pet: Rng.Atk.+15','Pet: "Dbl. Atk."+4','Pet: AGI+10','Pet: "Mag.Atk.Bns."+11',}},
     neck="Shulmanu Collar",
     waist="Klouskap Sash +1",
-    left_ear="Enmerkar Earring",
+    left_ear="Domes. Earring",
     right_ear="Rimeice Earring",
     left_ring="Varar Ring",
-    right_ring="Varar Ring",
+    right_ring="Thurandaut Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
@@ -649,7 +689,7 @@ function init_gear_sets()
     waist="Isa Belt",
     left_ear="Enmerkar Earring",
     right_ear="Handler's Earring +1",
-    left_ring="Varar Ring",
+    left_ring="Thurandaut Ring",
     right_ring="Overbearing Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}}
     }
@@ -671,7 +711,7 @@ function init_gear_sets()
     waist="Isa Belt",
     left_ear="Enmerkar Earring",
     right_ear="Handler's Earring +1",
-    left_ring="Varar Ring",
+    left_ring="Thurandaut Ring",
     right_ring="Overbearing Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}}
     }
@@ -692,8 +732,21 @@ function init_gear_sets()
     --[[
         WSNoFTP is the default weaponskill set used
     ]]
-    sets.midcast.Pet.WSNoFTP = {
-         
+    sets.midcast.Pet.WSNoFTP = {main={ name="Ohtas", augments={'Accuracy+70','Pet: Accuracy+70','Pet: Haste+10%',}},
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head={ name="Herculean Helm", augments={'Pet: Mag. Acc.+14','Pet: "Dbl. Atk."+4','Pet: INT+3','Pet: Attack+6 Pet: Rng.Atk.+6','Pet: "Mag.Atk.Bns."+6',}},
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs={ name="Herculean Trousers", augments={'Pet: "Dbl. Atk."+5','Pet: DEX+4','Pet: "Mag.Atk.Bns."+1',}},
+    feet={ name="Herculean Boots", augments={'Pet: Attack+15 Pet: Rng.Atk.+15','Pet: "Dbl. Atk."+4','Pet: AGI+10','Pet: "Mag.Atk.Bns."+11',}},
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Domes. Earring",
+    right_ear="Rimeice Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Overbearing Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     
     }
 
@@ -706,16 +759,16 @@ function init_gear_sets()
     main={ name="Ohtas", augments={'Accuracy+70','Pet: Accuracy+70','Pet: Haste+10%',}},
     range="Animator P +1",
     ammo="Automat. Oil +3",
-    head={ name="Pitre Taj +3", augments={'Enhances "Optimization" effect',}},
+    head="Karagoz Capello +1",
     body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
     hands="Karagoz Guanti +1",
     legs="Kara. Pantaloni +1",
     feet={ name="Naga Kyahan", augments={'Pet: HP+100','Pet: Accuracy+25','Pet: Attack+25',}},
     neck="Shulmanu Collar",
     waist="Klouskap Sash",
-    left_ear="Rimeice Earring",
+    left_ear="Burana Earring",
     right_ear="Enmerkar Earring",
-    left_ring="Varar Ring",
+    left_ring="Thurandaut Ring",
     right_ring="Overbearing Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Pet: "Regen"+10','Pet: Damage taken -5%',}},
     }
@@ -724,9 +777,22 @@ function init_gear_sets()
         Base Weapon Skill Set
         Used by default if no modifier is found
     ]]
-    sets.midcast.Pet.WS = {
+    sets.midcast.Pet.WS = {main={ name="Ohtas", augments={'Accuracy+70','Pet: Accuracy+70','Pet: Haste+10%',}},
 
-
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head={ name="Herculean Helm", augments={'Pet: Mag. Acc.+14','Pet: "Dbl. Atk."+4','Pet: INT+3','Pet: Attack+6 Pet: Rng.Atk.+6','Pet: "Mag.Atk.Bns."+6',}},
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs={ name="Herculean Trousers", augments={'Pet: "Dbl. Atk."+5','Pet: DEX+4','Pet: "Mag.Atk.Bns."+1',}},
+    feet={ name="Herculean Boots", augments={'Pet: Attack+15 Pet: Rng.Atk.+15','Pet: "Dbl. Atk."+4','Pet: AGI+10','Pet: "Mag.Atk.Bns."+11',}},
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Enmerkar Earring",
+    right_ear="Burana Earring",
+    left_ring="Varar Ring",
+    right_ring="Thurandaut Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
     --Chimera Ripper, String Clipper
@@ -795,7 +861,7 @@ function init_gear_sets()
     waist="Isa Belt",
     left_ear="Enmerkar Earring",
     right_ear="Handler's Earring +1",
-    left_ring="Varar Ring",
+    left_ring="Thurandaut Ring",
     right_ring="Overbearing Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     })
