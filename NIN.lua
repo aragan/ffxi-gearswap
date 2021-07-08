@@ -365,11 +365,19 @@ main="Heishi Shorinken",
     }
 
     sets.defense.MDT = set_combine(sets.defense.PDT, {
-        -- head="Ptica Headgear",
-        ear1="Etiolation Earring",
-        neck="Twilight Torque",
-        hands="Malignance Gloves",
-        -- feet="Amm Greaves"
+   ammo="Staunch Tathlum +1",
+    head="Malignance Chapeau",
+    body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Warder's Charm +1",
+    waist="Audumbla Sash",
+    left_ear="Etiolation Earring",
+    right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    left_ring="Defending Ring",
+    right_ring="Shadow Ring",
+    back="Engulfer Cape +1",
     })
 
     sets.DayMovement = {feet="Danzo sune-ate"}
@@ -461,10 +469,14 @@ main="Heishi Shorinken",
         body="Malignance Tabard",
         neck="Agitator's Collar",
         hands="Malignance Gloves",
-        back=Andartia.DEX,
+        right_ear="Genmei Earring",
+        ring2={ name="Gelatinous Ring +1", augments={'Path: A',}},
+        neck={ name="Loricate Torque +1", augments={'Path: A',}},
+        waist="Flume Belt +1",
         ring1="Defending Ring",
         legs="Malignance Tights",
-        feet="Malignance Boots"
+        feet="Malignance Boots",
+        back="Moonlight Cape",
     }
     sets.AccPDT = {
 main="Heishi Shorinken",
