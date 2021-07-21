@@ -152,7 +152,7 @@ function init_gear_sets()
 		
 		sets.precast.JA['Call Beast'] = sets.precast.JA['Bestial Loyalty']
 		
-        sets.precast.JA.Familiar = {legs="Ankusa Trousers +1"}
+        sets.precast.JA.Familiar = {legs="Ankusa Trousers +2"}
 		
 		sets.precast.JA.Tame = {head="Totemic Helm +1",ear1="Tamer's Earring",legs="Stout Kecks"}
 		
@@ -164,7 +164,7 @@ function init_gear_sets()
 				neck="Voltsurge Torque",
 				ear1="Gwati Earring",
 				ear2="Enchanter Earring +1",
-				body="Ankusa Jackcoat +1",
+				body="Ankusa Jackcoat +2",
 				hands="Sombra Mittens +1",
 				ring1="Perception Ring",
 				ring2="Sangoma Ring",
@@ -593,19 +593,19 @@ function init_gear_sets()
 		 
 		
 	sets.precast.WS['Primal Rend'] = {
-			ammo="Plumose Sachet",
-			head="Jumalik Helm",
-			body={ name="Valorous Mail", augments={'"Mag.Atk.Bns."+20','Mag. Acc.+21','Accuracy+13 Attack+13','Mag. Acc.+9 "Mag.Atk.Bns."+9',}},
-			hands={ name="Valorous Mitts", augments={'"Mag.Atk.Bns."+16','Pet: Attack+18 Pet: Rng.Atk.+18','Accuracy+4 Attack+4','Mag. Acc.+20 "Mag.Atk.Bns."+20',}},
-			legs={ name="Valor. Hose", augments={'Attack+5','"Mag.Atk.Bns."+25','Mag. Acc.+6 "Mag.Atk.Bns."+6',}},
-			feet="Sombra Leggings +1",
-			neck="Sanctity Necklace",
-			waist="Eschan Stone",
-			ear1="Moonshade Earring",
-			ear2="Friomisi Earring",
-			ring1="Thurandaut Ring",
-			ring2="Sangoma Ring",
-			back={ name="Artio's Mantle", augments={'STR+20','Mag. Acc+20 /Mag. Dmg.+20','STR+10','Weapon skill damage +10%',}},}
+			ammo="Voluspa Tathlum",
+    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    hands="Nukumi Manoplas +1",
+    legs={ name="Valorous Hose", augments={'Pet: "Mag.Atk.Bns."+23','Pet: INT+3','Pet: Accuracy+5 Pet: Rng. Acc.+5','Pet: Attack+4 Pet: Rng.Atk.+4',}},
+    feet={ name="Valorous Greaves", augments={'Pet: "Mag.Atk.Bns."+28','Pet: DEX+7','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+6 Pet: Rng.Atk.+6',}},
+    neck="Adad Amulet",
+    waist="Klouskap Sash +1",
+    left_ear="Enmerkar Earring",
+    right_ear="Rimeice Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Tali'ah Ring",
+    back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 
 	-- Calamity, Meditate, Sekkanoki > brain > tail, leave, cb, fight > Primal Rend > tegmina > Clerrrdplerrterrr
 	--------------------------------------------------------------------------------		
@@ -673,9 +673,9 @@ function init_gear_sets()
 			
 	-- PET SIC & READY MOVES
 	sets.midcast.Pet.WS = {
-	main={ name="Digirbalag", augments={'"Store TP"+1','Pet: CHR+1','Pet: Accuracy+12 Pet: Rng. Acc.+12','Pet: Attack+30 Pet: Rng.Atk.+30','DMG:+3',}},
-    sub="Mdomo Axe +1",
-    ammo="Hesperiidae",
+	main="Charmer's Merlin",
+    sub={ name="Digirbalag", augments={'"Store TP"+1','Pet: CHR+1','Pet: Accuracy+12 Pet: Rng. Acc.+12','Pet: Attack+30 Pet: Rng.Atk.+30','DMG:+3',}},
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     hands="Nukumi Manoplas +1",
@@ -690,17 +690,17 @@ function init_gear_sets()
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 			
 	sets.midcast.Pet.DA = {
-	main={ name="Digirbalag", augments={'"Store TP"+1','Pet: CHR+1','Pet: Accuracy+12 Pet: Rng. Acc.+12','Pet: Attack+30 Pet: Rng.Atk.+30','DMG:+3',}},
+	main="Charmer's Merlin",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
     hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
-    legs="Despair Cuisses",
+    legs={ name="Emicho Hose", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     feet={ name="Taeon Boots", augments={'Pet: Attack+25 Pet: Rng.Atk.+25',}},
     neck="Shulmanu Collar",
     waist="Klouskap Sash +1",
-    left_ear="Enmerkar Earring",
+    left_ear="Sabong Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
     right_ring="Varar Ring",
@@ -710,7 +710,7 @@ function init_gear_sets()
 			
 	main="Deacon Tabar",
     sub="Mdomo Axe +1",
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
     body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     hands="Nukumi Manoplas +1",
@@ -735,7 +735,7 @@ function init_gear_sets()
 	sets.midcast.Pet.MaccReady = set_combine(sets.midcast.Pet.WS, {
 			main="Deacon Tabar",
     sub="Mdomo Axe +1",
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head="Tali'ah Turban +2",
     body="Tali'ah Manteel +1",
     hands="Tali'ah Gages +1",
@@ -753,7 +753,7 @@ function init_gear_sets()
 			--MAB
 			main="Deacon Tabar",
     sub="Mdomo Axe +1",
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
     body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     hands="Nukumi Manoplas +1",
@@ -769,7 +769,7 @@ function init_gear_sets()
 			--MACC
 			main="Deacon Tabar",
     sub="Mdomo Axe +1",
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head="Tali'ah Turban +2",
     body="Tali'ah Manteel +1",
     hands="Tali'ah Gages +1",
@@ -790,11 +790,10 @@ function init_gear_sets()
 	sets.midcast.Pet.Favorable = {
 	main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
-    legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
     waist="Klouskap Sash +1",
@@ -807,7 +806,7 @@ function init_gear_sets()
 	sets.midcast.Pet.Killer = {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
     hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
@@ -829,7 +828,7 @@ function init_gear_sets()
 			body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',}},
 			legs={ name="Valor. Hose", augments={'Pet: Accuracy+28 Pet: Rng. Acc.+28','Pet: "Regen"+4','System: 1 ID: 1793 Val: 11','Pet: Attack+13 Pet: Rng.Atk.+13',}},
 			feet="Tot. Gaiters +3",
-			head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+			hands="Nukumi Manoplas +1",
 			ammo="Demonry Core",
 			neck="Shulmanu Collar",
 			waist="Incarnation Sash",
@@ -912,10 +911,10 @@ function init_gear_sets()
     sets.idle = {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
@@ -929,10 +928,10 @@ function init_gear_sets()
 	sets.idle.MDTMaster = {		
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
@@ -946,10 +945,10 @@ function init_gear_sets()
 	sets.idle.MNormal = set_combine(sets.idle, {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
@@ -963,10 +962,10 @@ function init_gear_sets()
 	sets.idle.Turtle = set_combine(sets.idle, {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
@@ -997,10 +996,10 @@ function init_gear_sets()
     sets.idle.Refresh = set_combine(sets.idle, {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
@@ -1016,10 +1015,10 @@ function init_gear_sets()
 	sets.idle.Pet = set_combine(sets.idle, {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
@@ -1037,70 +1036,82 @@ function init_gear_sets()
 	sets.idle.Pet.Engaged = set_combine(sets.idle, {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
-    head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    ammo="Voluspa Tathlum",
+    head="Tali'ah Turban +2",
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
-    legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    legs={ name="Emicho Hose", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
     waist="Klouskap Sash +1",
     left_ear="Enmerkar Earring",
-    right_ear="Domes. Earring",
-    left_ring="Thurandaut Ring",
+    right_ear="Rimeice Earring",
+    left_ring="Varar Ring",
     right_ring="Varar Ring",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},})
         
         -- DEFENSE SETS
    sets.defense.PDT = {
-			sub="Beatific Shield +1",
-			ammo="Vanir Battery",
-			head="Ighwa Cap",
-			body={ name="Xaddi Mail", augments={'VIT+12','Phys. dmg. taken -5','Magic dmg. taken -3',}},
-			hands="Umuthi Gloves",
-			legs={ name="Xaddi Cuisses", augments={'HP+45','Accuracy+15','Phys. dmg. taken -3',}},
-			feet={ name="Xaddi Boots", augments={'HP+45','Accuracy+15','Phys. dmg. taken -3',}},
-			neck="Loricate Torque +1",
-			waist="Flume Belt",
-			ear1="Merman's Earring",
-			ear2="Merman's Earring",
-			ring1="Patricius Ring",
-			ring2={ name="Dark Ring", augments={'Phys. dmg. taken -6%','Magic dmg. taken -4%',}},
-			back="Solemnity Cape",}
+			ammo="Staunch Tathlum +1",
+    head="Malignance Chapeau",
+    body="Tartarus Platemail",
+    hands="Meg. Gloves +2",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    waist="Nierenschutz",
+    left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    right_ear="Genmei Earring",
+    left_ring="Patricius Ring",
+    right_ring="Defending Ring",
+    back="Moonlight Cape",}
 
     sets.defense.PetPDT = {
 			main="Izizoeksi",
 	head={ name="Taeon Chapeau", augments={'Pet: Damage taken -3%',}},
-    body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    body={ name="Taeon Tabard", augments={'Pet: Mag. Evasion+20','Pet: "Regen"+3','Pet: Damage taken -3%',}},
     hands={ name="Ankusa Gloves +1", augments={'Enhances "Beast Affinity" effect',}},
     legs="Tali'ah Sera. +2",
     feet={ name="Ankusa Gaiters +1", augments={'Enhances "Beast Healer" effect',}},
     neck="Shepherd's Chain",
     waist="Isa Belt",
-    left_ear="Enmerkar Earring",
+    left_ear="Hypaspist Earringg",
     right_ear="Handler's Earring +1",
     left_ring="Thurandaut Ring",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 
-	sets.defense.Killer = set_combine(sets.defense.PDT, {body="Nukumi Gausape +1"})
+	sets.defense.Killer = set_combine(sets.defense.PDT, {main="Izizoeksi",
+	sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
+    ammo="Voluspa Tathlum",
+    head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    legs={ name="Emicho Hose", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
+    feet="Tali'ah Crackows +2",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Sabong Earring",
+    right_ear="Domes. Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Varar Ring",
+    back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},})
 	
 	sets.defense.Reraise = set_combine(sets.defense.PDT, {head="Twilight Helm",body="Twilight Mail"})
 
 	sets.defense.MDT = set_combine(sets.defense.PDT, {
-			sub="Beatific Shield +1",
-			ammo="Vanir Battery",
-			head={ name="Ankusa Helm +1", augments={'Enhances "Killer Instinct" effect',}},
-			body={ name="An. Jackcoat +1", augments={'Enhances "Feral Howl" effect',}},
-			hands="Umuthi Gloves",
-			legs="Nukumi Quijotes +1",
-			feet={ name="Taeon Boots", augments={'Pet: Attack+24 Pet: Rng.Atk.+24','Pet: "Dbl. Atk."+5','Pet: Damage taken -2%',}},
-			neck="Loricate Torque +1",
-			waist="Nierenschutz",
-			ear1="Sanare Earring",
-			ear2="Merman's Earring",
-			ring1="Fortified Ring",
-			ring2="Defending Ring",
-			back="Mubvum. Mantle",})
+	ammo="Staunch Tathlum +1",
+    head="Malignance Chapeau",
+    body="Tartarus Platemail",
+    hands="Meg. Gloves +2",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    waist="Nierenschutz",
+    left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    right_ear="Etiolation Earring",
+    left_ring="Fortified Ring",
+    right_ring="Defending Ring",
+    back="Moonlight Cape",})
 
 	sets.defense.MDTShell = set_combine(sets.defense.MDT, {
 			neck="Inquisitor Bead Necklace",
@@ -1113,20 +1124,19 @@ function init_gear_sets()
 			feet="Durgai Leggings"})
 
 	sets.defense.PetMDT = set_combine(sets.defense.PDT, {
-			sub="Beatific Shield +1",
-			ammo="Vanir Battery",
-			head={ name="Ankusa Helm +1", augments={'Enhances "Killer Instinct" effect',}},
-			body={ name="An. Jackcoat +1", augments={'Enhances "Feral Howl" effect',}},
-			hands="Umuthi Gloves",
-			legs="Nukumi Quijotes +1",
-			feet={ name="Taeon Boots", augments={'Pet: Attack+24 Pet: Rng.Atk.+24','Pet: "Dbl. Atk."+5','Pet: Damage taken -2%',}},
-			neck="Loricate Torque +1",
-			waist="Nierenschutz",
-			ear1="Sanare Earring",
-			ear2="Merman's Earring",
-			ring1="Fortified Ring",
-			ring2={ name="Dark Ring", augments={'Phys. dmg. taken -6%','Magic dmg. taken -4%',}},
-			back="Mubvum. Mantle",})
+			main="Izizoeksi",
+    head={ name="Taeon Chapeau", augments={'Pet: Damage taken -3%',}},
+    body={ name="Taeon Tabard", augments={'Pet: Mag. Evasion+20','Pet: "Regen"+3','Pet: Damage taken -3%',}},
+    hands={ name="Ankusa Gloves +1", augments={'Enhances "Beast Affinity" effect',}},
+    legs="Tali'ah Sera. +2",
+    feet={ name="Ankusa Gaiters +1", augments={'Enhances "Beast Healer" effect',}},
+    neck="Shepherd's Chain",
+    waist="Isa Belt",
+    left_ear="Rimeice Earring",
+    right_ear="Enmerkar Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Varar Ring",
+    back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},})
 
 	sets.Kiting = {feet="Skadi's Jambeaux +1"}
 
@@ -1142,7 +1152,7 @@ function init_gear_sets()
 	sets.engaged.Shield = {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Taeon Chapeau", augments={'Pet: Damage taken -3%',}},
     body={ name="Taeon Tabard", augments={'Pet: Mag. Evasion+20','Pet: "Regen"+3','Pet: Damage taken -3%',}},
     hands={ name="Ankusa Gloves +1", augments={'Enhances "Beast Affinity" effect',}},
@@ -1285,10 +1295,10 @@ function init_gear_sets()
 	sets.engaged.DW.MedAcc = {
 			main="Izizoeksi",
     sub={ name="Digirbalag", augments={'Pet: "Dbl. Atk."+4','Pet: DEX+2','Pet: Accuracy+3 Pet: Rng. Acc.+3','DMG:+8',}},
-    ammo="Hesperiidae",
+    ammo="Voluspa Tathlum",
     head={ name="Emicho Coronet", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     body={ name="An. Jackcoat +2", augments={'Enhances "Feral Howl" effect',}},
-    head={ name="Valorous Mask", augments={'Pet: "Mag.Atk.Bns."+26','Pet: VIT+14','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+12 Pet: Rng.Atk.+12',}},
+    hands={ name="Emicho Gauntlets", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
