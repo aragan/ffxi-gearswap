@@ -293,7 +293,7 @@ function init_gear_sets()
     sets.midcast.RA.Acc = {main="Naegling",
     sub="Tauret",
     range={ name="Doomsday", augments={'"Mag.Atk.Bns."+19',}},
-    ammo="Chrono Bullet",
+    ammo="Orichalc. Bullet",
     head="Malignance Chapeau",
     body="Mummu Jacket +2",
     hands="Meg. Gloves +2",
