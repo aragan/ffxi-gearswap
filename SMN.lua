@@ -155,8 +155,14 @@ function init_gear_sets()
     sets.precast.JA['Mana Cede'] = {hands="Caller's Bracers +2"}
 
     -- Pact delay reduction gear
-    sets.precast.BloodPactWard = {ammo="Seraphicaller",head="Convoker's Horn",body="Glyphic Doublet +1",hands="Glyphic Bracers +1",
-        back="Samanisi Cape"}
+    sets.precast.BloodPactWard = {main={ name="Espiritus", augments={'Summoning magic skill +15','Pet: Mag. Acc.+30','Pet: Damage taken -4%',}},
+    ammo="Sancus Sachet",
+    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
+    body={ name="Glyphic Doublet +1", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
+    legs={ name="Glyphic Spats +1", augments={'Increases Sp. "Blood Pact" accuracy',}},
+    feet={ name="Glyph. Pigaches +1", augments={'Inc. Sp. "Blood Pact" magic crit. dmg.',}},
+    right_ear="Evans Earring",}
 
     sets.precast.BloodPactRage = sets.precast.BloodPactWard
 
@@ -271,13 +277,13 @@ function init_gear_sets()
     ammo="Sancus Sachet",
     head={ name="Helios Band", augments={'Pet: Attack+28 Pet: Rng.Atk.+28','Pet: Crit.hit rate +2','Blood Pact Dmg.+6',}},
     body={ name="Helios Jacket", augments={'Pet: Attack+28 Pet: Rng.Atk.+28','Pet: Crit.hit rate +3','Blood Pact Dmg.+5',}},
-    hands={ name="Helios Gloves", augments={'Pet: Attack+18 Pet: Rng.Atk.+18','Pet: Crit.hit rate +3','Blood Pact Dmg.+4',}},
+    hands={ name="Helios Gloves", augments={'Pet: Attack+30 Pet: Rng.Atk.+30','Pet: Crit.hit rate +3','Blood Pact Dmg.+6',}},
     legs={ name="Enticer's Pants", augments={'MP+20','Pet: Accuracy+7 Pet: Rng. Acc.+7','Pet: Mag. Acc.+3',}},
     feet={ name="Helios Boots", augments={'Pet: Attack+24 Pet: Rng.Atk.+24','Pet: Crit.hit rate +4','Blood Pact Dmg.+2',}},
     neck="Shulmanu Collar",
     waist="Klouskap Sash +1",
     left_ear="Gifted Earring",
-    right_ear="Evans Earring",
+    right_ear="Esper Earring",
     left_ring="Varar Ring",
     right_ring="Varar Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
@@ -289,13 +295,13 @@ function init_gear_sets()
     ammo="Sancus Sachet",
     head={ name="Apogee Crown", augments={'MP+60','Pet: "Mag.Atk.Bns."+30','Blood Pact Dmg.+7',}},
     body={ name="Helios Jacket", augments={'Pet: Attack+28 Pet: Rng.Atk.+28','Pet: Crit.hit rate +3','Blood Pact Dmg.+5',}},
-    hands={ name="Apogee Mitts", augments={'MP+60','Pet: "Mag.Atk.Bns."+30','Blood Pact Dmg.+7',}},
+    hands={ name="Merlinic Dastanas", augments={'Pet: "Mag.Atk.Bns."+22','Blood Pact Dmg.+6','Pet: DEX+9',}},
     legs={ name="Enticer's Pants", augments={'MP+20','Pet: Accuracy+7 Pet: Rng. Acc.+7','Pet: Mag. Acc.+3',}},
     feet={ name="Apogee Pumps", augments={'MP+60','Pet: "Mag.Atk.Bns."+30','Blood Pact Dmg.+7',}},
     neck="Adad Amulet",
     waist="Kobo Obi",
     left_ear="Gifted Earring",
-    right_ear="Evans Earring",
+    right_ear="Esper Earring",
     left_ring="Varar Ring",
     right_ring="Varar Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
@@ -339,10 +345,21 @@ function init_gear_sets()
     right_ring="Varar Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
-    sets.idle.PDT = {main=gear.Staff.PDT,sub="Achaq Grip",ammo="Seraphicaller",
-        head="Convoker's Horn",neck="Twilight Torque",ear1="Gifted Earring",ear2="Loquacious Earring",
-        body="Hagondes Coat",hands="Yaoyotl Gloves",ring1="Defending Ring",ring2="Sangoma Ring",
-        back="Umbra Cape",waist="Fucho-no-Obi",legs="Hagondes Pants",feet="Herald's Gaiters"}
+    sets.idle.PDT = {main="Contemplator +1",
+    sub="Vox Grip",
+    ammo="Sancus Sachet",
+    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
+    body={ name="Glyphic Doublet +1", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
+    legs="Assiduity Pants",
+    feet={ name="Glyph. Pigaches +1", augments={'Inc. Sp. "Blood Pact" magic crit. dmg.',}},
+    neck="Caller's Pendant",
+    waist="Fucho-no-Obi",
+    left_ear="Enmerkar Earring",
+    right_ear="Evans Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Varar Ring",
+    back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     -- perp costs:
     -- spirits: 7
@@ -455,9 +472,21 @@ function init_gear_sets()
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.defense.MDT = {
-        head="Hagondes Hat",neck="Twilight Torque",ear1="Gifted Earring",ear2="Loquacious Earring",
-        body="Vanir Cotehardie",hands="Yaoyotl Gloves",ring1="Defending Ring",ring2="Shadow Ring",
-        back="Umbra Cape",waist="Fucho-no-Obi",legs="Bokwus Slops",feet="Hagondes Sabots"}
+        main="Contemplator +1",
+    sub="Vox Grip",
+    ammo="Sancus Sachet",
+    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
+    body={ name="Glyphic Doublet +1", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
+    legs="Assiduity Pants",
+    feet={ name="Glyph. Pigaches +1", augments={'Inc. Sp. "Blood Pact" magic crit. dmg.',}},
+    neck="Caller's Pendant",
+    waist="Fucho-no-Obi",
+    left_ear="Enmerkar Earring",
+    right_ear="Evans Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Varar Ring",
+    back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.Kiting = {feet="Herald's Gaiters"}
     

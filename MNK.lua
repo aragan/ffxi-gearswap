@@ -160,7 +160,7 @@ function get_sets()
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
     hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
-    legs="Jokushu Haidate",
+    legs="Hiza. Hizayoroi +2",
     feet="Malignance Boots",
     neck="Fotia Gorget",
     waist="Fotia Belt",

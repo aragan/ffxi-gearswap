@@ -501,39 +501,25 @@ function init_gear_sets()
 }
 
 
-    sets.midcast.Protect = 
-{
-    ammo="Staunch Tathlum +1",
-    head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    body={ name="Souv. Cuirass +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    hands={ name="Souv. Handsch. +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    legs={ name="Founder's Hose", augments={'MND+5','Mag. Acc.+5','Attack+3','Breath dmg. taken -2%',}},
-    feet={ name="Odyssean Greaves", augments={'"Mag.Atk.Bns."+23','Magic dmg. taken -5%','INT+9',}},
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
-    waist="Audumbla Sash",
-    left_ear="Knightly Earring",
-    right_ear="Genmei Earring",
-    left_ring="Patricius Ring",
-    right_ring="Defending Ring",
-    back="Moonlight Cape",
+    sets.midcast.Protect = set_combine(sets.self_healing.DT, {
+     head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+    legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
+    waist="Cascade Belt",
+    left_ear="Brachyura Earring",
+    right_ear="Andoaa Earring",
+    left_ring="Sheltered Ring",
+    right_ring="Stikini Ring",
 
-}
-    sets.midcast.Shell = 
-{
-    ammo="Staunch Tathlum +1",
-    head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    body={ name="Souv. Cuirass +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    hands={ name="Souv. Handsch. +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    legs={ name="Founder's Hose", augments={'MND+5','Mag. Acc.+5','Attack+3','Breath dmg. taken -2%',}},
-    feet={ name="Odyssean Greaves", augments={'"Mag.Atk.Bns."+23','Magic dmg. taken -5%','INT+9',}},
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
-    waist="Audumbla Sash",
-    left_ear="Knightly Earring",
-    right_ear="Genmei Earring",
-    left_ring="Patricius Ring",
-    right_ring="Defending Ring",
-    back="Moonlight Cape",
-}
+})
+    sets.midcast.Shell = set_combine(sets.self_healing.DT, {
+     head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+    legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
+    waist="Cascade Belt",
+    left_ear="Brachyura Earring",
+    right_ear="Andoaa Earring",
+    left_ring="Sheltered Ring",
+    right_ring="Stikini Ring",
+})
 	sets.midcast.Raise = 
 {       ammo="Staunch Tathlum +1",
     head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
@@ -711,7 +697,7 @@ function init_gear_sets()
     -- Idle sets
     sets.idle = 
 { 
-    legs="Carmine Cuisses +1"
+
 }
  
     sets.idle.Town =
