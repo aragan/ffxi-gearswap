@@ -111,6 +111,7 @@ function init_gear_sets()
     hands={ name="Chironic Gloves", augments={'"Cure" potency +7%','MND+9','Mag. Acc.+5','"Mag.Atk.Bns."+5',}},
     legs={ name="Vanya Slops", augments={'Healing magic skill +20','"Cure" spellcasting time -7%','Magic dmg. taken -3',}},
     feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
+    waist="Cascade Belt",
     left_ear="Loquac. Earring",
     right_ear="Andoaa Earring",
     left_ring="Stikini Ring",
@@ -144,7 +145,7 @@ function init_gear_sets()
     -- Waltz set (chr and vit)
     sets.precast.Waltz = {range="Gjallarhorn",
         head="Nahtirah Hat",
-        body="Gendewitha Bliaut",hands="Buremte Gloves",
+        body="Passion Jacket",hands="Buremte Gloves",
         back="Kumbira Cape",legs="Gendewitha Spats",feet="Gendewitha Galoshes"}
     
        
