@@ -169,22 +169,20 @@ function init_gear_sets()
     -- Fast cast sets for spells
     
     sets.precast.FC = {
-        main="Bolelabunga",
-    sub="Genmei Shield",
-    ammo="Sapience Orb",
-    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
-    body="Shomonjijoe +1",
+    main="Contemplator +1",
+    sub="Vox Grip",
+    ammo="Sancus Sachet",
+    head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
     hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
-    feet={ name="Merlinic Crackows", augments={'Magic burst dmg.+9%','Mag. Acc.+9',}},
     neck="Caller's Pendant",
     waist="Kobo Obi",
-    left_ear="Loquac. Earring",
-    right_ear="Etiolation Earring",
-    left_ring="Kishar Ring",
+    left_ear="Andoaa Earring",
+    right_ear="Loquac. Earring",
+    left_ring="Stikini Ring",
     right_ring="Prolix Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
-    sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {waist="Siegel Sash"})
+    sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {waist="Siegel Sash",left_ear="Andoaa Earring",})
 
        
     -- Weaponskill sets
@@ -251,7 +249,7 @@ function init_gear_sets()
     left_ear="Andoaa Earring",
     right_ear="Gifted Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.midcast.Pet.DebuffBloodPactWard = {main={ name="Espiritus", augments={'Summoning magic skill +15','Pet: Mag. Acc.+30','Pet: Damage taken -4%',}},
@@ -267,7 +265,7 @@ function init_gear_sets()
     left_ear="Andoaa Earring",
     right_ear="Gifted Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
         
     sets.midcast.Pet.DebuffBloodPactWard.Acc = sets.midcast.Pet.DebuffBloodPactWard
@@ -284,8 +282,8 @@ function init_gear_sets()
     waist="Klouskap Sash +1",
     left_ear="Gifted Earring",
     right_ear="Esper Earring",
-    left_ring="Varar Ring",
-    right_ring="Varar Ring",
+    left_ring="Varar Ring +1",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.midcast.Pet.PhysicalBloodPactRage.Acc = sets.midcast.Pet.PhysicalBloodPactRage
@@ -302,8 +300,8 @@ function init_gear_sets()
     waist="Kobo Obi",
     left_ear="Gifted Earring",
     right_ear="Esper Earring",
-    left_ring="Varar Ring",
-    right_ring="Varar Ring",
+    left_ring="Varar Ring +1",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.midcast.Pet.MagicalBloodPactRage.Acc = sets.midcast.Pet.MagicalBloodPactRage
@@ -342,7 +340,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Evans Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.idle.PDT = {main="Contemplator +1",
@@ -358,7 +356,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Evans Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     -- perp costs:
@@ -394,7 +392,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Evans Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1 +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.idle.PDT.Avatar = {main={ name="Espiritus", augments={'Summoning magic skill +15','Pet: Mag. Acc.+30','Pet: Damage taken -4%',}},
@@ -410,7 +408,7 @@ function init_gear_sets()
     left_ear="Handler's Earring +1",
     right_ear="Enmerkar Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.idle.Spirit = {main="Gridarvor",sub="Achaq Grip",ammo="Seraphicaller",
@@ -468,7 +466,7 @@ function init_gear_sets()
     left_ear="Handler's Earring +1",
     right_ear="Enmerkar Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.defense.MDT = {
@@ -485,7 +483,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Evans Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.Kiting = {feet="Herald's Gaiters"}
@@ -511,7 +509,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Evans Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 end
 

@@ -353,7 +353,19 @@ function init_gear_sets()
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
-       -- Add your set here 
+          main="Godhands",
+    range="Animator P +1",
+    head={ name="Pitre Taj +3", augments={'Enhances "Optimization" effect',}},
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs="Hiza. Hizayoroi +2",
+    feet="Malignance Boots",
+    neck="Fotia Gorget",
+    waist="Fotia Belt",
+    left_ear="Telos Earring",
+    right_ear="Cessance Earring",
+    left_ring="Niqmaddu Ring",
+    right_ring="Epona's Ring",
     }
 
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
@@ -368,19 +380,17 @@ function init_gear_sets()
         sets.precast.WS, {
         main="Godhands",
     range="Animator P +1",
-    ammo="Automat. Oil +3",
-    head="Malignance Chapeau",
-    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    head={ name="Herculean Helm", augments={'Pet: Mag. Acc.+14','Pet: "Dbl. Atk."+4','Pet: INT+3','Pet: Attack+6 Pet: Rng.Atk.+6','Pet: "Mag.Atk.Bns."+6',}},
+    body="Tali'ah Manteel +1",
     hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
-    legs="Malignance Tights",
-    feet="Malignance Boots",
+    legs="Hiza. Hizayoroi +2",
+    feet={ name="Herculean Boots", augments={'Pet: Mag. Acc.+28','Pet: "Store TP"+10','Pet: INT+2',}},
     neck="Fotia Gorget",
     waist="Fotia Belt",
     left_ear="Cessance Earring",
-    right_ear="Domes. Earring",
+    right_ear="Trux Earring",
     left_ring="Niqmaddu Ring",
     right_ring="Epona's Ring",
-    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
         }
 
     )
@@ -424,7 +434,21 @@ function init_gear_sets()
         Hybrid Mode = Acc
     ]]
     sets.engaged.Master.Acc = {
-       -- Add your set here 
+     main="Godhands",
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Malignance Chapeau",
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Niqmaddu Ring",
+    right_ring="Epona's Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
     -------------------------------------TP
@@ -462,7 +486,21 @@ function init_gear_sets()
         Hybrid Mode = Normal
     ]]
     sets.engaged.MasterPet = {
-       -- Add your set here 
+     main="Godhands",
+    range="Animator P +1",
+    ammo="Automat. Oil +3",
+    head="Malignance Chapeau",
+    body={ name="Pitre Tobe +3", augments={'Enhances "Overdrive" effect',}},
+    hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+30','Pet: "Dbl. Atk."+5','Pet: INT+4',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Shulmanu Collar",
+    waist="Klouskap Sash +1",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Niqmaddu Ring",
+    right_ring="Epona's Ring",
+    back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10','Pet: Damage taken -5%',}},
     }
 
     -------------------------------------Acc
@@ -471,7 +509,7 @@ function init_gear_sets()
         Hybrid Mode = Acc
     ]]
     sets.engaged.MasterPet.Acc = {
-       -- Add your set here 
+        
     }
 
     -------------------------------------TP

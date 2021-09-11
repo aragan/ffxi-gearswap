@@ -214,7 +214,7 @@ function init_gear_sets()
 				feet="Whirlpool Greaves"}
                 
         -- HEALING WALTZ
-        sets.precast.Waltz['Healing Waltz'] = {}
+        sets.precast.Waltz['Healing Waltz'] = {body="Passion Jacket",}
 
 	-- STEPS
 	
@@ -231,7 +231,7 @@ function init_gear_sets()
 				left_ear="Lifestorm Earring",
 				right_ear="Psystorm Earring",
 				left_ring="Etana Ring",
-				right_ring="Varar Ring +1",
+				right_ring="Varar Ring +1 +1",
 				back={ name="Artio's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Store TP"+10',}}}
 
 	-- VIOLENT FLOURISH
@@ -249,7 +249,7 @@ function init_gear_sets()
 				left_ear="Lifestorm Earring",
 				right_ear="Psystorm Earring",
 				left_ring="Etana Ring",
-				right_ring="Varar Ring +1",
+				right_ring="Varar Ring +1 +1",
 				back={ name="Artio's Mantle", augments={'STR+20','Mag. Acc+20 /Mag. Dmg.+20','STR+10','Weapon skill damage +10%',}},}
 
         sets.precast.FC = {
@@ -261,7 +261,9 @@ function init_gear_sets()
                 right_ring="Prolix Ring",}
 				
         sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {
-				ammo="Sapience Orb",
+				
+			    ammo="Sapience Orb",
+                body="Passion Jacket",
                 hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
                 left_ear="Etiolation Earring",
                 right_ear="Loquac. Earring",
@@ -505,7 +507,7 @@ function init_gear_sets()
 			left_ear="Suppanomimi",
 			right_ear="Digni. Earring",
 			left_ring="Rajas Ring",
-			right_ring="Varar Ring +1",
+			right_ring="Varar Ring +1 +1",
 			back={ name="Artio's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Store TP"+10',}},}
 
 	sets.precast.WS.WSMedAcc = {
@@ -669,7 +671,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1 +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 			
 	sets.midcast.Pet.DA = {
@@ -682,11 +684,11 @@ function init_gear_sets()
     legs={ name="Emicho Hose", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
     feet={ name="Taeon Boots", augments={'Pet: Attack+25 Pet: Rng.Atk.+25',}},
     neck="Shulmanu Collar",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Sabong Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1 +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 
 	sets.midcast.Pet.MabReady = set_combine(sets.midcast.Pet.WS, {
@@ -700,7 +702,7 @@ function init_gear_sets()
     legs={ name="Valorous Hose", augments={'Pet: "Mag.Atk.Bns."+23','Pet: INT+3','Pet: Accuracy+5 Pet: Rng. Acc.+5','Pet: Attack+4 Pet: Rng.Atk.+4',}},
     feet={ name="Valorous Greaves", augments={'Pet: "Mag.Atk.Bns."+28','Pet: DEX+7','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+6 Pet: Rng.Atk.+6',}},
     neck="Adad Amulet",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Enmerkar Earring",
     right_ear="Rimeice Earring",
     left_ring="Thurandaut Ring",
@@ -725,7 +727,7 @@ function init_gear_sets()
     legs="Tali'ah Sera. +2",
     feet="Tali'ah Crackows +2",
     neck="Adad Amulet",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
@@ -743,7 +745,7 @@ function init_gear_sets()
     legs={ name="Valorous Hose", augments={'Pet: "Mag.Atk.Bns."+23','Pet: INT+3','Pet: Accuracy+5 Pet: Rng. Acc.+5','Pet: Attack+4 Pet: Rng.Atk.+4',}},
     feet={ name="Valorous Greaves", augments={'Pet: "Mag.Atk.Bns."+28','Pet: DEX+7','Pet: Accuracy+2 Pet: Rng. Acc.+2','Pet: Attack+6 Pet: Rng.Atk.+6',}},
     neck="Adad Amulet",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Enmerkar Earring",
     right_ear="Rimeice Earring",
     left_ring="Thurandaut Ring",
@@ -759,7 +761,7 @@ function init_gear_sets()
     legs="Tali'ah Sera. +2",
     feet="Tali'ah Crackows +2",
     neck="Adad Amulet",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
@@ -784,7 +786,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 			
 	sets.midcast.Pet.Killer = {
@@ -797,17 +799,17 @@ function init_gear_sets()
     legs={ name="Ankusa Trousers +2", augments={'Enhances "Familiar" effect',}},
     feet="Tali'ah Crackows +2",
     neck="Shulmanu Collar",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 			
 	sets.midcast.Pet.HighAcc = {
 			main="Aymur",
 			ear1="Enmerkar Earring",
-			ring2="Varar Ring +1",
+			ring2="Varar Ring +1 +1",
 			head="Totemic Helm +3",
 			body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',}},
 			legs={ name="Valor. Hose", augments={'Pet: Accuracy+28 Pet: Rng. Acc.+28','Pet: "Regen"+4','System: 1 ID: 1793 Val: 11','Pet: Attack+13 Pet: Rng.Atk.+13',}},
@@ -824,7 +826,7 @@ function init_gear_sets()
 	sets.midcast.Pet.MaxAcc = {
 			main="Arktoi",
 			ear1="Enmerkar Earring",
-			ring2="Varar Ring +1",
+			ring2="Varar Ring +1 +1",
 			head="Totemic Helm +3",
 			body="Tali'ah Manteel +2",
 			hands="Tali'ah Gages +2",
@@ -841,7 +843,7 @@ function init_gear_sets()
 	sets.midcast.Pet.ArktoiAcc = {
 			main="Aymur",
 			ear1="Enmerkar Earring",
-			ring2="Varar Ring +1",
+			ring2="Varar Ring +1 +1",
 			head="Totemic Helm +3",
 			body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',}},
 			legs="Tali'ah Seraweels +2",
@@ -858,7 +860,7 @@ function init_gear_sets()
 	sets.midcast.Pet.Vagary = {
 			main={name="Hunahpu",priority=15},
 			ear1="Enmerkar Earring",
-			ring2="Varar Ring +1",
+			ring2="Varar Ring +1 +1",
 			head={name="Tali'ah Turban +2",priority=10},
 			body={name="Tali'ah Manteel +2",priority=14},
 			hands={name="Tali'ah Gages +2",priority=12},
@@ -876,7 +878,7 @@ function init_gear_sets()
 	sets.midcast.Pet.ReadyRecast = {
 			main="Aymur",sub="Charmer's Merlin",legs="Desultor Tassets",body="Tali'ah Manteel +2",feet="Totemic Gaiters +3",neck="Shulmanu Collar"} 
 			--main="Charmer's Merlin",legs="Desultor Tassets",body="Tali'ah Manteel +2",feet="Totemic Gaiters +3",neck="Shulmanu Collar"}
-			--main={name="Aymur",priority=15},ear2="Hija Earring",ring2="Varar Ring +1",head="Emicho Coronet +1",body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',priority=12}},legs="Desultor Tassets",feet={name="Tot. Gaiters +3",priority=13},hands={name="Nukumi Manoplas +1",priority=11},ammo="Demonry Core",neck="Shulmanu Collar",waist="Incarnation Sash",ear1="Enmerkar Earring",sub={name="Charmer's Merlin",priority=14},ring1="Thurandaut Ring",back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Accuracy+20 Attack+20','Pet: Attack+10 Pet: Rng.Atk.+10','"Dbl.Atk."+10',}},}
+			--main={name="Aymur",priority=15},ear2="Hija Earring",ring2="Varar Ring +1 +1",head="Emicho Coronet +1",body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',priority=12}},legs="Desultor Tassets",feet={name="Tot. Gaiters +3",priority=13},hands={name="Nukumi Manoplas +1",priority=11},ammo="Demonry Core",neck="Shulmanu Collar",waist="Incarnation Sash",ear1="Enmerkar Earring",sub={name="Charmer's Merlin",priority=14},ring1="Thurandaut Ring",back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Accuracy+20 Attack+20','Pet: Attack+10 Pet: Rng.Atk.+10','"Dbl.Atk."+10',}},}
 	
 	-- poop2
 		-- main="Aymur",sub="Charmer's Merlin",legs="Desultor Tassets",body="Tali'ah Manteel +2",feet="Totemic Gaiters +3",neck="Shulmanu Collar"} 
@@ -936,7 +938,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},})
 
 	sets.idle.Turtle = set_combine(sets.idle, {
@@ -953,7 +955,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},})
 			
 	sets.idle.MEva = set_combine(sets.idle, {
@@ -987,7 +989,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},})
 			
 	sets.idle.Reraise = set_combine(sets.idle, {head="Twilight Helm",body="Twilight Mail"})
@@ -1069,7 +1071,7 @@ function init_gear_sets()
     left_ear="Sabong Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 	
 	sets.defense.Reraise =  {main={ name="Arktoi", augments={'Accuracy+50','Pet: Accuracy+50','Pet: Attack+30',}},
@@ -1081,11 +1083,11 @@ function init_gear_sets()
     legs="Despair Cuisses",
     feet={ name="Taeon Boots", augments={'Pet: Attack+25 Pet: Rng.Atk.+25',}},
     neck="Shulmanu Collar",
-    waist="Klouskap Sash +1",
+    waist="Incarnation Sash",,
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 
 	sets.defense.MDT = set_combine(sets.defense.PDT, {
@@ -1131,7 +1133,7 @@ function init_gear_sets()
     left_ear="Rimeice Earring",
     right_ear="Enmerkar Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 
 	sets.Kiting = {feet="Skadi's Jambeaux +1"}
@@ -1168,7 +1170,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Handler's Earring +1",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 			
 	sets.engaged.MedAcc = {
@@ -1297,7 +1299,7 @@ function init_gear_sets()
     left_ear="Enmerkar Earring",
     right_ear="Domes. Earring",
     left_ring="Thurandaut Ring",
-    right_ring="Varar Ring",
+    right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 			
 	sets.engaged.DW.MedAccHaste = {
@@ -1314,7 +1316,7 @@ function init_gear_sets()
 			left_ear="Suppanomimi",
 			right_ear="Digni. Earring",
 			left_ring="Rajas Ring",
-			right_ring="Varar Ring +1",
+			right_ring="Varar Ring +1 +1",
 			back={ name="Artio's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Store TP"+10',}},}
 			
 	sets.engaged.DW.HighAcc = {
@@ -1331,7 +1333,7 @@ function init_gear_sets()
 			left_ear="Suppanomimi",
 			right_ear="Eabani Earring",
 			left_ring="Rajas Ring",
-			right_ring="Varar Ring +1",
+			right_ring="Varar Ring +1 +1",
 			back={ name="Artio's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','"Dual Wield"+10',}},}
 			
 	sets.engaged.DW.HighAccHaste = {
@@ -1348,7 +1350,7 @@ function init_gear_sets()
 			left_ear="Suppanomimi",
 			right_ear="Digni. Earring",
 			left_ring="Rajas Ring",
-			right_ring="Varar Ring +1",
+			right_ring="Varar Ring +1 +1",
 			back={ name="Artio's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Store TP"+10',}},}
 			
 	-- MELEE (DUAL-WIELD) HYBRID SETS
@@ -1532,7 +1534,7 @@ sets.THBelt = {	ammo="Ginsen",
 				left_ear="Lifestorm Earring",
 				right_ear="Psystorm Earring",
 				left_ring="Etana Ring",
-				right_ring="Varar Ring +1",
+				right_ring="Varar Ring +1 +1",
 				back={ name="Artio's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Store TP"+10',}},}
 
 -------------------------------------------------------------------------------------------------------------------

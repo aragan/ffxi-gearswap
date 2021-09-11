@@ -78,7 +78,7 @@ function init_gear_sets()
     sets.precast.JA['Random Deal'] = {body="Lanun Frac +1"}
 
     
-    sets.precast.CorsairRoll = {range={ name="Compensator", augments={'DMG:+9','Rng.Acc.+9','Rng.Atk.+9',}},
+    sets.precast.CorsairRoll = {
     head={ name="Lanun Tricorne +1", augments={'Enhances "Winning Streak" effect',}},
     left_ring="Luzaf's Ring",
     right_ring="Barataria Ring",
@@ -132,10 +132,30 @@ function init_gear_sets()
        
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
-    sets.precast.WS = {
-
-  
+    sets.precast.WS = {main="Naegling",
+    sub="Tauret",
+    range="Anarchy +2",
+    ammo="Bullet",
     head="Malignance Chapeau",
+    body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck="Asperity Necklace",
+    waist="Sarissapho. Belt",
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Epona's Ring",
+    right_ring="Petrov Ring",
+    back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
+    }
+
+    -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
+    sets.precast.WS['Evisceration'] = sets.precast.WS
+
+    sets.precast.WS['Exenterator'] = set_combine(sets.precast.WS, {legs="Nahtirah Trousers"})
+
+    sets.precast.WS['Requiescat'] = set_combine(sets.precast.WS, {head="Malignance Chapeau",
     body="Meg. Cuirie +2",
     hands="Meg. Gloves +2",
     legs={ name="Herculean Trousers", augments={'Rng.Acc.+10','Weapon skill damage +2%','AGI+4','Rng.Atk.+10',}},
@@ -146,15 +166,7 @@ function init_gear_sets()
     right_ear="Ishvara Earring",
     left_ring="Epona's Ring",
     right_ring="Ilabrat Ring",
-    back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
-    }
-
-    -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
-    sets.precast.WS['Evisceration'] = sets.precast.WS
-
-    sets.precast.WS['Exenterator'] = set_combine(sets.precast.WS, {legs="Nahtirah Trousers"})
-
-    sets.precast.WS['Requiescat'] = set_combine(sets.precast.WS, {legs="Nahtirah Trousers"})
+    back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},})
 
     sets.precast.WS['Last Stand'] = {range="Fomalhaut",
     ammo="Chrono Bullet",
@@ -377,8 +389,8 @@ function init_gear_sets()
     }
     sets.engaged.Acc = {main="Naegling",
     sub="Tauret",
-    range="Molybdosis",
-    ammo="Orichalc. Bullet",
+    range="Anarchy +1",
+    ammo="Bullet",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
     hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},

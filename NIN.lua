@@ -160,12 +160,12 @@ function init_gear_sets()
     sets.precast.JA.Sange = { ammo=gear.SangeAmmo, body="Mochizuki Chainmail +3" }
 
     -- Waltz (chr and vit)
-    sets.precast.Waltz = {
+    sets.precast.Waltz = {body="Passion Jacket",
         waist="Chaac Belt",
         feet="Hizamaru Sune-ate +1"
     }
     -- Don't need any special gear for Healing Waltz.
-    sets.precast.Waltz['Healing Waltz'] = {}
+    sets.precast.Waltz['Healing Waltz'] = {body="Passion Jacket",}
     -- Set for acc on steps, since Yonin drops acc a fair bit
     sets.precast.Step = {
         body="Hattori Ningi +1",
@@ -245,7 +245,7 @@ function init_gear_sets()
         back="Mujin Mantle",
         feet="Mochizuki Kyahan +1" -- special enhancement for casting ninjutsu III
     }
-    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, { neck="Magoraga Beads", body="Mochizuki Chainmail +3" })
+    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, { neck="Magoraga Beads", body="Passion Jacket", })
 
     -- Midcast Sets
     sets.midcast.FastRecast = {

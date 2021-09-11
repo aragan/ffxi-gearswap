@@ -142,7 +142,7 @@ function init_gear_sets()
         ring2="Weatherspoon Ring"
     }
     -- Waltz set (chr and vit)
-    sets.precast.Waltz = {}
+    sets.precast.Waltz = {body="Passion Jacket",}
 
     sets.Organizer = {
         grip="Pearlsack",

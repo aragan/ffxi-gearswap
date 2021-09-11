@@ -114,11 +114,11 @@ function init_gear_sets()
     -- Waltz set (chr and vit)
     sets.precast.Waltz = {ammo="Yamarang",
         head="Mummu Bonnet +1",
-        body="Pillager's Vest +1",hands="Pillager's Armlets +1",ring1="Asklepian Ring",
+        body="Passion Jacket",hands="Pillager's Armlets +1",ring1="Asklepian Ring",
         back="Iximulew Cape",waist="Caudata Belt",legs="Pillager's Culottes +1",feet="Plunderer's Poulaines +1"}
 
     -- Don't need any special gear for Healing Waltz.
-    sets.precast.Waltz['Healing Waltz'] = {}
+    sets.precast.Waltz['Healing Waltz'] = {body="Passion Jacket",}
 
 
     -- Fast cast sets for spells
@@ -131,7 +131,7 @@ function init_gear_sets()
     right_ear="Etiolation Earring",
     left_ring="Prolix Ring",}
 
-    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {neck="Magoraga Beads"})
+    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {body="Passion Jacket",})
 
 
     -- Ranged snapshot gear
@@ -211,7 +211,7 @@ function init_gear_sets()
     body="Mummu Jacket +2",
     hands="Meg. Gloves +2",
     legs="Malignance Tights",
-    feet="Jute Boots +1",
+    feet="Malignance Boots",
     neck="Fotia Gorget",
     waist="Fotia Belt",
     left_ear="Ishvara Earring",
@@ -282,7 +282,7 @@ function init_gear_sets()
     -- Specific spells
     sets.midcast.Utsusemi = {
         ammo="Sapience Orb",
-    body={ name="Taeon Tabard", augments={'Pet: Mag. Evasion+20','Pet: "Regen"+3','Pet: Damage taken -3%',}},
+    body="Passion Jacket",
     hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
     feet="Jute Boots +1",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -361,21 +361,25 @@ function init_gear_sets()
     --------------------------------------
 
     -- Normal melee group
-    sets.engaged = {ammo="Coiste Bodhar",
+    sets.engaged = { main="Aeneas",
+    sub="Tauret",
+    ammo="Coiste Bodhar",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Plun. Armlets +2", augments={'Enhances "Perfect Dodge" effect',}},
+    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
     legs="Malignance Tights",
-    feet="Skulk. Poulaines +1",
+    feet="Malignance Boots",
     neck="Asperity Necklace",
     waist="Reiki Yotai",
     left_ear="Sherida Earring",
     right_ear="Telos Earring",
-    left_ring="Ilabrat Ring",
+    left_ring="Petrov Ring",
     right_ring="Epona's Ring",
     back={ name="Toutatis's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','Weapon skill damage +10%','Damage taken-5%',}},
 }
-    sets.engaged.Acc = {ammo="Coiste Bodhar",
+    sets.engaged.Acc = {main="Tauret",
+    sub="Aeneas",
+    ammo="Coiste Bodhar",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
     hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
@@ -386,14 +390,13 @@ function init_gear_sets()
     left_ear="Sherida Earring",
     right_ear="Telos Earring",
     left_ring="Epona's Ring",
-    right_ring="Ilabrat Ring",
+    right_ring="Petrov Ring",
     back={ name="Toutatis's Cape", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','Weapon skill damage +10%','Damage taken-5%',}},}
         
     -- Mod set for trivial mobs (Skadi+1)
-    sets.engaged.Mod = {ammo="Thew Bomblet",
-        head="Felistris Mask",neck="Asperity Necklace",ear1="Dudgeon Earring",ear2="Heartseeker Earring",
-        body="Skadi's Cuirie +1",hands="Pillager's Armlets +1",ring1="Rajas Ring",ring2="Epona's Ring",
-        back="Atheling Mantle",waist="Patentia Sash",legs=gear.AugQuiahuiz,feet="Plunderer's Poulaines +1"}
+    sets.engaged.Mod = {main="Tauret",
+    sub="Aeneas",
+        back="Atheling Mantle",}
 
     -- Mod set for trivial mobs (Thaumas)
     sets.engaged.Mod2 = {ammo="Thew Bomblet",
@@ -614,13 +617,13 @@ end
 function select_default_macro_book()
     -- Default macro set/book
     if player.sub_job == 'DNC' then
-        set_macro_page(2, 5)
+        set_macro_page(3, 3)
     elseif player.sub_job == 'WAR' then
-        set_macro_page(3, 5)
+        set_macro_page(3, 3)
     elseif player.sub_job == 'NIN' then
-        set_macro_page(4, 5)
+        set_macro_page(3, 3)
     else
-        set_macro_page(2, 5)
+        set_macro_page(3, 3)
     end
 end
 
