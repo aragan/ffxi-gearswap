@@ -260,7 +260,7 @@ function init_gear_sets()
 
     -- skill ++ 
     sets.midcast.Ninjutsu = {
-    main="Heishi Shorinken",sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},ammo="Seething Bomblet",
+    
     head="Malignance Chapeau",body={ name="Samnuha Coat", augments={'Mag. Acc.+8','"Mag.Atk.Bns."+11','"Dual Wield"+2',}},
     hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
     legs={ name="Herculean Trousers", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','STR+13','Mag. Acc.+3','"Mag.Atk.Bns."+1',}},
@@ -282,7 +282,7 @@ function init_gear_sets()
 
     -- Nuking Ninjutsu (skill & magic attack)
     sets.midcast.ElementalNinjutsu = {
-    main="Heishi Shorinken",sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},ammo="Seething Bomblet",
+    
     head="Malignance Chapeau",body={ name="Samnuha Coat", augments={'Mag. Acc.+8','"Mag.Atk.Bns."+11','"Dual Wield"+2',}},
     hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
     legs={ name="Herculean Trousers", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','STR+13','Mag. Acc.+3','"Mag.Atk.Bns."+1',}},
@@ -298,8 +298,7 @@ function init_gear_sets()
     sets.precast.Effusion.Swipe = sets.midcast.ElementalNinjutsu
 
     sets.idle = {
-    main="Heishi Shorinken",
-    sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},
+
     ammo="Coiste Bodhar",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
@@ -347,12 +346,11 @@ function init_gear_sets()
 
     -- Defense sets
     sets.defense.PDT = {
-main="Heishi Shorinken",
-    sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},
+
     ammo="Coiste Bodhar",
     head="Malignance Chapeau",
-    body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    body="Mpaca's Doublet",
+    hands="Mpaca's Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Moonbeam Nodowa",
@@ -367,8 +365,8 @@ main="Heishi Shorinken",
     sets.defense.MDT = set_combine(sets.defense.PDT, {
    ammo="Staunch Tathlum +1",
     head="Malignance Chapeau",
-    body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    body="Mpaca's Doublet",
+    hands="Mpaca's Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Warder's Charm +1",
@@ -390,12 +388,11 @@ main="Heishi Shorinken",
 
     -- Normal melee group without buffs
     sets.engaged = {
-    main="Heishi Shorinken",
-    sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},
+
     ammo="Coiste Bodhar",
     head="Malignance Chapeau",
-    body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    body="Mpaca's Doublet",
+    hands="Mpaca's Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Moonbeam Nodowa",
@@ -479,8 +476,7 @@ main="Heishi Shorinken",
         back="Moonlight Cape",
     }
     sets.AccPDT = {
-main="Heishi Shorinken",
-    sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},
+
     ammo="Coiste Bodhar",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
@@ -688,8 +684,7 @@ main="Heishi Shorinken",
     
     -- Weaponskills 
     sets.precast.WS = {
-    main="Heishi Shorinken",
-    sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},
+
     ammo="Yamarang",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
@@ -741,8 +736,7 @@ main="Heishi Shorinken",
     
     -- BLADE: HI
     sets.precast.WS['Blade: Hi'] = set_combine(sets.precast.WS, {
-    main="Heishi Shorinken",
-    sub={ name="Kanaria", augments={'"Store TP"+3','AGI+3','Accuracy+6','Attack+6','DMG:+17',}},
+  
     ammo="Yamarang",
     head={ name="Adhemar Bonnet", augments={'DEX+10','AGI+10','Accuracy+15',}},
     body="Mummu Jacket +2",
@@ -770,8 +764,7 @@ main="Heishi Shorinken",
     
     -- BLADE: SHUN
     sets.Shun = {
-    main="Heishi Shorinken",
-    sub={ name="Ochu", augments={'STR+1','DEX+2','Ninjutsu skill +2',}},
+    
     ammo="Yamarang",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},

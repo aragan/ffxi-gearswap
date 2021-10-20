@@ -431,18 +431,20 @@ function init_gear_sets()
     }
     
     sets.engaged.Mid = set_combine(sets.engaged, {
-        -- hands=Valorous.Hands.TP,
-        neck="Samurai's Nodowa +2",
-        body="Kendatsuba Samue +1",
-        ear1="Telos Earring",
-        ear2="Cessance Earring",
-        legs="Kendatsuba Hakama +1",
-        waist="Ioskeha Belt",
-        ring1="Niqmaddu Ring", 
-        ring2="Flamma Ring",
-        feet="Tatenashi Sune-ate +1"
-        --body="Kendatsuba Samue",
-        --legs="Kendatsuba Hakama",
+   main="Shining One",
+        ammo="Coiste Bodhar",
+    head="Flam. Zucchetto +2",
+    body={ name="Sakonji Domaru +3", augments={'Enhances "Overwhelm" effect',}},
+    hands="Flam. Manopolas +2",
+    legs={ name="Ryuo Hakama", augments={'Accuracy+20','"Store TP"+4','Phys. dmg. taken -3',}},
+    feet="Flam. Gambieras +2",
+    neck={ name="Sam. Nodowa +2", augments={'Path: A',}},
+    waist={ name="Sailfi Belt +1", augments={'Path: A',}},
+    left_ear="Cessance Earring",
+    right_ear="Telos Earring",
+    left_ring="Niqmaddu Ring",
+    right_ring="Petrov Ring",
+    back={ name="Takaha Mantle", augments={'STR+1','"Zanshin"+2','"Store TP"+2',}},
     })
 
     sets.engaged.Acc = set_combine(sets.engaged.Mid, { 

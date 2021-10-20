@@ -182,7 +182,7 @@ function init_gear_sets()
     right_ring="Prolix Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
-    sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {waist="Siegel Sash",left_ear="Andoaa Earring",})
+    sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {waist="Cascade Belt",left_ear="Andoaa Earring",})
 
        
     -- Weaponskill sets
