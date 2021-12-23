@@ -10,7 +10,7 @@ function get_sets()
     include('Mote-Include.lua')
 end
 
-
+include('organizer-lib')
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
     state.Buff['Burst Affinity'] = buffactive['Burst Affinity'] or false
@@ -169,7 +169,7 @@ function job_setup()
     unbridled_spells = S{
         'Absolute Terror','Bilgestorm','Blistering Roar','Bloodrake','Carcharian Verve',
         'Crashing Thunder','Droning Whirlwind','Gates of Hades','Harden Shell','Polar Roar',
-        'Pyric Bulwark','Thunderbolt','Tourbillion','Uproot'
+        'Pyric Bulwark','Thunderbolt','Tourbillion','Uproot','Cruel Joke',
     }
 end
 
@@ -371,7 +371,21 @@ function init_gear_sets()
     back={ name="Rosmerta's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},}
 
     sets.midcast['Blue Magic'].Magical.Resistant = set_combine(sets.midcast['Blue Magic'].Magical,
-        {body="Vanir Cotehardie",ring1="Sangoma Ring",legs="Iuitl Tights",feet="Mavi Basmak +2"})
+        {main={ name="Iris", augments={'Blue Magic skill +15','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+        sub={ name="Iris", augments={'Blue Magic skill +15','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+        ammo="Pemphredo Tathlum",
+        head="Jhakri Coronal +2",
+        body="Jhakri Robe +2",
+        hands="Jhakri Cuffs +2",
+        legs="Jhakri Slops +2",
+        feet="Jhakri Pigaches +2",
+        neck="Sanctity Necklace",
+        waist="Eschan Stone",
+        left_ear="Crep. Earring",
+        right_ear="Digni. Earring",
+        left_ring="Jhakri Ring",
+        right_ring="Stikini Ring",
+        back={ name="Rosmerta's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},})
     
     sets.midcast['Blue Magic'].MagicalMnd = set_combine(sets.midcast['Blue Magic'].Magical,
         {ring1="Aquasoul Ring"})
@@ -383,7 +397,21 @@ function init_gear_sets()
 
     sets.midcast['Blue Magic'].MagicalDex = set_combine(sets.midcast['Blue Magic'].Magical)
 
-    sets.midcast['Blue Magic'].MagicAccuracy = {
+    sets.midcast['Blue Magic'].MagicAccuracy = {main={ name="Iris", augments={'Blue Magic skill +15','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+    sub={ name="Iris", augments={'Blue Magic skill +15','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
+    ammo="Pemphredo Tathlum",
+    head="Jhakri Coronal +2",
+    body="Jhakri Robe +2",
+    hands="Jhakri Cuffs +2",
+    legs="Jhakri Slops +2",
+    feet="Jhakri Pigaches +2",
+    neck="Sanctity Necklace",
+    waist="Eschan Stone",
+    left_ear="Crep. Earring",
+    right_ear="Digni. Earring",
+    left_ring="Jhakri Ring",
+    right_ring="Stikini Ring",
+    back={ name="Rosmerta's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},
     }
 
     -- Breath Spells --
@@ -426,7 +454,7 @@ function init_gear_sets()
     -- Sets to return to when not performing an action.
 
     -- Gear for learning spells: +skill and AF hands.
-    sets.Learning = {ammo="Mavi Tathlum",hands="Assimilator's Bazubands +1"}
+    sets.Learning = {ammo="Mavi Tathlum",hands="Assimilator's Bazubands"}
         --head="Luhlaza Keffiyeh",  
         --body="Assimilator's Jubbah",hands="Assimilator's Bazubands +1",
         --back="Cornflower Cape",legs="Mavi Tayt +2",feet="Luhlaza Charuqs"}

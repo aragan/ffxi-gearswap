@@ -46,7 +46,21 @@ function org.export_set()
 
     -- See if we have any non-equipment items to drag along
     if organizer_items then
-        local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {})
+        local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {item="Icarus Wing",
+        item="Bean Daifuku +1",
+        item="Grape Daifuku +1",
+        item="Miso Ramen",
+        item="Tropical Crepe",
+        item="Maze Tabula R01",
+        item="Bean Daifuku",
+        item="Kusamochi",
+        item="Toolbag (Shihe)",
+        item="Trump Card Case",
+        item="Coconut Rusk",
+        item="Mars Orb",
+        item="Antacid",
+        ammo="Chrono Bullet",
+        ammo="Automat. Oil +3",})
 
         for _,tab in pairs(org.identify_items(organizer_item_list)) do
             count = gearswap.res.items[tab.id].stack
