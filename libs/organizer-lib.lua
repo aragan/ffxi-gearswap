@@ -49,6 +49,7 @@ function org.export_set()
         local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {item="Icarus Wing",
         item="Bean Daifuku +1",
         item="Grape Daifuku +1",
+        item="Grape Daifuku",
         item="Miso Ramen",
         item="Tropical Crepe",
         item="Maze Tabula R01",
