@@ -46,7 +46,15 @@ function org.export_set()
 
     -- See if we have any non-equipment items to drag along
     if organizer_items then
-        local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {item="Icarus Wing",
+        local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {
+            item="Remedy",
+            item="Carbonara",
+            item="Antidote",
+            item="Holy Water",
+            ammo="Orichalc. Bullet",
+            item="Panacea",
+            
+        item="Icarus Wing",
         item="Bean Daifuku +1",
         item="Grape Daifuku +1",
         item="Grape Daifuku",
