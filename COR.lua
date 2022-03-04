@@ -29,7 +29,7 @@ function job_setup()
 
     define_roll_values()
 end
-
+include('organizer-lib')
 -------------------------------------------------------------------------------------------------------------------
 -- User setup functions for this job.  Recommend that these be overridden in a sidecar file.
 -------------------------------------------------------------------------------------------------------------------
@@ -75,10 +75,10 @@ function init_gear_sets()
     sets.precast.JA['Triple Shot'] = {hands="Oshosi Gloves",head="Chass. Tricorne +1",body="Oshosi Vest",}
     sets.precast.JA['Snake Eye'] = {legs="Lanun Culottes"}
     sets.precast.JA['Wild Card'] = {feet="Lanun Bottes +3"}
-    sets.precast.JA['Random Deal'] = {body="Lanun Frac +1"}
+    sets.precast.JA['Random Deal'] = {body="Lanun Frac +3"}
 
     
-    sets.precast.CorsairRoll = {
+    sets.precast.CorsairRoll = {range={ name="Compensator", augments={'DMG:+9','Rng.Acc.+9','Rng.Atk.+9',}},
     head={ name="Lanun Tricorne +1", augments={'Enhances "Winning Streak" effect',}},
     left_ring="Luzaf's Ring",
     right_ring="Barataria Ring",
@@ -132,22 +132,19 @@ function init_gear_sets()
        
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
-    sets.precast.WS = {main="Naegling",
-    sub="Tauret",
-    range="Anarchy +2",
-    ammo="Bullet",
-    head="Malignance Chapeau",
-    body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
-    legs="Malignance Tights",
-    feet="Malignance Boots",
-    neck="Asperity Necklace",
-    waist="Sarissapho. Belt",
-    left_ear="Cessance Earring",
-    right_ear="Telos Earring",
-    left_ring="Epona's Ring",
-    right_ring="Petrov Ring",
-    back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
+    sets.precast.WS = {
+        range={ name="Anarchy +2", augments={'Delay:+60','TP Bonus +1000',}},
+        head="Oshosi Mask",
+        body="Nyame Mail",
+        hands="Meg. Gloves +2",
+        legs="Malignance Tights",
+        feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
+        neck="Sanctity Necklace",
+        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+        right_ear="Ishvara Earring",
+        left_ring="Ilabrat Ring",
+        right_ring="Petrov Ring",
+        back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
     }
 
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
@@ -189,7 +186,7 @@ function init_gear_sets()
     range="Fomalhaut",
     ammo="Chrono Bullet",
     head="Pixie Hairpin +1",
-    body={ name="Lanun Frac +1", augments={'Enhances "Loaded Deck" effect',}},
+    body={ name="Lanun Frac +3", augments={'Enhances "Loaded Deck" effect',}},
     hands={ name="Herculean Gloves", augments={'Mag. Acc.+18 "Mag.Atk.Bns."+18','Crit. hit damage +3%','STR+8','"Mag.Atk.Bns."+10',}},
     legs={ name="Herculean Trousers", augments={'Mag. Acc.+13 "Mag.Atk.Bns."+13','Crit. hit damage +1%','Mag. Acc.+11','"Mag.Atk.Bns."+7',}},
     feet={ name="Herculean Boots", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','Crit.hit rate+1','INT+2','"Mag.Atk.Bns."+1',}},
@@ -204,7 +201,7 @@ function init_gear_sets()
 
 
     sets.precast.WS['Wildfire'] = {main="Naegling",sub="Tauret",range="Molybdosis",ammo="Orichalc. Bullet",head="Pixie Hairpin +1",
-    body={ name="Lanun Frac +1", augments={'Enhances "Loaded Deck" effect',}},hands={ name="Herculean Gloves", augments={'"Mag.Atk.Bns."+24','STR+15',}},legs={ name="Herculean Trousers", augments={'"Mag.Atk.Bns."+22','Weapon skill damage +2%','INT+11','Mag. Acc.+8',}},
+    body={ name="Lanun Frac +3", augments={'Enhances "Loaded Deck" effect',}},hands={ name="Herculean Gloves", augments={'"Mag.Atk.Bns."+24','STR+15',}},legs={ name="Herculean Trousers", augments={'"Mag.Atk.Bns."+22','Weapon skill damage +2%','INT+11','Mag. Acc.+8',}},
     feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},neck="Sanctity Necklace",waist="Svelt. Gouriz +1",left_ear="Friomisi Earring",right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Dingir Ring",right_ring="Archon Ring",back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
 }
@@ -292,7 +289,7 @@ function init_gear_sets()
     head="Malignance Chapeau",
     body="Mummu Jacket +2",
     hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
-    legs="Malignance Tights",
+    legs="Ikenga's Trousers",
     feet="Malignance Boots",
     neck="Iskur Gorget",
     waist="Yemaya Belt",
@@ -307,10 +304,10 @@ function init_gear_sets()
     sub="Tauret",
     range="Molybdosis",
     ammo="Orichalc. Bullet",
-    head="Malignance Chapeau",
+    head="Ikenga's Hat",
     body="Mummu Jacket +2",
-    hands="Meg. Gloves +2",
-    legs="Malignance Tights",
+    hands="Malignance Gloves",
+    legs="Ikenga's Trousers",
     feet="Malignance Boots",
     neck="Iskur Gorget",
     waist="Yemaya Belt",
@@ -331,12 +328,12 @@ function init_gear_sets()
     -- Idle sets
     sets.idle = {}
 
-    sets.idle.Town = {}
+    sets.idle.Town = {legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
     
     -- Defense sets
     sets.defense.PDT = {head="Malignance Chapeau",
-    body="Meg. Cuirie +2",
-    hands="Meg. Gloves +2",
+    body="Nyame Mail",
+    hands="Malignance Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -349,6 +346,8 @@ function init_gear_sets()
 }
 
     sets.defense.MDT = {head="Malignance Chapeau",
+    body="Nyame Mail",
+    hands="Malignance Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Warder's Charm +1",
@@ -371,12 +370,12 @@ function init_gear_sets()
     
     -- Normal melee group
     sets.engaged.Melee = {main="Naegling",
-    sub="Demersal Degen",
-    range="Fomalhaut",
-    ammo="Chrono Bullet",
+    sub="Demers. Degen +1",
+    range="Anarchy +1",
+    
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    hands="Malignance Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Asperity Necklace",
@@ -390,10 +389,10 @@ function init_gear_sets()
     sets.engaged.Acc = {main="Naegling",
     sub="Tauret",
     range="Anarchy +1",
-    ammo="Bullet",
+    
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    hands="Malignance Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Asperity Necklace",
@@ -405,11 +404,10 @@ function init_gear_sets()
     back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
     }
     sets.engaged.Melee.DW = {
-    range="Fomalhaut",
-    ammo="Chrono Bullet",
+    
     head="Malignance Chapeau",
     body="Mummu Jacket +2",
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    hands="Malignance Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Iskur Gorget",
@@ -422,13 +420,12 @@ function init_gear_sets()
 }
     
     sets.engaged.Acc.DW = {
-    main="Naegling",
-    sub="Tauret",
+    
     range="Molybdosis",
     ammo="Orichalc. Bullet",
     head="Malignance Chapeau",
     body="Mummu Jacket +2",
-    hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+    hands="Malignance Gloves",
     legs="Malignance Tights",
     feet="Malignance Boots",
     neck="Iskur Gorget",
