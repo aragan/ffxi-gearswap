@@ -18,7 +18,7 @@ function job_setup()
     state.Buff.Convergence = buffactive.Convergence or false
     state.Buff.Diffusion = buffactive.Diffusion or false
     state.Buff.Efflux = buffactive.Efflux or false
-    
+    send_command('wait 2;input /lockstyleset 200')
     state.Buff['Unbridled Learning'] = buffactive['Unbridled Learning'] or false
 
 
@@ -567,7 +567,7 @@ function init_gear_sets()
         ammo="Coiste Bodhar",
         head="Malignance Chapeau",
         body={ name="Adhemar Jacket", augments={'DEX+10','AGI+10','Accuracy+15',}},
-        hands={ name="Adhemar Wristbands", augments={'Accuracy+15','Attack+15','"Subtle Blow"+7',}},
+        hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
         legs={ name="Samnuha Tights", augments={'STR+7','DEX+6',}},
         feet="Malignance Boots",
         neck="Asperity Necklace",

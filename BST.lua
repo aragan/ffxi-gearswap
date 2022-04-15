@@ -41,7 +41,7 @@ end
 function job_setup()
 	state.Buff['Killer Instinct'] = buffactive['Killer Instinct'] or false
 	state.Buff.Doomed = buffactive.doomed or false
-
+	send_command('wait 2;input /lockstyleset 200')
 	get_combat_form()
 end
 

@@ -289,7 +289,7 @@ function init_gear_sets()
         body="Vanir Cotehardie",hands="Yaoyotl Gloves",ring1="Defending Ring",ring2="Shadow Ring",
         back="Tuilha Cape",waist="Hierarch Belt",legs="Bokwus Slops",feet="Hagondes Sabots"}
 
-    sets.Kiting = {feet="Herald's Gaiters"}
+    sets.Kiting = {feet="Herald's Gaiters +1"}
 
     sets.latent_refresh = {waist="Fucho-no-obi"}
 
@@ -586,6 +586,6 @@ end
 
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
-    set_macro_page(1, 17)
+    set_macro_page(7, 1)
 end
 

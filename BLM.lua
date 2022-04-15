@@ -1018,7 +1018,7 @@ end
  
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
-    set_macro_page(3, 5)
+    set_macro_page(4, 1)
 	-- Do not remove below argument or the file WILL NOT WORK PROPERLY when reloaded in an escha area--
 	if buffactive['Vorseal'] and state.VorsealMode.value == 'Normal' then
 	send_command('gs c cycle VorsealMode')
