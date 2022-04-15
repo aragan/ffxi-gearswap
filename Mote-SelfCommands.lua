@@ -53,7 +53,7 @@ function handle_set(cmdParams)
     
     if state_var then
         local oldVal = state_var.value
-        state_var:set(cmdParams[2])
+        state_var:set(T(cmdParams):slice(2):concat(' '))
         local newVal = state_var.value
         
         local descrip = state_var.description or cmdParams[1]
@@ -170,7 +170,7 @@ end
 -- Handle cycling backwards through the options list of a state var.
 -- User command format: gs c cycleback [field]
 function handle_cycleback(cmdParams)
-    cmdParms[2] = 'reverse'
+    cmdParams[2] = 'reverse'
     handle_cycle(cmdParams)
 end
 
