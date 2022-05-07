@@ -44,8 +44,8 @@ windower.register_event('outgoing text',function(original,modified,blocked,ffxi,
     windower.debug('outgoing text')
     if gearswap_disabled then return modified end
     
-    local splitline = windower.from_shift_jis(windower.convert_auto_trans(modified)):gsub(' <wait %d+>',''):gsub('"(.-)"',function(str)
-            return str:gsub(' ',string.char(7))
+    local splitline = windower.from_shift_jis(windower.convert_auto_trans(modified)):gsub('<wait[%s%d%.]*>',''):gsub('"(.-)"',function(str)
+            return ' '..str:gsub(' ',string.char(7))..' '
         end):split(' '):filter(-'')
     
     if splitline.n == 0 then return end
@@ -81,15 +81,15 @@ windower.register_event('outgoing text',function(original,modified,blocked,ffxi,
         elseif temp_mob_arr then
             refresh_globals()
             
-            local r_line, find_monster_ability
+            local r_line, find_monster_skill
             
-            function find_monster_ability(abil)
+            function find_monster_skill(abil)
                 local line = false
                 if player.species and player.species.tp_moves then
                     -- Iterates over currently available monster TP moves instead of using validabils
                     for i,v in pairs(player.species.tp_moves) do
-                        if res.monster_abilities[i][language]:lower() == abil then
-                            line = copy_entry(res.monster_abilities[i])
+                        if res.monster_skills[i][language]:lower() == abil then
+                            line = copy_entry(res.monster_skills[i])
                             break
                         end
                     end
@@ -100,8 +100,8 @@ windower.register_event('outgoing text',function(original,modified,blocked,ffxi,
             if unified_prefix == '/ma' then
                 r_line = copy_entry(res.spells[validabils[language][unified_prefix][abil]])
                 storedcommand = command..' "'..windower.to_shift_jis(r_line[language])..'" '
-            elseif unified_prefix == '/ms' and find_monster_ability(abil) then
-                r_line = find_monster_ability(abil)
+            elseif unified_prefix == '/ms' and find_monster_skill(abil) then
+                r_line = find_monster_skill(abil)
                 storedcommand = command..' "'..windower.to_shift_jis(r_line[language])..'" '
             elseif unified_prefix == '/ws' then
                 r_line = copy_entry(res.weapon_skills[validabils[language][unified_prefix][abil]])
@@ -186,7 +186,7 @@ parse.i[0x028] = function (data)
         
     --print(((res[unpackedaction.resource] or {})[unpackedaction.spell_id] or {}).english,unpackedaction.type,unpackedaction.value,unpackedaction.interruption)
     local temp_player_mob_table,temp_pet,pet_id = windower.ffxi.get_mob_by_index(player.index)
-    if temp_player_mob_table.pet_index then
+    if temp_player_mob_table and temp_player_mob_table.pet_index then
         temp_pet = windower.ffxi.get_mob_by_index(temp_player_mob_table.pet_index)
         if temp_pet then
             pet_id = temp_pet.id

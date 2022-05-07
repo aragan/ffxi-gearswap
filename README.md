@@ -1,4 +1,4 @@
-Author: Aragan
+Author: Byrth
 
 Version: 0.930
 

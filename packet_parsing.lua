@@ -334,8 +334,9 @@ parse.i[0x117] = function (data)
 end
 
 parse.i[0x053] = function (data)
-    if data:unpack('H',0xD) == 0x12D and player then
-        -- You're unable to use trust magic if you're not the party leader or solo
+    local message = data:unpack('H',0xD)
+    if (message == 0x12D or message == 0x12A or message == 0x12B or message == 0x12C) and player then
+        -- You're unable to use trust magic if you're not the party leader, solo, pt full or trying to summon an already summoned trust
         local ts,tab = command_registry:find_by_time()
         if tab and tab.spell and tab.spell.prefix ~= '/pet' and not gearswap_disabled then
             tab.spell.action_type = 'Interruption'
@@ -638,36 +639,61 @@ parse.i[0x076] = function (data)
     end
 end
 
-parse.i[0x0DF] = function (data)
-    if data:unpack('I',5) == player.id then
-        player.vitals.hp = data:unpack('I',9)
-        player.vitals.mp = data:unpack('I',13)
-        player.vitals.tp = data:unpack('I',0x11)
-        player.vitals.hpp = data:byte(0x17)
-        player.vitals.mpp = data:byte(0x18)
+function update_vitals(id, hp, mp, tp, hpp, mpp)
+    if id==player.id then
+        player.vitals.hp = hp
+        player.vitals.mp = mp
+        player.vitals.tp = tp
+        player.vitals.hpp = hpp
+        player.vitals.mpp = mpp
         
-        player.hp = data:unpack('I',9)
-        player.mp = data:unpack('I',13)
-        player.tp = data:unpack('I',0x11)
-        player.hpp = data:byte(0x17)
-        player.mpp = data:byte(0x18)
+        player.hp = hp
+        player.mp = mp
+        player.tp = tp
+        player.hpp = hpp
+        player.mpp = mpp
+    end
+    -- Update alliance
+    local found_person = false
+    for i,v in pairs(alliance) do
+        if type(v) == 'table' then
+            for k,j in pairs(v) do
+                if type(j) == 'table' and j.id == id then
+                    j.hp = hp
+                    j.mp = mp
+                    j.tp = tp
+                    j.hpp = hpp
+                    j.mpp = mpp
+                    found_person = true
+                end
+            end
+            if found_person then
+                break
+            end
+        end
     end
 end
 
+parse.i[0x0DF] = function (data)
+    update_vitals(
+        data:unpack('I',5),
+        data:unpack('I',9),
+        data:unpack('I',13),
+        data:unpack('I',0x11),
+        data:byte(0x17),
+        data:byte(0x18)
+    )
+end
+
 parse.i[0x0E2] = function (data)
-    if data:unpack('I',5)==player.id then
-        player.vitals.hp = data:unpack('I',9)
-        player.vitals.mp = data:unpack('I',0xB)
-        player.vitals.tp = data:unpack('I',0x11)
-        player.vitals.hpp = data:byte(0x1E)
-        player.vitals.mpp = data:byte(0x1F)
-        
-        player.hp = data:unpack('I',9)
-        player.mp = data:unpack('I',0xB)
-        player.tp = data:unpack('I',0x11)
-        player.hpp = data:byte(0x1E)
-        player.mpp = data:byte(0x1F)
-    end
+    update_vitals(
+        data:unpack('I',5),
+        data:unpack('I',9),
+        data:unpack('I',0xB),
+        data:unpack('I',0x11),
+        data:byte(0x1E),
+        data:byte(0x1F)
+    )
 end
 
 parse.o[0x100] = function(data)
@@ -701,13 +727,15 @@ end
 
 function initialize_packet_parsing()
     for i,v in pairs(parse.i) do
-        local lastpacket = windower.packets.last_incoming(i)
-        if lastpacket then
-            v(lastpacket)
-        end
-        if i == 0x63 and lastpacket and lastpacket:byte(5) ~= 9 then
-            -- Not receiving an accurate buff line on load because the wrong 0x063 packet was sent last
+        if i ~= 0x028 then
+            local lastpacket = windower.packets.last_incoming(i)
+            if lastpacket then
+                v(lastpacket)
+            end
+            if i == 0x63 and lastpacket and lastpacket:byte(5) ~= 9 then
+                -- Not receiving an accurate buff line on load because the wrong 0x063 packet was sent last
             
+            end
         end
     end
 end
