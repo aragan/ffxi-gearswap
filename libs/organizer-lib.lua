@@ -46,30 +46,7 @@ function org.export_set()
 
     -- See if we have any non-equipment items to drag along
     if organizer_items then
-        local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {
-            item="Remedy",
-            item="Carbonara",
-            item="Antidote",
-            item="Holy Water",
-            ammo="Orichalc. Bullet",
-            item="Panacea",
-            
-        item="Icarus Wing",
-        item="Bean Daifuku +1",
-        item="Grape Daifuku +1",
-        item="Grape Daifuku",
-        item="Miso Ramen",
-        item="Tropical Crepe",
-        item="Maze Tabula R01",
-        item="Bean Daifuku",
-        item="Kusamochi",
-        item="Toolbag (Shihe)",
-        item="Trump Card Case",
-        item="Coconut Rusk",
-        item="Mars Orb",
-        item="Antacid",
-        ammo="Chrono Bullet",
-        ammo="Automat. Oil +3",})
+        local organizer_item_list = org.unpack_names({}, 'L1', organizer_items, {})
 
         for _,tab in pairs(org.identify_items(organizer_item_list)) do
             count = gearswap.res.items[tab.id].stack
@@ -83,7 +60,7 @@ function org.export_set()
     -- #trans_item_list[i] = Number of a given item
     -- trans_item_list[i].id = item ID
     
-    local ward_ids = {8,10,11,12}
+    local ward_ids = {8,10,11,12,13,14,15,16}
     local wardrobes = {}
     local ward = {}
     
