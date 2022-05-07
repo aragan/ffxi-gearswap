@@ -29,6 +29,7 @@ function get_sets()
     
     -- Load and initialize the include file.
     include('Mote-Include.lua')
+    include('organizer-lib')
 end
 
 
@@ -52,7 +53,7 @@ function user_setup()
     state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'PDT')
 
-    brd_daggers = S{'Izhiikoh', 'Vanir Knife', 'Atoyac', 'Aphotic Kukri', 'Sabebus'}
+    brd_daggers = S{'Tauret', 'Gleti Knife'}
     pick_tp_weapon()
     
     -- Adjust this if using the Terpander (new +song instrument)
@@ -117,7 +118,6 @@ function init_gear_sets()
 
     sets.precast.FC.BardSong = { main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
     sub={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
-
     head="Fili Calot +1",
     body="Fili Hongreline +1",
     hands="Inyan. Dastanas +1",
@@ -141,34 +141,71 @@ function init_gear_sets()
     sets.precast.JA['Soul Voice'] = {legs="Bihu Cannions"}
 
     -- Waltz set (chr and vit)
-    sets.precast.Waltz = {range="Gjallarhorn",
-        head="Nahtirah Hat",
-        body="Passion Jacket",hands="Buremte Gloves",
-        back="Kumbira Cape",legs="Gendewitha Spats",feet="Gendewitha Galoshes"}
+    sets.precast.Waltz = {
+        
+    }
     
        
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
-    sets.precast.WS = {range="Gjallarhorn",
-        head="Nahtirah Hat",neck=gear.ElementalGorget,ear1="Bladeborn Earring",ear2="Steelflash Earring",
-        body="Bihu Justaucorps",hands="Buremte Gloves",ring1="Rajas Ring",ring2="K'ayres Ring",
-        back="Atheling Mantle",waist="Caudata Belt",legs="Brioso Cannions +1",feet="Gendewitha Galoshes"}
+    sets.precast.WS = {}
     
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
-    sets.precast.WS['Evisceration'] = set_combine(sets.precast.WS)
+    sets.precast.WS['Evisceration'] = set_combine(sets.precast.WS,{ 
+    range="Linos",
+    head="Blistering Sallet +1",
+    neck="Fotia Gorget",
+    ear1="Moonshade Earring",
+    ear2="Brutal Earring",
+    body="Ayanmo Corazza +2",
+    hands="Lustr. Mittens +1",
+    ring1="Hetairoi Ring",
+    ring2="Begrudging Ring",
+    back="Intarabus's Cape",
+    waist="Fotia Belt",
+    legs="Lustr. Subligar +1",
+    feet="Lustra. Leggings +1",
+})
 
-    sets.precast.WS['Exenterator'] = set_combine(sets.precast.WS)
+    sets.precast.WS['Exenterator'] = set_combine(sets.precast.WS,{
+    range="Linos",
+    head="Blistering Sallet +1",
+    neck="Fotia Gorget",
+    ear1="Moonshade Earring",
+    ear2="Brutal Earring",
+    body="Ayanmo Corazza +2",
+    hands="Lustr. Mittens +1",
+    ring1="Hetairoi Ring",
+    ring2="Begrudging Ring",
+    back="Intarabus's Cape",
+    waist="Fotia Belt",
+    legs="Lustr. Subligar +1",
+    feet="Lustra. Leggings +1",
+})
 
-    sets.precast.WS['Mordant Rime'] = set_combine(sets.precast.WS)
+    sets.precast.WS['Mordant Rime'] = set_combine(sets.precast.WS,{
+    range="Linos",
+    head="Blistering Sallet +1",
+    neck="Fotia Gorget",
+    ear1="Moonshade Earring",
+    ear2="Brutal Earring",
+    body="Ayanmo Corazza +2",
+    hands="Lustr. Mittens +1",
+    ring1="Hetairoi Ring",
+    ring2="Begrudging Ring",
+    back="Intarabus's Cape",
+    waist="Fotia Belt",
+    legs="Lustr. Subligar +1",
+    feet="Lustra. Leggings +1",
+})
     
     
     -- Midcast Sets
 
     -- General set for recast times.
-    sets.midcast.FastRecast = {range="Angel Lyre",
-        head="Nahtirah Hat",ear2="Loquacious Earring",
-        body="Vanir Cotehardie",hands="Gendewitha Gages",ring1="Prolix Ring",
-        back="Swith Cape +1",waist="Goading Belt",legs="Gendewitha Spats",feet="Gendewitha Galoshes"}
+    sets.midcast.FastRecast = {ear2="Loquacious Earring",
+        ring1="Prolix Ring",
+        }
         
     -- Gear to enhance certain classes of songs.  No instruments added here since Gjallarhorn is being used.
     sets.midcast.Ballad = {legs="Aoidos' Rhing. +2"}
@@ -188,7 +225,8 @@ function init_gear_sets()
     
 
     -- For song buffs (duration and AF3 set bonus)
-    sets.midcast.SongEffect = {main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
+    sets.midcast.SongEffect = {
+        main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
     sub={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
     head="Fili Calot +1",
     body="Fili Hongreline +1",
@@ -204,16 +242,19 @@ function init_gear_sets()
     back={ name="Intarabus's Cape", augments={'CHR+20','Eva.+20 /Mag. Eva.+20','"Fast Cast"+10',}},}
 
     -- For song defbuffs (duration primary, accuracy secondary)
-    sets.midcast.SongDebuff = {main="Lehbrailg +2",sub="Mephitis Grip",range="Gjallarhorn",
+    sets.midcast.SongDebuff = {
+        main="Lehbrailg +2",sub="Mephitis Grip",range="Gjallarhorn",
         head="Brioso Roundlet +1",neck="Aoidos' Matinee",ear1="Psystorm Earring",ear2="Lifestorm Earring",
         body="Aoidos' Hongreline +2",hands="Aoidos' Manchettes +2",ring1="Prolix Ring",ring2="Sangoma Ring",
-        back="Kumbira Cape",waist="Goading Belt",legs="Marduk's Shalwar +1",feet="Brioso Slippers +1"}
+        back="Kumbira Cape",waist="Goading Belt",legs="Marduk's Shalwar +1",feet="Brioso Slippers +1"
+    }
 
     -- For song defbuffs (accuracy primary, duration secondary)
-    sets.midcast.ResistantSongDebuff = {main="Lehbrailg +2",sub="Mephitis Grip",range="Gjallarhorn",
-        head="Brioso Roundlet +1",neck="Wind Torque",ear1="Psystorm Earring",ear2="Lifestorm Earring",
-        body="Brioso Justaucorps +1",hands="Aoidos' Manchettes +2",ring1="Prolix Ring",ring2="Sangoma Ring",
-        back="Kumbira Cape",waist="Demonry Sash",legs="Brioso Cannions +1",feet="Bokwus Boots"}
+    sets.midcast.ResistantSongDebuff = {
+        sub="Mephitis Grip",range="Gjallarhorn",
+       ring1="Prolix Ring",ring2="Sangoma Ring",
+        back="Kumbira Cape",waist="Demonry Sash",legs="Brioso Cannions +1",feet="Bokwus Boots"
+    }
 
     -- Song-specific recast reduction
     sets.midcast.SongRecast = {ear2="Loquacious Earring",
@@ -226,13 +267,11 @@ function init_gear_sets()
     sets.midcast.Daurdabla = {range=info.ExtraSongInstrument}
 
     -- Dummy song with Daurdabla; minimize duration to make it easy to overwrite.
-    sets.midcast.DaurdablaDummy = {main="Izhiikoh",range=info.ExtraSongInstrument,
-        head="Nahtirah Hat",neck="Wind Torque",ear1="Psystorm Earring",ear2="Lifestorm Earring",
-        body="Brioso Justaucorps +1",hands="Aoidos' Manchettes +2",ring1="Prolix Ring",ring2="Sangoma Ring",
-        back="Swith Cape +1",waist="Goading Belt",legs="Gendewitha Spats",feet="Bokwus Boots"}
+    sets.midcast.DaurdablaDummy = {
+        }
 
     -- Other general spells and classes.
-    sets.midcast.Cure = {main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
+    sets.midcast.Cure = {
     head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
     body={ name="Chironic Doublet", augments={'"Mag.Atk.Bns."+5','"Cure" potency +10%','MND+4','Mag. Acc.+1',}},
     hands={ name="Chironic Gloves", augments={'"Cure" potency +7%','MND+9','Mag. Acc.+5','"Mag.Atk.Bns."+5',}},
@@ -242,14 +281,13 @@ function init_gear_sets()
     right_ear="Mendi. Earring",
     left_ring="Stikini Ring",
     right_ring="Kishar Ring",
-    back="Solemnity Cape",}
+    back="Solemnity Cape",
+}
         
     sets.midcast.Curaga = sets.midcast.Cure
         
     sets.midcast.Stoneskin = {
-        head="Nahtirah Hat",
-        body="Gendewitha Bliaut",hands="Gendewitha Gages",
-        legs="Gendewitha Spats",feet="Gendewitha Galoshes"}
+        }
         
     sets.midcast.Cursna = {
         neck="Malison Medallion",
@@ -260,37 +298,38 @@ function init_gear_sets()
     
     -- Resting sets
     sets.resting = {main=gear.Staff.HMP, 
-        body="Gendewitha Bliaut",
-        legs="Nares Trews",feet="Chelona Boots +1"}
+       }
     
     
     -- Idle sets (default idle set not needed since the other three are defined, but leaving for testing purposes)
     sets.idle = {}
 
-    sets.idle.PDT = {main=gear.Staff.PDT, sub="Mephitis Grip",range="Oneiros Harp",
-        head="Gendewitha Caubeen",neck="Wiglen Gorget",ear1="Bloodgem Earring",ear2="Loquacious Earring",
-        body="Gendewitha Bliaut",hands="Gendewitha Gages",ring1="Defending Ring",ring2="Sangoma Ring",
-        back="Umbra Cape",waist="Flume Belt",legs="Gendewitha Spats",feet="Aoidos' Cothurnes +2"}
+    sets.idle.PDT = {
+       
+    }
 
     sets.idle.Town = {}
     
-    sets.idle.Weak = {main=gear.Staff.PDT,sub="Mephitis Grip",range="Oneiros Harp",
-        head="Gendewitha Caubeen",neck="Twilight Torque",ear1="Bloodgem Earring",
-        body="Gendewitha Bliaut",hands="Gendewitha Gages",ring1="Defending Ring",ring2="Sangoma Ring",
-        back="Umbra Cape",waist="Flume Belt",legs="Gendewitha Spats",feet="Gendewitha Galoshes"}
+    sets.idle.Weak = {
+        
+    }
     
     
     -- Defense sets
 
-    sets.defense.PDT = {main=gear.Staff.PDT,sub="Mephitis Grip",
-        head="Gendewitha Caubeen",neck="Twilight Torque",
-        body="Gendewitha Bliaut",hands="Gendewitha Gages",ring1="Defending Ring",ring2=gear.DarkRing.physical,
-        back="Umbra Cape",waist="Flume Belt",legs="Gendewitha Spats",feet="Gendewitha Galoshes"}
+    sets.defense.PDT = {
+        head="Nyame Helm",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    back="Moonlight Cape",
+    }
 
-    sets.defense.MDT = {main=gear.Staff.PDT,sub="Mephitis Grip",
-        head="Nahtirah Hat",neck="Twilight Torque",
-        body="Gendewitha Bliaut",hands="Gendewitha Gages",ring1="Defending Ring",ring2="Shadow Ring",
-        back="Engulfer Cape",waist="Flume Belt",legs="Bihu Cannions",feet="Gendewitha Galoshes"}
+    sets.defense.MDT = {
+        
+    }
 
     sets.Kiting = {feet="Aoidos' Cothurnes +2"}
 
@@ -304,22 +343,58 @@ function init_gear_sets()
     -- EG: sets.engaged.Dagger.Accuracy.Evasion
     
     -- Basic set for if no TP weapon is defined.
-    sets.engaged = {range="Angel Lyre",
-        head="Nahtirah Hat",neck="Asperity Necklace",ear1="Bladeborn Earring",ear2="Steelflash Earring",
-        body="Bihu Justaucorps",hands="Buremte Gloves",ring1="Rajas Ring",ring2="K'ayres Ring",
-        back="Atheling Mantle",waist="Goading Belt",legs="Brioso Cannions +1",feet="Gendewitha Galoshes"}
+    sets.engaged = {
+     main="Tauret",
+    sub="Gleti's Knife",
+    head="Nyame Helm",
+    body="Ayanmo Corazza +2",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck="Asperity Necklace",
+    waist="Reiki Yotai",
+    left_ear="Eabani Earring",
+    right_ear="Digni. Earring",
+    left_ring="Petrov Ring",
+    right_ring="Moonbeam Ring",
+    back="Atheling Mantle",
+    }
 
     -- Sets with weapons defined.
-    sets.engaged.Dagger = {range="Angel Lyre",
-        head="Nahtirah Hat",neck="Asperity Necklace",ear1="Bladeborn Earring",ear2="Steelflash Earring",
-        body="Bihu Justaucorps",hands="Buremte Gloves",ring1="Rajas Ring",ring2="K'ayres Ring",
-        back="Atheling Mantle",waist="Goading Belt",legs="Brioso Cannions +1",feet="Gendewitha Galoshes"}
+    sets.engaged.Dagger = {
+        main="Tauret",
+        sub="Gleti's Knife",
+        head="Nyame Helm",
+        body="Ayanmo Corazza +2",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Asperity Necklace",
+        waist="Reiki Yotai",
+        left_ear="Eabani Earring",
+        right_ear="Digni. Earring",
+        left_ring="Petrov Ring",
+        right_ring="Moonbeam Ring",
+        back="Atheling Mantle",
+    }
 
     -- Set if dual-wielding
-    sets.engaged.DW = {range="Angel Lyre",
-        head="Nahtirah Hat",neck="Asperity Necklace",ear1="Dudgeon Earring",ear2="Heartseeker Earring",
-        body="Bihu Justaucorps",hands="Buremte Gloves",ring1="Rajas Ring",ring2="K'ayres Ring",
-        back="Atheling Mantle",waist="Goading Belt",legs="Brioso Cannions +1",feet="Gendewitha Galoshes"}
+    sets.engaged.DW = {
+        main="Tauret",
+        sub="Gleti's Knife",
+        head="Nyame Helm",
+        body="Ayanmo Corazza +2",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Asperity Necklace",
+        waist="Reiki Yotai",
+        left_ear="Eabani Earring",
+        right_ear="Digni. Earring",
+        left_ring="Petrov Ring",
+        right_ring="Moonbeam Ring",
+        back="Atheling Mantle",
+    }
 end
 
 
