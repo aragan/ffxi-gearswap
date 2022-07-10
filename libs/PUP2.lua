@@ -678,7 +678,7 @@ function init_gear_sets()
 
     sets.midcast.Pet["Elemental Magic"] = {
         head={ name="Herculean Helm", augments={'Pet: "Mag.Atk.Bns."+26','Pet: "Dbl.Atk."+2 Pet: Crit.hit rate +2',}},
-        body={ name="Herculean Vest", augments={'Pet: "Mag.Atk.Bns."+25','Pet: "Dbl.Atk."+2 Pet: Crit.hit rate +2','Pet: AGI+10',}},
+        	body="Udug Jacket",
         hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+28','Pet: "Store TP"+6','Pet: DEX+1',}},
         legs={ name="Pitre Churidars +3", augments={'Enhances "Ventriloquy" effect',}},
         feet={ name="Pitre Babouches +3", augments={'Enhances "Role Reversal" effect',}},
@@ -707,7 +707,7 @@ function init_gear_sets()
 
     sets.midcast.Pet["Dark Magic"] = {
         head={ name="Herculean Helm", augments={'Pet: "Mag.Atk.Bns."+26','Pet: "Dbl.Atk."+2 Pet: Crit.hit rate +2',}},
-        body={ name="Herculean Vest", augments={'Pet: "Mag.Atk.Bns."+25','Pet: "Dbl.Atk."+2 Pet: Crit.hit rate +2','Pet: AGI+10',}},
+        	body="Udug Jacket",
         hands={ name="Herculean Gloves", augments={'Pet: "Mag.Atk.Bns."+28','Pet: "Store TP"+6','Pet: DEX+1',}},
         legs={ name="Pitre Churidars +3", augments={'Enhances "Ventriloquy" effect',}},
         feet={ name="Pitre Babouches +3", augments={'Enhances "Role Reversal" effect',}},
@@ -837,8 +837,8 @@ function init_gear_sets()
     neck="Shulmanu Collar",
     waist="Klouskap Sash +1",
     left_ear="Rimeice Earring",
-    right_ear="Enmerkar Earring",
-    left_ring="Thurandaut Ring",
+    right_ear="Sroda Earring",
+        left_ring="Thurandaut Ring",
     right_ring="C. Palug Ring",
     back={ name="Visucius's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: Haste+10',}},
     }  
@@ -937,7 +937,7 @@ function init_gear_sets()
         feet="Mpaca's Boots",
         waist="Incarnation Sash",
         left_ring="Thurandaut Ring",right_ring="C. Palug Ring",
-        left_ear="Kyrene's Earring",right_ear="Domes. Earring",
+        left_ear="Kyrene's Earring",    right_ear="Sroda Earring",
     
     
     }
@@ -988,7 +988,7 @@ function init_gear_sets()
         feet="Mpaca's Boots",
         waist="Incarnation Sash",
         left_ring="Thurandaut Ring",right_ring="C. Palug Ring",
-        left_ear="Kyrene's Earring",right_ear="Domes. Earring",
+        left_ear="Kyrene's Earring",    right_ear="Sroda Earring",
     })
 
     -- Bone crusher, String Shredder
@@ -1003,7 +1003,7 @@ function init_gear_sets()
             feet="Mpaca's Boots",
             waist="Incarnation Sash",
             left_ring="Thurandaut Ring",right_ring="C. Palug Ring",
-            left_ear="Kyrene's Earring",right_ear="Domes. Earring",
+            left_ear="Kyrene's Earring",    right_ear="Sroda Earring",
            
          
         }
@@ -1018,7 +1018,7 @@ function init_gear_sets()
         feet="Mpaca's Boots",
         waist="Incarnation Sash",
         left_ring="Thurandaut Ring",right_ring="C. Palug Ring",
-        left_ear="Kyrene's Earring",right_ear="Domes. Earring",
+        left_ear="Kyrene's Earring",    right_ear="Sroda Earring",
     }
     )
 
@@ -1031,7 +1031,7 @@ function init_gear_sets()
         feet="Mpaca's Boots",
         waist="Incarnation Sash",
         left_ring="Thurandaut Ring",right_ring="C. Palug Ring",
-        left_ear="Kyrene's Earring",right_ear="Domes. Earring",
+        left_ear="Kyrene's Earring",    right_ear="Sroda Earring",
         }
     )
 
