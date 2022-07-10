@@ -179,7 +179,7 @@ function init_gear_sets()
     body={ name="Sakonji Domaru +3", augments={'Enhances "Overwhelm" effect',}},
     hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
     legs="Wakido Haidate +3",
-    feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
+    feet={ name="Sak. Sune-Ate +3", augments={'Enhances "Meikyo Shisui" effect',}},
     neck="Fotia Gorget",
     waist="Fotia Belt",
     left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
@@ -337,9 +337,6 @@ function init_gear_sets()
     sets.precast.WS['Impulse Drive'].Acc = set_combine(sets.precast.WS['Impulse Drive'], {
         feet="Flamma Gambieras +2",
     })
-
-    sets.precast.WS['Sonic Thrust'] = set_combine(sets.precast.WS['Impulse Drive'], {
-    })
     
     sets.precast.WS['Tachi: Shoha'] = set_combine(sets.precast.WS, {
         ammo="Knobkierrie",
@@ -489,7 +486,7 @@ function init_gear_sets()
         body={ name="Sakonji Domaru +3", augments={'Enhances "Overwhelm" effect',}},
         hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
         legs="Wakido Haidate +3",
-    feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
+        feet="Nyame Sollerets",
         neck={ name="Sam. Nodowa +2", augments={'Path: A',}},
         waist="Orpheus's Sash",
         left_ear="Friomisi Earring",
@@ -526,6 +523,7 @@ function init_gear_sets()
     sets.idle.Town = {        
 
     ear2="Infused Earring",
+       body="Hizamaru Haramaki +2",
        feet="Danzo Sune-Ate",
 
 
@@ -616,7 +614,9 @@ function init_gear_sets()
     
     -- I generally use Anahera outside of Adoulin areas, so this set aims for 47 STP + 5 from Anahera (52 total)
     -- Note, this set assumes use of Cibitshavore (hence the arrow as ammo)
-    sets.engaged = {
+    sets.engaged = {    
+        main={ name="Masamune", augments={'Path: A',}},
+        sub="Utu Grip",
         ammo="Coiste Bodhar",
         head="Flam. Zucchetto +2",
         body={ name="Tatena. Harama. +1", augments={'Path: A',}},
@@ -665,7 +665,9 @@ function init_gear_sets()
     })
 
     sets.engaged.polearm = set_combine(sets.engaged, {
-             ammo="Coiste Bodhar",
+        main="Shining One",
+        sub="Utu Grip",
+         ammo="Coiste Bodhar",
          head="Flam. Zucchetto +2",
          body={ name="Sakonji Domaru +3", augments={'Enhances "Overwhelm" effect',}},
          hands="Flam. Manopolas +2",
@@ -680,20 +682,7 @@ function init_gear_sets()
          back={ name="Takaha Mantle", augments={'STR+1','"Zanshin"+2','"Store TP"+2',}},
          })
 
-         sets.engaged.Range = {
-            head={ name="Sakonji Kabuto +3", augments={'Enhances "Ikishoten" effect',}},
-            body="Nyame Mail",
-            hands="Nyame Gauntlets",
-            legs="Nyame Flanchard",
-            feet="Nyame Sollerets",
-            neck={ name="Sam. Nodowa +2", augments={'Path: A',}},
-            waist="Yemaya Belt",
-            left_ear="Crep. Earring",
-            right_ear="Telos Earring",
-            left_ring="Purity Ring",
-            right_ring="Ilabrat Ring",
-            back={ name="Takaha Mantle", augments={'STR+1','"Zanshin"+2','"Store TP"+2',}},
-        }
+
 
     sets.engaged.PD = set_combine(sets.engaged, {
         body="Mpaca's Doublet",

@@ -50,7 +50,7 @@ end
   
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
-    state.OffenseMode:options('Normal', 'STP', 'MidAcc', 'MaxAcc')
+    state.OffenseMode:options('Normal', 'STP', 'MidAcc', 'MaxAcc', 'SubtleBlow')
     state.HybridMode:options('Normal', 'Meva', 'PDT')
     state.WeaponskillMode:options('Normal', 'MaxAcc', 'Max')  ---Max for Scythe removes Ratri for safer WS---For Resolution removes Agrosy for Meva---
     state.CastingMode:options('Normal', 'Resistant')
@@ -622,6 +622,18 @@ sets.precast.WS['Infernal Scythe'].Max = set_combine(sets.precast.WS['Torcleaver
     right_ring="Chirich Ring +1",
     back={ name="Ankou's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+1','Weapon skill damage +10%',}},
 }
+
+sets.engaged.SubtleBlow = set_combine(sets.engaged, {
+
+    hands="Sakpata's Gauntlets",
+    neck={ name="Bathy Choker +1", augments={'Path: A',}},
+    waist="Sarissapho. Belt",
+    left_ear="Digni. Earring",
+    right_ear="Schere Earring",
+    left_ring="Chirich Ring +1",
+    right_ring="Chirich Ring +1",
+    back="Atheling Mantle",
+})
       
       
     -- These only apply when delay is capped.
