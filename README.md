@@ -1,4 +1,5 @@
-Author: AraganVersion: 0.930
+Author: Aragan 
+Version: 0.930
 
 Date: 06/13/2017
 
