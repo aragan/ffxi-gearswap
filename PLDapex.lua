@@ -1,4 +1,10 @@
-require 'organizer-lib'
+-----------------------------Authors of this file--------------------------------
+------           ******************************************                ------
+---                                                                           ---
+--	  Aragan (Asura) --------------- [Author Primary]                          -- 
+--                                                                             --
+---------------------------------------------------------------------------------
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------- Initialization function that defines sets and variables to be used -----------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -9,6 +15,7 @@ require 'organizer-lib'
 function get_sets()
     -- Load and initialize the include file.
     include('Mote-IncludePLD.lua')
+    require 'organizer-lib'
 end
 
  
@@ -922,7 +929,7 @@ back="Moonlight Cape",
     
     sets.defense.PD = 
 {    
-    ammo="Eluder's Sachet",
+    ammo="Iron Gobbet",
     head="Sakpata's Helm",
     body="Sakpata's Plate",
     hands="Sakpata's Gauntlets",
@@ -1272,7 +1279,8 @@ if cmdParams[1] == 'buffWatcher' then
       stopBuffWatcher()
   end
 end
-
+add_to_chat(159,'Author Aragan PLD.Lua File (from Asura)')
+add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
 
 -- Curing rules
 function refine_various_spells(spell,action,spell_map,event_args)

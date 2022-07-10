@@ -1289,7 +1289,7 @@ if cmdParams[1] == 'buffWatcher' then
       stopBuffWatcher()
   end
 end
-add_to_chat(123,'Author Aragan PLD.Lua File (from Asura)')
+add_to_chat(159,'Author Aragan PLD.Lua File (from Asura)')
 
 
 -- Curing rules
