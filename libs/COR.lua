@@ -1,3 +1,10 @@
+-----------------------------Authors of this file--------------------------------
+------           ******************************************                ------
+---                                                                           ---
+--	  Aragan (Asura) --------------- [Author Primary]                          -- 
+--                                                                             --
+---------------------------------------------------------------------------------
+
 -------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job.  Generally should not be modified.
 -------------------------------------------------------------------------------------------------------------------
@@ -37,7 +44,7 @@ include('organizer-lib')
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
     state.OffenseMode:options('Ranged', 'Melee', 'Acc')
-    state.RangedMode:options('Normal', 'Acc')
+    state.RangedMode:options('Normal', 'Molybdosis')
     state.WeaponskillMode:options('Normal', 'Acc', 'Att', 'Mod')
     state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'PDT', 'Refresh')
@@ -134,7 +141,6 @@ function init_gear_sets()
     -- Weaponskill sets
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
-        range={ name="Anarchy +2", augments={'Delay:+60','TP Bonus +1000',}},
         head="Oshosi Mask",
         body="Nyame Mail",
         hands="Meg. Gloves +2",
@@ -340,7 +346,7 @@ function init_gear_sets()
     back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
 }
 
-    sets.midcast.RA.Acc = {main="Naegling",
+    sets.midcast.RA.Molybdosis = {main="Naegling",
     sub="Tauret",
     range="Molybdosis",
     ammo="Orichalc. Bullet",
@@ -411,7 +417,7 @@ function init_gear_sets()
     -- Normal melee group
     sets.engaged.Melee = {main="Naegling",
     sub="Demers. Degen +1",
-    range="Anarchy +1",
+    range={ name="Anarchy +2", augments={'Delay:+60','TP Bonus +1000',}},
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     hands="Malignance Gloves",
@@ -699,7 +705,8 @@ function do_bullet_checks(spell, spellMap, eventArgs)
         state.warned:reset()
     end
 end
-
+add_to_chat(159,'Author Aragan COR.Lua File (from Asura)')
+add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     set_macro_page(4, 2)

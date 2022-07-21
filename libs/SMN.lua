@@ -2,6 +2,16 @@
 -- Setup functions for this job.  Generally should not be modified.
 -------------------------------------------------------------------------------------------------------------------
 
+---------------------------------------------------------------------------------
+-- This lua is based off of the Kinematics template and uses Motenten globals. --
+--                                                                             --
+-----------------------------Authors of this file--------------------------------
+------           ******************************************                ------
+---                                                                           ---
+--	  Aragan (Asura) --------------- [Author Primary]                          -- 
+--                                                                             --
+---------------------------------------------------------------------------------
+
 -- Also, you'll need the Shortcuts addon to handle the auto-targetting of the custom pact commands.
 
 --[[
@@ -130,8 +140,8 @@ end
 function user_setup()
     state.OffenseMode:options('None', 'Normal', 'Acc')
     state.CastingMode:options('Normal', 'Resistant')
-    state.IdleMode:options('Normal', 'PDT')
-
+    state.IdleMode:options('Normal', 'PDT', 'Regen')
+    state.PhysicalDefenseMode:options('PDT', 'Regen', 'Mdt')
     gear.perp_staff = {name=""}
     
     select_default_macro_book()
@@ -296,7 +306,7 @@ function init_gear_sets()
     sub="Elan Strap +1",
     ammo="Sancus Sachet +1",
     head="C. Palug Crown",
-    body={ name="Helios Jacket", augments={'Pet: Attack+28 Pet: Rng.Atk.+28','Pet: Crit.hit rate +3','Blood Pact Dmg.+5',}},
+    body="Con. Doublet +2",
     hands={ name="Merlinic Dastanas", augments={'Blood Pact Dmg.+10','Pet: "Mag.Atk.Bns."+3',}},
     legs={ name="Enticer's Pants", augments={'MP+20','Pet: Accuracy+7 Pet: Rng. Acc.+7','Pet: Mag. Acc.+3',}},
     feet={ name="Apogee Pumps", augments={'MP+60','Pet: "Mag.Atk.Bns."+30','Blood Pact Dmg.+7',}},
@@ -317,9 +327,10 @@ function init_gear_sets()
 
     -- Spirits cast magic spells, which can be identified in standard ways.
     
-    sets.midcast.Pet.WhiteMagic = {legs="Summoner's Spats"}
+    sets.midcast.Pet.WhiteMagic = {    legs={ name="Glyphic Spats +1", augments={'Increases Sp. "Blood Pact" accuracy',}},
+}
     
-    sets.midcast.Pet['Elemental Magic'] = set_combine(sets.midcast.Pet.BloodPactRage, {legs="Summoner's Spats"})
+    sets.midcast.Pet['Elemental Magic'] = set_combine(sets.midcast.Pet.BloodPactRage, {})
 
     sets.midcast.Pet['Elemental Magic'].Resistant = {}
     
@@ -332,7 +343,8 @@ function init_gear_sets()
     sets.resting = {main=gear.Staff.HMP,ammo="Seraphicaller",
         head="Convoker's Horn",neck="Wiglen Gorget",ear1="Gifted Earring",ear2="Loquacious Earring",
         body="Hagondes Coat",hands="Serpentes Cuffs",ring1="Sheltered Ring",ring2="Paguroidea Ring",
-        back="Pahtli Cape",waist="Austerity Belt",legs="Nares Trews",feet="Chelona Boots +1"}
+        back="Pahtli Cape",waist="Austerity Belt",legs="Nares Trews",feet="Chelona Boots +1"
+    }
     
     -- Idle sets
     sets.idle = {main="Contemplator +1",
@@ -367,6 +379,24 @@ function init_gear_sets()
     left_ring="Thurandaut Ring",
     right_ring="Varar Ring +1",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
+
+    sets.idle.Regen = {
+        main="Contemplator +1",
+        sub="Elan Strap +1",
+        ammo="Sancus Sachet +1",
+        head="Beckoner's Horn +1",
+        body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+        hands="Baayami Cuffs",
+        legs="Baayami Slops",
+        feet="Baayami Sabots",
+        neck="Empath Necklace",
+        waist="Isa Belt",
+        left_ear="Enmerkar Earring",
+        right_ear="Evans Earring",
+        left_ring="Thurandaut Ring",
+        right_ring="C. Palug Ring",
+        back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
+    }
 
     -- perp costs:
     -- spirits: 7
@@ -422,6 +452,24 @@ function init_gear_sets()
         back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
 }
 
+    sets.idle.Regen.Avatar = {
+        main="Contemplator +1",
+        sub="Elan Strap +1",
+        ammo="Sancus Sachet +1",
+        head="Beckoner's Horn +1",
+        body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+        hands="Baayami Cuffs",
+        legs="Baayami Slops",
+        feet="Baayami Sabots",
+        neck="Empath Necklace",
+        waist="Isa Belt",
+        left_ear="Enmerkar Earring",
+        right_ear="Evans Earring",
+        left_ring="Thurandaut Ring",
+        right_ring="C. Palug Ring",
+        back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
+}
+
     sets.idle.Spirit = {main="Gridarvor",sub="Achaq Grip",ammo="Seraphicaller",
         head="Convoker's Horn",neck="Caller's Pendant",ear1="Gifted Earring",ear2="Loquacious Earring",
         body="Hagondes Coat",hands="Serpentes Cuffs",ring1="Evoker's Ring",ring2="Sangoma Ring",
@@ -457,7 +505,7 @@ function init_gear_sets()
     -- We can then use Hagondes Coat and end up with the same net MP cost, but significantly better defense.
     -- Weather is the same, but we can also use the latent on the pendant to negate the last point lost.
     sets.perp.Day = {hands="Caller's Bracers +2"}
-    sets.perp.Weather = {neck="Caller's Pendant",hands="Caller's Bracers +2"}
+    sets.perp.Weather = {neck="Caller's Pendant",}
     -- Carby: Mitts+Conv.feet = 1/tick perp.  Everything else should be +refresh
     sets.perp.Carbuncle = {
   }
@@ -465,7 +513,7 @@ function init_gear_sets()
     --sets.perp.Diabolos = {waist="Diabolos's Rope"}
     sets.perp.Alexander = sets.midcast.Pet.BloodPactWard
 
-    sets.perp.staff_and_grip = {main=gear.perp_staff,sub="Achaq Grip"}
+    sets.perp.staff_and_grip = {}
     
     -- Defense sets
     sets.defense.PDT = {
@@ -504,6 +552,24 @@ function init_gear_sets()
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
 }
 
+    sets.defense.Regen = {
+        main="Contemplator +1",
+        sub="Elan Strap +1",
+        ammo="Sancus Sachet +1",
+        head="Beckoner's Horn +1",
+        body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+        hands="Baayami Cuffs",
+        legs="Baayami Slops",
+        feet="Baayami Sabots",
+        neck="Empath Necklace",
+        waist="Isa Belt",
+        left_ear="Enmerkar Earring",
+        right_ear="Evans Earring",
+        left_ring="Thurandaut Ring",
+        right_ring="C. Palug Ring",
+        back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
+}
+
     sets.Kiting = {feet="Herald's Gaiters"}
     
     sets.latent_refresh = {waist="Fucho-no-obi"}
@@ -514,21 +580,23 @@ function init_gear_sets()
     --------------------------------------
     
     -- Normal melee group
-    sets.engaged = {main="Contemplator +1",
-    sub="Vox Grip",
-    ammo="Sancus Sachet +1",
-    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
-    body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
-    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
-    legs="Assiduity Pants +1",
-    feet={ name="Glyph. Pigaches +3", augments={'Inc. Sp. "Blood Pact" magic crit. dmg.',}},
-    neck="Caller's Pendant",
-    waist="Fucho-no-Obi",
-    left_ear="Enmerkar Earring",
-    right_ear="Evans Earring",
-    left_ring="Thurandaut Ring",
-    right_ring="Varar Ring +1",
-    back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
+    sets.engaged = {
+        main={ name="Espiritus", augments={'Summoning magic skill +15','Pet: Mag. Acc.+30','Pet: Damage taken -4%',}},
+        sub="Alber Strap",
+        ammo="Sancus Sachet +1",
+        head="Nyame Helm",
+        body="Tali'ah Manteel +2",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Shulmanu Collar",
+        waist="Klouskap Sash +1",
+        left_ear="Mache Earring +1",
+        right_ear="Mache Earring +1",
+        left_ring="Chirich Ring +1",
+        right_ring="Defending Ring",
+        back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
+}
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -911,7 +979,8 @@ function select_default_macro_book(reset)
     if reset == 'reset' then
         -- lost pet, or tried to use pact when pet is gone
     end
-    
+    add_to_chat(159,'Author Aragan SMN.Lua File (from Asura)')
+    add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
     -- Default macro set/book
     set_macro_page(3, 2)
 end

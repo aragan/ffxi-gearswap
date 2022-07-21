@@ -1,6 +1,15 @@
 -------------------------------------------------------------------------------------------------------------------
 -- Initialization function that defines sets and variables to be used.
 -------------------------------------------------------------------------------------------------------------------
+---------------------------------------------------------------------------------
+-- This lua is based off of the Kinematics template and uses Motenten globals. --
+--                                                                             --
+-----------------------------Authors of this file--------------------------------
+------           ******************************************                ------
+---                                                                           ---
+--	  Aragan (Asura) --------------- [Author Primary]                          -- 
+--                                                                             --
+---------------------------------------------------------------------------------
 -- Haste II has the same buff ID [33], so we have to use a toggle. 
 -- gs c toggle hastemode -- Toggles whether or not you're getting Haste II
 -- for Rune Fencer sub, you need to create two macros. One cycles runes, and gives you descrptive text in the log.
@@ -311,7 +320,7 @@ function init_gear_sets()
     body="Malignance Tabard",
     hands="Malignance Gloves",
     legs="Malignance Tights",
-    feet="Malignance Boots",
+    feet="Danzo Sune-Ate",
     neck="Moonbeam Nodowa",
     waist="Sarissapho. Belt",
     left_ear="Telos Earring",
@@ -332,7 +341,7 @@ function init_gear_sets()
         body="Councilor's Garb",
     }
     sets.idle.Town = sets.idle
-    sets.idle.Town = set_combine(sets.idle, {
+    sets.idle.Town = set_combine(sets.idle, {    feet="Danzo Sune-Ate",
 
     })
     --sets.idle.Town.Adoulin = set_combine(sets.idle.Town, {
@@ -420,7 +429,7 @@ function init_gear_sets()
     sets.engaged = {
 
         ammo="Coiste Bodhar",
-        head={ name="Adhemar Bonnet", augments={'DEX+10','AGI+10','Accuracy+15',}},
+        head={ name="Ryuo Somen +1", augments={'HP+65','"Store TP"+5','"Subtle Blow"+8',}},
         body={ name="Tatena. Harama. +1", augments={'Path: A',}},
         hands={ name="Tatena. Gote +1", augments={'Path: A',}},
         legs={ name="Tatena. Haidate +1", augments={'Path: A',}},
@@ -446,7 +455,7 @@ function init_gear_sets()
         waist="Olseni Belt",
     })
         sets.engaged.Sword = set_combine(sets.engaged, {
-            main="Onion Sword",
+            main="Excalipoor II",
             sub=empty,
         })
         sets.engaged.GK = set_combine(sets.engaged, {
@@ -466,7 +475,7 @@ function init_gear_sets()
             sub=empty,
         })
         sets.engaged.Dagger = set_combine(sets.engaged, {
-            main="Onion Dagger",
+            main="Ceremonial Dagger",
             sub=empty,
         })
 
@@ -664,8 +673,8 @@ function init_gear_sets()
         feet="Hizamaru Sune-ate +2" 
     })
     sets.engaged.Mid.Haste_30 = set_combine(sets.engaged.Haste_30, {  ammo="Coiste Bodhar",
-        head="Adhemar Bonnet ",
-        ear2="Cessance Earring",
+    head={ name="Ryuo Somen +1", augments={'HP+65','"Store TP"+5','"Subtle Blow"+8',}},
+    ear2="Cessance Earring",
         ring1="Ilabrat Ring",
     })
     sets.engaged.Acc.Haste_30 = set_combine(sets.engaged.Mid.Haste_30, {  ammo="Coiste Bodhar",
@@ -690,6 +699,7 @@ function init_gear_sets()
     sets.engaged.Haste_15 = set_combine(sets.engaged.Haste_30, {  ammo="Coiste Bodhar",
         left_ear="Eabani Earring",
         right_ear="Suppanomimi",
+        head={ name="Ryuo Somen +1", augments={'HP+65','"Store TP"+5','"Subtle Blow"+8',}},
         body="Adhemar Jacket +1",
         ring1="Epona's Ring",
         feet="Hizamaru Sune-ate +2",
@@ -819,7 +829,7 @@ function init_gear_sets()
     -- BLADE: SHUN
     sets.Shun = {
     
-        ammo="C. Palug Stone",
+        ammo="Aurgelmir Orb +1",
         head={ name="Adhemar Bonnet", augments={'DEX+10','AGI+10','Accuracy+15',}},
         body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
@@ -920,13 +930,15 @@ function init_gear_sets()
     })
     
     sets.precast.WS['Aeolian Edge'] = set_combine(sets.precast.WS, {        ammo={ name="Seeth. Bomblet +1", augments={'Path: A',}},
-        head="Malignance Chapeau",body={ name="Samnuha Coat", augments={'Mag. Acc.+8','"Mag.Atk.Bns."+11','"Dual Wield"+2',}},
-        hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
-        legs={ name="Herculean Trousers", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','STR+13','Mag. Acc.+3','"Mag.Atk.Bns."+1',}},
-        feet={ name="Herculean Boots", augments={'Mag. Acc.+19 "Mag.Atk.Bns."+19','Crit.hit rate+1','INT+2','"Mag.Atk.Bns."+1',}},neck="Baetyl Pendant",
+    head="Nyame Helm",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets"
+    ,neck="Baetyl Pendant",
         waist="Orpheus's Sash",
         left_ring="Epaminondas's Ring",
-        right_ring={ name="Mephitas's Ring +1", augments={'Path: A',}},
+        right_ring="Dingir Ring",
         left_ear="Hecate's Earring",right_ear="Friomisi Earring",back={ name="Andartia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Attack+10','"Dbl.Atk."+10','Occ. inc. resist. to stat. ailments+10',}},
     })
     sets.precast.WS['Blade: Chi'] = set_combine(sets.precast.WS['Aeolian Edge'], {
@@ -1452,7 +1464,8 @@ end
 --         return sets.DayAccAmmo
 --     end
 -- end
-
+add_to_chat(159,'Author Aragan NIN.Lua File (from Asura)')
+add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
 function update_combat_form()
     if state.Buff.Innin then
         state.CombatForm:set('Innin')
