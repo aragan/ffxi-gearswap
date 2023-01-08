@@ -109,8 +109,8 @@ function init_gear_sets()
 	-- Fast cast sets for spells
 
 	sets.precast.FC = {
-		head="Haruspex Hat",ear2="Loquacious Earring",
-		hands="Thaumas Gloves",ring1="Prolix Ring"}
+		ear2="Loquacious Earring",
+		ring1="Prolix Ring"}
 
 	sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {neck="Magoraga Beads"})
 
@@ -119,11 +119,11 @@ function init_gear_sets()
 	
 	sets.precast.RA = {
 
-	head="Ikenga's Hat",
+		head="Arcadian Beret +1",
 	body="Oshosi Vest",
 	hands={ name="Carmine Fin. Ga. +1", augments={'Rng.Atk.+20','"Mag.Atk.Bns."+12','"Store TP"+6',}},
     legs={ name="Adhemar Kecks +1", augments={'AGI+12','"Rapid Shot"+13','Enmity-6',}},
-    feet="Meg. Jam. +2",
+    feet="Arcadian Socks +3",
     waist="Yemaya Belt",
 	right_ring="Crepuscular Ring",
 	}
@@ -289,12 +289,12 @@ function init_gear_sets()
 
 	sets.midcast.RA = {		
 
-		head="Malignance Chapeau",
+		head="Arcadian Beret +1",
 		body="Nisroch Jerkin",
 		hands="Malignance Gloves",
-		legs="Malignance Tights",
+		legs={ name="Adhemar Kecks +1", augments={'AGI+12','"Rapid Shot"+13','Enmity-6',}},
 		feet="Malignance Boots",
-		neck="Iskur Gorget",
+		neck="Scout's Gorget +2",
 		waist="Yemaya Belt",
 		left_ear="Dedition Earring",
 		right_ear="Telos Earring",
@@ -310,12 +310,12 @@ function init_gear_sets()
 		hands="Ikenga's Gloves",
 		legs="Ikenga's Trousers",
 		feet="Meg. Jam. +2",
-		neck="Iskur Gorget",
+		neck="Scout's Gorget +2",
 		waist="Yemaya Belt",
 		left_ear="Telos Earring",
 		right_ear="Enervating Earring",
-		left_ring="Dingir Ring",
-		right_ring="Cacoethic Ring",
+		left_ring="Cacoethic Ring 1+",
+		right_ring="Dingir Ring",
 		back={ name="Belenus's Cape", augments={'AGI+20','Rng.Acc.+20 Rng.Atk.+20','Weapon skill damage +10%',}},
 
 	})
@@ -327,11 +327,11 @@ function init_gear_sets()
 		hands="Malignance Gloves",
 		legs="Malignance Tights",
 		feet="Malignance Boots",
-		neck="Iskur Gorget",
+		neck="Scout's Gorget +2",
 		waist="Yemaya Belt",
 		left_ear="Enervating Earring",
 		right_ear="Crep. Earring",
-		left_ring="Cacoethic Ring",
+		left_ring="Cacoethic Ring 1+",
 		right_ring="Crepuscular Ring",
 		back={ name="Belenus's Cape", augments={'AGI+20','Rng.Acc.+20 Rng.Atk.+20','Weapon skill damage +10%',}},
 	}
