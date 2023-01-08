@@ -61,8 +61,6 @@ end
 function job_setup()
     state.Buff["Avatar's Favor"] = buffactive["Avatar's Favor"] or false
     state.Buff["Astral Conduit"] = buffactive["Astral Conduit"] or false
-    state.WeaponLock = M(false, 'Weapon Lock')
-    state.MagicBurst = M(false, 'Magic Burst')
 
     spirits = S{"LightSpirit", "DarkSpirit", "FireSpirit", "EarthSpirit", "WaterSpirit", "AirSpirit", "IceSpirit", "ThunderSpirit"}
     avatars = S{"Carbuncle", "Fenrir", "Diabolos", "Ifrit", "Titan", "Leviathan", "Garuda", "Shiva", "Ramuh", "Odin", "Alexander", "Cait Sith", "Siren"}
@@ -167,22 +165,7 @@ function init_gear_sets()
     sets.precast.JA['Mana Cede'] = {hands="Caller's Bracers +2"}
 
     -- Pact delay reduction gear
-    sets.precast.BloodPactWard = {
-        main={ name="Espiritus", augments={'Summoning magic skill +15','Pet: Mag. Acc.+30','Pet: Damage taken -4%',}},
-    ammo="Sancus Sachet +1",
-    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
-    body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
-    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
-    legs={ name="Glyphic Spats +1", augments={'Increases Sp. "Blood Pact" accuracy',}},
-    feet={ name="Glyph. Pigaches +3", augments={'Inc. Sp. "Blood Pact" magic crit. dmg.',}},
-    neck="Incanter's Torque",
-    waist="Lucidity Sash",
-    right_ear="Evans Earring",
-    left_ring="Stikini Ring +1",
-    right_ring="Fervor Ring",
-}
 
-    sets.precast.BloodPactRage = sets.precast.BloodPactWard
 
     -- Fast cast sets for spells
     
@@ -198,7 +181,7 @@ function init_gear_sets()
     neck="Incanter's Torque",
     waist="Kobo Obi",
     left_ear="Andoaa Earring",
-    right_ear="Beck. Earring",
+    right_ear="Loquac. Earring",
     left_ring="Stikini Ring",
     right_ring="Prolix Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
@@ -225,10 +208,13 @@ function init_gear_sets()
         }
 
     sets.midcast.Cure = {
+        
+   
     left_ear="Loquac. Earring",
     right_ear="Etiolation Earring",
     left_ring="Kishar Ring",
     right_ring="Prolix Ring",
+    
 }
 
     sets.midcast.Stoneskin = {waist="Siegel Sash"}
@@ -290,15 +276,15 @@ function init_gear_sets()
     neck={ name="Smn. Collar +2", augments={'Path: A',}},
     waist="Incarnation Sash",
     left_ear="Gelos Earring",
-    right_ear="Beck. Earring",
+    right_ear="Esper Earring",
     left_ring="Varar Ring +1",
     right_ring="C. Palug Ring",
     back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
 
     sets.midcast.Pet.PhysicalBloodPactRage.Acc = set_combine(sets.midcast.Pet.PhysicalBloodPactRage, {
         main="Was",
-        right_ear="Beck. Earring",
-        left_ear="Gelos Earring",
+        left_ear="Kyrene's Earring",
+        right_ear="Gelos Earring",
     })
 
     sets.midcast.Pet.MagicalBloodPactRage = {main={ name="Grioavolr", augments={'Blood Pact Dmg.+9','Pet: Mag. Acc.+17',}},
@@ -311,7 +297,7 @@ function init_gear_sets()
     feet={ name="Apogee Pumps", augments={'MP+60','Pet: "Mag.Atk.Bns."+30','Blood Pact Dmg.+7',}},
     neck={ name="Smn. Collar +2", augments={'Path: A',}},
     waist="Kobo Obi",
-    left_ear="Beck. Earring",
+    left_ear="Kyrene's Earring",
     right_ear="Esper Earring",
     left_ring="Varar Ring +1",
     right_ring="Varar Ring +1",
@@ -319,8 +305,8 @@ function init_gear_sets()
 
     sets.midcast.Pet.MagicalBloodPactRage.Acc = set_combine(sets.midcast.Pet.MagicalBloodPactRage, {
       
-        right_ear="Beck. Earring",
-        left_ear="Gelos Earring",
+        left_ear="Kyrene's Earring",
+        right_ear="Gelos Earring",
     })
 
 
@@ -339,21 +325,10 @@ function init_gear_sets()
     --------------------------------------
     
     -- Resting sets
-    sets.resting = {
-        main="Contemplator +1",
-        sub="Elan Strap +1",
-        ammo="Sancus Sachet +1",
-        head="Beckoner's Horn +1",
-        body="Shomonjijoe +1",
-        hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
-        legs={ name="Glyphic Spats +1", augments={'Increases Sp. "Blood Pact" accuracy',}},
-        feet="Baayami Sabots",
-        neck="Caller's Pendant",
-        waist="Fucho-no-Obi",
-        left_ear="C. Palug Earring",
-        right_ear="Infused Earring",
-        left_ring="Stikini Ring +1",
-        right_ring="Stikini Ring +1",
+    sets.resting = {main=gear.Staff.HMP,ammo="Seraphicaller",
+        head="Convoker's Horn",neck="Wiglen Gorget",ear1="Gifted Earring",ear2="Loquacious Earring",
+        body="Hagondes Coat",hands="Serpentes Cuffs",ring1="Sheltered Ring",ring2="Paguroidea Ring",
+        back="Pahtli Cape",waist="Austerity Belt",legs="Nares Trews",feet="Chelona Boots +1"
     }
     
     -- Idle sets
@@ -607,11 +582,25 @@ function init_gear_sets()
         right_ring="Defending Ring",
         back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
 }
-sets.Doom = {    neck="Nicander's Necklace",
-waist="Gishdubar Sash",
-left_ring="Purity Ring",
-right_ring="Blenmot's Ring +1",}
+end
 
+sets.engaged.Acc = {
+    main="Contemplator +1",
+    sub="Vox Grip",
+    ammo="Sancus Sachet +1",
+    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
+    body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
+    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
+    legs="Assiduity Pants +1",
+    feet={ name="Glyph. Pigaches +3", augments={'Inc. Sp. "Blood Pact" magic crit. dmg.',}},
+    neck="Caller's Pendant",
+    waist="Fucho-no-Obi",
+    left_ear="Enmerkar Earring",
+    right_ear="Evans Earring",
+    left_ring="Thurandaut Ring",
+    right_ring="Varar Ring +1",
+    back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},
+}
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -622,13 +611,13 @@ end
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 function job_precast(spell, action, spellMap, eventArgs)
     if state.Buff['Astral Conduit'] and pet_midaction() then
-        eventArgs.useMidcastGear = true
+        eventArgs.handled = true
     end
 end
 
 function job_midcast(spell, action, spellMap, eventArgs)
     if state.Buff['Astral Conduit'] and pet_midaction() then
-        eventArgs.useMidcastGear = true
+        eventArgs.handled = true
     end
 end
 
@@ -653,18 +642,6 @@ function job_buff_change(buff, gain)
         handle_equipping_gear(player.status)
     elseif storms:contains(buff) then
         handle_equipping_gear(player.status)
-    end
-    if buff == "doom" then
-        if gain then
-            equip(sets.Doom)
-            send_command('@input /p Doomed, please Cursna.')
-            send_command('@input /item "Holy Water" <me>')	
-             disable('ring1','ring2','waist','neck')
-        else
-            enable('ring1','ring2','waist','neck')
-            send_command('input /p Doom removed.')
-            handle_equipping_gear(player.status)
-        end
     end
 end
 
@@ -960,20 +937,7 @@ function handle_pacts(cmdParams)
         add_to_chat(122,pet.name..' does not have a pact of type ['..pact..'].')
     end
 end
-function job_state_change(stateField, newValue, oldValue)
-    if stateField == 'Offense Mode' then
-        if newValue == 'Normal' then
-            disable('main','sub','range')
-        else
-            enable('main','sub','range')
-        end
-    end
-    if state.WeaponLock.value == true then
-        disable('main','sub')
-    else
-        enable('main','sub')
-    end
-end
+
 
 -- Event handler for updates to player skill, since we can't rely on skill being
 -- correct at pet_aftercast for the creation of custom timers.
@@ -1013,10 +977,14 @@ function create_pact_timer(spell_name)
     end
 end
 
-add_to_chat(159,'Author Aragan SMN.Lua File (from Asura)')
-add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
+
 -- Select default macro book on initial load or subjob change.
-function select_default_macro_book()
+function select_default_macro_book(reset)
+    if reset == 'reset' then
+        -- lost pet, or tried to use pact when pet is gone
+    end
+    add_to_chat(159,'Author Aragan PLD.Lua File (from Asura)')
+    add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
     -- Default macro set/book
     set_macro_page(3, 2)
 end

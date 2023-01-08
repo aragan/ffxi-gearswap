@@ -27,8 +27,6 @@ function job_setup()
 	state.Buff.Barrage = buffactive.Barrage or false
 	state.Buff.Camouflage = buffactive.Camouflage or false
 	state.Buff['Unlimited Shot'] = buffactive['Unlimited Shot'] or false
-    state.Buff['Velocity Shot'] = buffactive['Velocity Shot'] or false
-    state.Buff['Double Shot'] = buffactive['Double Shot'] or false
 	state.CapacityMode = M(false, 'Capacity Point Mantle')
 	send_command('wait 2;input /lockstyleset 200')
 
@@ -52,26 +50,17 @@ function user_setup()
 	"Blurred Knife +1", "Ternion Dagger +1", "Beryllium Arrow", "Eminent Arrow", "Hangaku-no-Yumi",
 
 }
-    elemental_ws = S{'Aeolian Edge', 'Trueflight', 'Wildfire'}
+	
 	no_shoot_ammo = S{"Animikii Bullet", "Hauksbok Bullet"}
 
 	DefaultAmmo = {['Hangaku-no-Yumi'] = "Eminent Arrow", 
 	              ['Ullr'] = "Eminent Arrow",
 				  ['Fomalhaut'] = "Decimating Bullett",
 				}
-	WSAmmo = {['Hangaku-no-Yumi'] = "Beryllium Arrow", 
+	U_Shot_Ammo = {['Hangaku-no-Yumi'] = "Beryllium Arrow", 
 	               ['Ullr'] = "Beryllium Arrow",
 				   ['Fomalhaut'] = "Chrono Bullet",
 				}
-	AccAmmo = {['Hangaku-no-Yumi'] = "Eminent Arrow", 
-	              ['Ullr'] = "Eminent Arrow",
-				  ['Fomalhaut'] = "Decimating Bullett",
-				}
-	MagicAmmo = {['Hangaku-no-Yumi'] = "Beryllium Arrow", 
-	              ['Ullr'] = "Beryllium Arrow",
-	              ['Fomalhaut'] = "Chrono Bullet",
-				}
-
 
 	select_default_macro_book()
 	send_command('bind f12 gs c autoRAmode') --Gearset update toggle--
@@ -102,8 +91,6 @@ function init_gear_sets()
 	sets.precast.JA['Scavenge'] = {feet="Orion Socks +1"}
 	sets.precast.JA['Shadowbind'] = {hands="Orion Bracers +1"}
 	sets.precast.JA['Sharpshot'] = {legs="Orion Braccae +1"}
-	sets.precast.JA['Eagle Eye Shot'] = {legs="Arc. Braccae +3"}
-
 
 
 	-- Fast cast sets for spells
@@ -118,11 +105,12 @@ function init_gear_sets()
 	-- Ranged sets (snapshot)
 	
 	sets.precast.RA = {
-
-	head="Ikenga's Hat",
-	body="Oshosi Vest",
-	hands={ name="Carmine Fin. Ga. +1", augments={'Rng.Atk.+20','"Mag.Atk.Bns."+12','"Store TP"+6',}},
-    legs={ name="Adhemar Kecks +1", augments={'AGI+12','"Rapid Shot"+13','Enmity-6',}},
+		ammo=empty,
+		range="Trollbane", 
+			head="Ikenga's Hat",
+    body="Ikenga's Vest",
+    hands="Ikenga's Gloves",
+    legs={ name="Adhemar Kecks", augments={'DEX+10','AGI+10','Accuracy+15',}},
     feet="Meg. Jam. +2",
     waist="Yemaya Belt",
 	right_ring="Crepuscular Ring",
@@ -134,9 +122,9 @@ function init_gear_sets()
 	sets.precast.WS = {
 		head="Nyame Helm",
 		body="Nyame Mail",
-		hands="Nyame Gauntlets",
+		hands="Meg. Gloves +2",
 		legs={ name="Arc. Braccae +3", augments={'Enhances "Eagle Eye Shot" effect',}},
-		feet={ name="Nyame Sollerets", augments={'Path: B',}},
+		feet={ name="Herculean Boots", augments={'Accuracy+6','Weapon skill damage +3%','AGI+10',}},
 		neck="Fotia Gorget",
 		waist="Fotia Belt",
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
@@ -150,11 +138,11 @@ function init_gear_sets()
 	})
 
     sets.precast.WS['Last Stand'] = {
-		head="Nyame Helm",
-		body="Nyame Mail",
+		head="Ikenga's Hat",
+		body="Ikenga's Vest",
 		hands="Meg. Gloves +2",
 		legs={ name="Arc. Braccae +3", augments={'Enhances "Eagle Eye Shot" effect',}},
-		feet={ name="Nyame Sollerets", augments={'Path: B',}},
+		feet={ name="Herculean Boots", augments={'Accuracy+6','Weapon skill damage +3%','AGI+10',}},
 		neck="Fotia Gorget",
 		waist="Fotia Belt",
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
@@ -165,10 +153,11 @@ function init_gear_sets()
 	}
 
 	sets.precast.WS.Wildfire  = {
-		body={ name="Cohort Cloak +1", augments={'Path: A',}},
-		hands={ name="Carmine Fin. Ga. +1", augments={'Rng.Atk.+20','"Mag.Atk.Bns."+12','"Store TP"+6',}},
+	    head="Nyame Helm",
+    body="Nyame Mail",
+    hands="Meg. Gloves +2",
     legs={ name="Arc. Braccae +3", augments={'Enhances "Eagle Eye Shot" effect',}},
-    feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    feet={ name="Herculean Boots", augments={'Accuracy+6','Weapon skill damage +3%','AGI+10',}},
     neck="Baetyl Pendant",
     waist="Orpheus's Sash",
     left_ear="Ishvara Earring",
@@ -184,10 +173,10 @@ function init_gear_sets()
 
 	sets.precast.WS["Jishnu's Radiance"] = {		
     head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
-    body="Nisroch Jerkin",
+    body="Meg. Cuirie +2",
     hands="Mummu Wrists +2",
     legs="Jokushu Haidate",
-    feet="Thereoid Greaves",
+    feet={ name="Herculean Boots", augments={'Accuracy+6','Weapon skill damage +3%','AGI+10',}},
     neck="Fotia Gorget",
     waist="Fotia Belt",
     left_ear="Sherida Earring",
@@ -196,39 +185,13 @@ function init_gear_sets()
     right_ring="Regal Ring",
     back={ name="Belenus's Cape", augments={'AGI+20','Rng.Acc.+20 Rng.Atk.+20','Weapon skill damage +10%',}},
 	}
-	sets.precast.WS["Flaming Arrow"] = sets.precast.WS.Wildfire
-	sets.precast.WS["Hot Shot"] = sets.precast.WS.Wildfire
-
-	sets.precast.WS["Heavy Shot"] = sets.precast.WS["Jishnu's Radiance"]
-	sets.precast.WS["Sniper Shot"] = sets.precast.WS["Jishnu's Radiance"]
-
-	sets.precast.WS["Blast Shot"] = {
-		head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
-		body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
-		hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
-		legs="Meg. Chausses +2",
-		feet={ name="Herculean Boots", augments={'Attack+5','"Triple Atk."+4','AGI+4','Accuracy+1',}},
-		neck="Fotia Gorget",
-		waist="Svelt. Gouriz +1",
-		left_ear="Sherida Earring",
-		right_ear="Brutal Earring",
-		left_ring="Regal Ring",
-		right_ring="Ilabrat Ring",
-		back={ name="Belenus's Cape", augments={'AGI+20','Rng.Acc.+20 Rng.Atk.+20','Weapon skill damage +10%',}},
-	}
-	sets.precast.WS["Numbing Shot"] = set_combine(sets.precast.WS["Blast Shot"], {
-		
-	})
-	sets.precast.WS["Slug Shot"] = set_combine(sets.precast.WS["Blast Shot"], {
-
-	})
 
 	sets.precast.WS["Savage Blade"] = {	    main="Naegling",	
-    	head="Nyame Helm",
-     	body="Nyame Mail",
+		head="Meghanada Visor +2",
+		body="Meg. Cuirie +2",
 		hands="Meg. Gloves +2",
 		legs={ name="Arc. Braccae +3", augments={'Enhances "Eagle Eye Shot" effect',}},
-		feet={ name="Nyame Sollerets", augments={'Path: B',}},
+		feet={ name="Herculean Boots", augments={'Accuracy+6','Weapon skill damage +3%','AGI+10',}},
 		neck="Fotia Gorget",
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
@@ -241,9 +204,9 @@ function init_gear_sets()
 	sets.precast.WS['Aeolian Edge'] = {
 		head="Nyame Helm",
 		body="Nyame Mail",
-		hands="Nyame Gauntlets",
+		hands="Meg. Gloves +2",
 		legs={ name="Arc. Braccae +3", augments={'Enhances "Eagle Eye Shot" effect',}},
-		feet={ name="Nyame Sollerets", augments={'Path: B',}},
+		feet={ name="Herculean Boots", augments={'Accuracy+6','Weapon skill damage +3%','AGI+10',}},
 		neck="Baetyl Pendant",
 		waist="Orpheus's Sash",
 		left_ear="Ishvara Earring",
@@ -287,7 +250,8 @@ function init_gear_sets()
 
 	-- Ranged sets
 
-	sets.midcast.RA = {		
+	sets.midcast.RA = {			ammo=empty,
+    range="Trollbane", 
 
 		head="Malignance Chapeau",
 		body="Nisroch Jerkin",
@@ -303,7 +267,8 @@ function init_gear_sets()
 		back={ name="Belenus's Cape", augments={'AGI+20','Rng.Acc.+20 Rng.Atk.+20','Weapon skill damage +10%',}},
 	}
 	
-	sets.midcast.RA.Acc = set_combine(sets.midcast.RA, {	
+	sets.midcast.RA.Acc = set_combine(sets.midcast.RA, {	ammo=empty,
+    range="Trollbane", 
 
 		head="Meghanada Visor +2",
 		body="Nisroch Jerkin",
@@ -321,8 +286,8 @@ function init_gear_sets()
 	})
 
 	sets.midcast.RA.MAXACC = {
-		
-		head="Malignance Chapeau",
+		ammo=empty,
+		range="Trollbane", 		head="Malignance Chapeau",
 		body="Malignance Tabard",
 		hands="Malignance Gloves",
 		legs="Malignance Tights",
@@ -364,7 +329,8 @@ function init_gear_sets()
         back="Moonlight Cape",	}
 
 	-- Idle sets
-	sets.idle = {
+	sets.idle = {ammo=empty,
+    range="Trollbane", 
 		head="Malignance Chapeau",
 		body="Malignance Tabard",
 		hands="Malignance Gloves",
@@ -420,10 +386,8 @@ function init_gear_sets()
 	-- Engaged sets
 	--------------------------------------
 
-	sets.engaged = {
+	sets.engaged = {range={ name="Anarchy +2", augments={'Delay:+60','TP Bonus +1000',}},
 
-		range="Fomalhaut",
-		ammo="Chrono Bullet",
 		head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
 		body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
 		hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
@@ -500,14 +464,9 @@ function init_gear_sets()
 	--------------------------------------
 	-- Custom buff sets
 	--------------------------------------
-	sets.buff['Velocity Shot'] = set_combine(sets.midcast.RA, {body="Amini Caban +1",})
+
 	sets.buff.Barrage = set_combine(sets.midcast.RA.Acc, {})
 	sets.buff.Camouflage = {}
-	sets.Doom = {    neck="Nicander's Necklace",
-    waist="Gishdubar Sash",
-    left_ring="Purity Ring",
-    right_ring="Blenmot's Ring +1",}
-
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -560,18 +519,6 @@ function job_buff_change(buff, gain)
 			enable('body')
 		end
 	end
-	if buff == "doom" then
-        if gain then
-            equip(sets.Doom)
-            send_command('@input /p Doomed, please Cursna.')
-            send_command('@input /item "Holy Water" <me>')	
-             disable('ring1','ring2','waist','neck')
-        else
-            enable('ring1','ring2','waist','neck')
-            send_command('input /p Doom removed.')
-            handle_equipping_gear(player.status)
-        end
-    end
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -589,52 +536,49 @@ end
 
 -- Check for proper ammo when shooting or weaponskilling
 function check_ammo(spell, action, spellMap, eventArgs)
-    if spell.action_type == 'Ranged Attack' then
-        if player.equipment.ammo == 'empty' or player.equipment.ammo ~= DefaultAmmo[player.equipment.range] then
-            if DefaultAmmo[player.equipment.range] then
-                if player.inventory[DefaultAmmo[player.equipment.range]] then
-                    --add_to_chat(3,"Using Default Ammo")
-                    equip({ammo=DefaultAmmo[player.equipment.range]})
-                else
-                    add_to_chat(3,"Default ammo unavailable.  Leaving empty.")
-                end
-            else
-                add_to_chat(3,"Unable to determine default ammo for current weapon.  Leaving empty.")
-            end
-        end
-    elseif spell.type == 'WeaponSkill' then
-        -- magical weaponskills
-        if elemental_ws:contains(spell.english) then
-            if player.inventory[MagicAmmo[player.equipment.range]] then
-                equip({ammo=MagicAmmo[player.equipment.range]})
-            else
-                add_to_chat(3,"Magic ammo unavailable.  Using default ammo.")
-                equip({ammo=DefaultAmmo[player.equipment.range]})
-            end
-        --physical weaponskills
-        else
-            if state.RangedMode.value == 'Acc' then
-                if player.inventory[AccAmmo[player.equipment.range]] then
-                    equip({ammo=AccAmmo[player.equipment.range]})
-                else
-                    add_to_chat(3,"Acc ammo unavailable.  Using default ammo.")
-                    equip({ammo=DefaultAmmo[player.equipment.range]})
-                end
-            else
-                if player.inventory[WSAmmo[player.equipment.range]] then
-                    equip({ammo=WSAmmo[player.equipment.range]})
-                else
-                    add_to_chat(3,"WS ammo unavailable.  Using default ammo.")
-                    equip({ammo=DefaultAmmo[player.equipment.range]})
-                end
-            end
-        end
-    end
-    if player.equipment.ammo ~= 'empty' and player.inventory[player.equipment.ammo].count < 15 then
-        add_to_chat(39,"*** Ammo '"..player.inventory[player.equipment.ammo].shortname.."' running low! *** ("..player.inventory[player.equipment.ammo].count..")")
-    end
+	-- Filter ammo checks depending on Unlimited Shot
+	if state.Buff['Unlimited Shot'] then
+		if player.equipment.ammo ~= U_Shot_Ammo[player.equipment.range] then
+			if player.inventory[U_Shot_Ammo[player.equipment.range]] or player.wardrobe[U_Shot_Ammo[player.equipment.range]] then
+				add_to_chat(122,"Unlimited Shot active. Using custom ammo.")
+				equip({ammo=U_Shot_Ammo[player.equipment.range]})
+			elseif player.inventory[DefaultAmmo[player.equipment.range]] or player.wardrobe[DefaultAmmo[player.equipment.range]] then
+				add_to_chat(122,"Unlimited Shot active but no custom ammo available. Using default ammo.")
+				equip({ammo=DefaultAmmo[player.equipment.range]})
+			else
+				add_to_chat(122,"Unlimited Shot active but unable to find any custom or default ammo.")
+			end
+		end
+	else
+		if player.equipment.ammo == U_Shot_Ammo[player.equipment.range] and player.equipment.ammo ~= DefaultAmmo[player.equipment.range] then
+			if DefaultAmmo[player.equipment.range] then
+				if player.inventory[DefaultAmmo[player.equipment.range]] then
+					add_to_chat(122,"Unlimited Shot not active. Using Default Ammo")
+					equip({ammo=DefaultAmmo[player.equipment.range]})
+				else
+					add_to_chat(122,"Default ammo unavailable.  Removing Unlimited Shot ammo.")
+					equip({ammo=empty})
+				end
+			else
+				add_to_chat(122,"Unable to determine default ammo for current weapon.  Removing Unlimited Shot ammo.")
+				equip({ammo=empty})
+			end
+		elseif player.equipment.ammo == 'empty' then
+			if DefaultAmmo[player.equipment.range] then
+				if player.inventory[DefaultAmmo[player.equipment.range]] then
+					add_to_chat(122,"Using Default Ammo")
+					equip({ammo=DefaultAmmo[player.equipment.range]})
+				else
+					add_to_chat(122,"Default ammo unavailable.  Leaving empty.")
+				end
+			else
+				add_to_chat(122,"Unable to determine default ammo for current weapon.  Leaving empty.")
+			end
+		elseif player.inventory[player.equipment.ammo].count < 15 then
+			add_to_chat(122,"Ammo '"..player.inventory[player.equipment.ammo].shortname.."' running low ("..player.inventory[player.equipment.ammo].count..")")
+		end
+	end
 end
-
 function special_ammo_check()
     -- Stop if Animikii/Hauksbok equipped
     if no_shoot_ammo:contains(player.equipment.ammo) then

@@ -46,7 +46,7 @@ function user_setup()
     state.WeaponskillMode:options('Normal', 'Acc', 'Att', 'Mod')
     state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'PDT', 'Refresh')
-    
+
     no_shoot_ammo = S{"Animikii Bullet", "Hauksbok Bullet"}
     gear.RAbullet = "Decimating Bullet"
     gear.WSbullet = "Chrono Bullet"
@@ -127,8 +127,8 @@ function init_gear_sets()
 
 
     sets.precast.RA = {    
-        range={ name="Fomalhaut", augments={'Path: A',}},
-        ammo="Decimating Bullet",
+        ammo=empty,
+        range="Trollbane", 
         hands={ name="Carmine Fin. Ga. +1", augments={'Rng.Atk.+20','"Mag.Atk.Bns."+12','"Store TP"+6',}},
         head="Chass. Tricorne +1",
         body="Laksa. Frac +3",
@@ -347,9 +347,7 @@ function init_gear_sets()
         back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
 }
 
-    sets.midcast.RA.Acc = {main="Naegling",
-    sub="Tauret",
-    range="Molybdosis",
+    sets.midcast.RA.Acc = {
     ammo="Orichalc. Bullet",
     head="Malignance Chapeau",
     body="Laksa. Frac +3",
@@ -380,7 +378,8 @@ function init_gear_sets()
     
 
     -- Idle sets
-    sets.idle = {
+    sets.idle = { ammo=empty,
+    range="Trollbane", 
         head="Malignance Chapeau",
         body="Malignance Tabard",
         hands="Malignance Gloves",
@@ -441,7 +440,7 @@ sets.Kiting = {
     -- Normal melee group
     sets.engaged.Melee = {main="Naegling",
     sub="Demers. Degen +1",
-    range={ name="Anarchy +2", augments={'Delay:+60','TP Bonus +1000',}},
+    range="Anarchy +2",
     head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
@@ -455,9 +454,8 @@ sets.Kiting = {
     right_ring="Petrov Ring",
     back="Atheling Mantle",
     }
-    sets.engaged.Acc = {    main="Tauret",
-    sub="Gleti's Knife",
-    range={ name="Anarchy +2", augments={'Delay:+60','TP Bonus +1000',}},
+    sets.engaged.Acc = {   
+    range="Anarchy +2",
     head="Malignance Chapeau",
     body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     hands="Malignance Gloves",
@@ -507,7 +505,9 @@ sets.Kiting = {
     right_ring="Hetairoi Ring",
     back="Atheling Mantle",
     }
-    sets.engaged.Melee.DW = {
+    sets.engaged.Melee.DW = {main="Naegling",
+    sub="Demers. Degen +1",
+    range="Anarchy +2",
     
         head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
@@ -523,9 +523,10 @@ sets.Kiting = {
         back="Atheling Mantle",
 }
     
-    sets.engaged.Acc.DW = {
+    sets.engaged.Acc.DW = {main="Naegling",
+    sub="Demers. Degen +1",
+    range="Anarchy +2",
     
-    ammo="Orichalc. Bullet",
     head="Malignance Chapeau",
     body="Mummu Jacket +2",
     hands="Malignance Gloves",
@@ -555,11 +556,6 @@ sets.Kiting = {
     right_ring="Petrov Ring",
     back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},
 }
-sets.Doom = {    neck="Nicander's Necklace",
-waist="Gishdubar Sash",
-left_ring="Purity Ring",
-right_ring="Blenmot's Ring +1",}
-
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -569,10 +565,7 @@ end
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 function job_precast(spell, action, spellMap, eventArgs)
-    -- Check that proper ammo is available if we're using ranged attacks or similar.
-    if spell.action_type == 'Ranged Attack' or spell.type == 'WeaponSkill' or spell.type == 'CorsairShot' then
-        do_bullet_checks(spell, spellMap, eventArgs)
-    end
+
 
     -- gear sets
     if (spell.type == 'CorsairRoll' or spell.english == "Double-Up") and state.LuzafRing.value then
@@ -586,20 +579,7 @@ function job_precast(spell, action, spellMap, eventArgs)
         end
     end
 end
-function job_buff_change(buff,gain)
-    if buff == "doom" then
-        if gain then
-            equip(sets.Doom)
-            send_command('@input /p Doomed, please Cursna.')
-            send_command('@input /item "Holy Water" <me>')	
-             disable('ring1','ring2','waist','neck')
-        else
-            enable('ring1','ring2','waist','neck')
-            send_command('input /p Doom removed.')
-            handle_equipping_gear(player.status)
-        end
-    end
-end
+
 
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 function job_aftercast(spell, action, spellMap, eventArgs)
@@ -743,19 +723,7 @@ function do_bullet_checks(spell, spellMap, eventArgs)
     local available_bullets = player.inventory[bullet_name] or player.wardrobe[bullet_name]
     
     -- If no ammo is available, give appropriate warning and end.
-    if not available_bullets then
-        if spell.type == 'CorsairShot' and player.equipment.ammo ~= 'empty' then
-            add_to_chat(104, 'No Quick Draw ammo left.  Using what\'s currently equipped ('..player.equipment.ammo..').')
-            return
-        elseif spell.type == 'WeaponSkill' and player.equipment.ammo == gear.RAbullet then
-            add_to_chat(104, 'No weaponskill ammo left.  Using what\'s currently equipped (standard ranged bullets: '..player.equipment.ammo..').')
-            return
-        else
-            add_to_chat(104, 'No ammo ('..tostring(bullet_name)..') available for that action.')
-            eventArgs.cancel = true
-            return
-        end
-    end
+
     
     -- Don't allow shooting or weaponskilling with ammo reserved for quick draw.
     if spell.type ~= 'CorsairShot' and bullet_name == gear.QDbullet and available_bullets.count <= bullet_min_count then

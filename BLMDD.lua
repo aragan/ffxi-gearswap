@@ -44,7 +44,7 @@ end
 -- If you're new to gearswap, the F9~12 keys and CTRL keys in combination is how you activate this stuff.
 
 function job_setup()
-    state.OffenseMode:options('None', 'Locked')
+    state.OffenseMode:options('None', 'Locked', 'TH')
     state.CastingMode:options('Normal', 'OccultAcumen', 'FreeNuke', 'Proc')
     state.IdleMode:options('Normal', 'PDT')
 	state.VorsealMode = M('Normal', 'Vorseal')
@@ -54,6 +54,7 @@ function job_setup()
     state.Moving  = M(false, "moving")
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
+   
 
     element_table = L{'Earth','Wind','Ice','Fire','Water','Lightning'}
 
@@ -175,8 +176,7 @@ function init_gear_sets()
     -- Midcast set for Death, Might as well only have one set, unless you plan on free-nuking death for some unexplainable reason.
 
     sets.midcast['Death'] = {
-		main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		sub="Alber Strap",
+
 		ammo="Pemphredo Tathlum",
 		head="Pixie Hairpin +1",
 		body={ name="Merlinic Jubbah", augments={'"Mag.Atk.Bns."+8','Magic burst dmg.+8%','CHR+10','Mag. Acc.+4',}},
@@ -194,22 +194,91 @@ function init_gear_sets()
  
     -- Sets for WS, Feel free to add one for Vidohunir if you have Laevateinn
 
-    sets.precast.WS['Myrkr'] = {
-		main="Grioavolr",
-		sub="Niobid Strap",
-		ammo="Pemphredo Tathlum",
-		head="Pixie Hairpin +1",
-		body={ name="Witching Robe", augments={'MP+50','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Refresh"+1',}},
-		hands="Amalric Gages",
-		legs={ name="Amalric Slops", augments={'MP+60','Mag. Acc.+15','"Mag.Atk.Bns."+15',}},
-		feet="Psycloth Boots",
-		neck="Sanctity Necklace",
-		waist="Yamabuki-no-Obi",
-		left_ear="Evans Earring",
-		right_ear="Moonshade Earring",
-		left_ring="Mephitas's Ring +1",
-		right_ring="Sangoma Ring",
-		back={ name="Taranus's Cape", augments={'MP+60','Mag. Acc+20 /Mag. Dmg.+20','MP+20','"Fast Cast"+10',}},}
+    sets.precast.WS = {
+        ammo="Pemphredo Tathlum",
+        head="Pixie Hairpin +1",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Baetyl Pendant",
+        waist="Orpheus's Sash",
+        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+        right_ear="Friomisi Earring",
+        left_ring="Epaminondas's Ring",
+        right_ring="Archon Ring",
+        back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},}
+        sets.precast.WS['Myrkr'] = {
+            ammo="Pemphredo Tathlum",
+            head="Pixie Hairpin +1",
+            body="Nyame Mail",
+            hands="Nyame Gauntlets",
+            legs="Nyame Flanchard",
+            feet="Nyame Sollerets",
+            neck="Baetyl Pendant",
+            waist="Orpheus's Sash",
+            left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+            right_ear="Friomisi Earring",
+            left_ring="Epaminondas's Ring",
+            right_ring="Archon Ring",
+            back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},}
+        sets.precast.WS['Spinning Scythe'] = {
+            ammo="Amar Cluster",
+            head="Jhakri Coronal +2",
+            body="Jhakri Robe +2",
+            hands="Jhakri Cuffs +2",
+            legs="Jhakri Slops +2",
+            feet="Jhakri Pigaches +2",
+            neck="Fotia Gorget",
+            waist="Fotia Belt",
+            left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+            right_ear="Ishvara Earring",
+            left_ring="Rufescent Ring",
+            right_ring="Epaminondas's Ring",
+            back={ name="Aurist's Cape +1", augments={'Path: A',}},}
+        sets.precast.WS['Cataclysm'] = {
+            ammo="Pemphredo Tathlum",
+            head="Pixie Hairpin +1",
+            body="Nyame Mail",
+            hands="Nyame Gauntlets",
+            legs="Nyame Flanchard",
+            feet="Nyame Sollerets",
+            neck="Baetyl Pendant",
+            waist="Orpheus's Sash",
+            left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+            right_ear="Friomisi Earring",
+            left_ring="Epaminondas's Ring",
+            right_ring="Archon Ring",
+            back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},}
+        sets.precast.WS['Infernal Scythe'] = {
+            ammo="Pemphredo Tathlum",
+            head="Pixie Hairpin +1",
+            body="Nyame Mail",
+            hands="Nyame Gauntlets",
+            legs="Nyame Flanchard",
+            feet="Nyame Sollerets",
+            neck="Baetyl Pendant",
+            waist="Orpheus's Sash",
+            left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+            right_ear="Friomisi Earring",
+            left_ring="Epaminondas's Ring",
+            right_ring="Archon Ring",
+            back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},}
+
+        sets.precast.WS['Myrkr'] = {
+            ammo="Pemphredo Tathlum",
+            head="Pixie Hairpin +1",
+            body="Nyame Mail",
+            hands="Nyame Gauntlets",
+            legs="Nyame Flanchard",
+            feet="Nyame Sollerets",
+            neck="Baetyl Pendant",
+            waist="Orpheus's Sash",
+            left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+            right_ear="Friomisi Earring",
+            left_ring="Epaminondas's Ring",
+            right_ring="Archon Ring",
+            back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},}
  
     ---- Midcast Sets ----
     sets.midcast.FastRecast = {}
@@ -217,8 +286,7 @@ function init_gear_sets()
     sets.midcast['Healing Magic'] = {}
 
     sets.midcast['Enhancing Magic'] = {
-		main="Gada",
-		sub="Ammurapi Shield",
+
 		ammo="Pemphredo Tathlum",
 		head="Telchine Cap",
 		body="Telchine Chas.",
@@ -234,8 +302,7 @@ function init_gear_sets()
 		back="Solemnity Cape",}
 	
 	sets.midcast.Mana_Wall_No_Swap = {
-		main="Malignance Pole",
-		sub="Alber Strap",
+
 		ammo="Amar Cluster",
 		head="Nyame Helm",
 		body="Nyame Mail",
@@ -267,8 +334,7 @@ function init_gear_sets()
 })
  
     sets.midcast['Enfeebling Magic'] = {
-        main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-        sub="Enki Strap",
+
         ammo="Pemphredo Tathlum",
         head="Jhakri Coronal +2",
         body="Shango Robe",
@@ -285,8 +351,7 @@ function init_gear_sets()
     }   
 
     sets.midcast['Enfeebling Magic'].Effect = set_combine(sets.midcast['Enfeebling Magic'],{
-        main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-        sub="Enki Strap",
+
         ammo="Pemphredo Tathlum",
         head="Jhakri Coronal +2",
         body="Shango Robe",
@@ -303,8 +368,7 @@ function init_gear_sets()
     })
 
 	sets.midcast['Enfeebling Magic'] = set_combine(sets.midcast['Enfeebling Magic'],{
-        main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-        sub="Enki Strap",
+
         ammo="Pemphredo Tathlum",
         head="Jhakri Coronal +2",
         body="Shango Robe",
@@ -323,8 +387,7 @@ function init_gear_sets()
 	sets.midcast.ElementalEnfeeble = sets.midcast['Enfeebling Magic']
  
     sets.midcast['Dark Magic'] = {
-		main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		sub="Alber Strap",
+
 		ammo="Pemphredo Tathlum",
 		head="Pixie Hairpin +1",
         body="Shango Robe",
@@ -343,8 +406,7 @@ function init_gear_sets()
     -- Elemental Magic sets
      
     sets.midcast['Elemental Magic'] = {
-        main="Bunzi's Rod",
-        sub="Ammurapi Shield",  
+
         ammo="Pemphredo Tathlum",
         head="Agwu's Cap",
         body="Agwu's Robe",
@@ -362,8 +424,7 @@ function init_gear_sets()
 
 
     sets.midcast['Elemental Magic'].FreeNuke = set_combine(sets.midcast['Elemental Magic'], {
-		main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-    sub="Alber Strap",
+
     ammo="Pemphredo Tathlum",
     head="Jhakri Coronal +2",
     body="Jhakri Robe +2",
@@ -380,8 +441,7 @@ function init_gear_sets()
     })
 		
     sets.midcast['Elemental Magic'].OccultAcumen = set_combine(sets.midcast['Elemental Magic'].HighTierNuke, {
-        main="Bunzi's Rod",
-        sub="Ammurapi Shield",  
+
         ammo="Pemphredo Tathlum",
         head="Agwu's Cap",
         body="Agwu's Robe",
@@ -398,8 +458,7 @@ function init_gear_sets()
     })
 		
     sets.midcast['Elemental Magic'].HighTierNuke = set_combine(sets.midcast['Elemental Magic'], {
-        main="Bunzi's Rod",
-        sub="Ammurapi Shield",  
+
         ammo="Pemphredo Tathlum",
         head="Agwu's Cap",
         body="Agwu's Robe",
@@ -416,8 +475,7 @@ function init_gear_sets()
     })
 	
     sets.midcast['Elemental Magic'].HighTierNuke.FreeNuke = set_combine(sets.midcast['Elemental Magic'].HighTierNuke, {
-		main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-    sub="Alber Strap",
+
     ammo="Pemphredo Tathlum",
     head="Jhakri Coronal +2",
     body="Jhakri Robe +2",
@@ -434,8 +492,6 @@ function init_gear_sets()
     })
 		
     sets.midcast['Elemental Magic'].HighTierNuke.OccultAcumen = set_combine(sets.midcast['Elemental Magic'].HighTierNuke, {
-        main="Bunzi's Rod",
-        sub="Ammurapi Shield",  
         ammo="Pemphredo Tathlum",
         head="Agwu's Cap",
         body="Agwu's Robe",
@@ -452,8 +508,7 @@ function init_gear_sets()
     })
 
     sets.midcast['Elemental Magic'].Proc = set_combine(sets.midcast['Elemental Magic'], {
-        main=empty,
-        ammo=empty,
+
         head=empty,
         body=empty,
         hands=empty,
@@ -469,8 +524,7 @@ function init_gear_sets()
     })
 
     sets.midcast['Elemental Magic'].HighTierNuke.Proc = set_combine(sets.midcast['Elemental Magic'], {
-        main=empty,
-        ammo=empty,
+
         head=empty,
         body=empty,
         hands=empty,
@@ -499,8 +553,7 @@ function init_gear_sets()
 		back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','INT+10','"Mag.Atk.Bns."+10',}},}
 	
 	sets.midcast['Comet'] = set_combine(sets.midcast['Elemental Magic'], {
-		main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-		sub="Alber Strap",
+
 		ammo="Pemphredo Tathlum",
 		head="Pixie Hairpin +1",
 		body={ name="Merlinic Jubbah", augments={'"Mag.Atk.Bns."+8','Magic burst dmg.+8%','CHR+10','Mag. Acc.+4',}},
@@ -517,8 +570,7 @@ function init_gear_sets()
     })
  
 	sets.midcast['Comet'].FreeNuke = set_combine(sets.midcast['Elemental Magic'], {
-		main={ name="Lathi", augments={'INT+15','"Mag.Atk.Bns."+15','Mag. Acc.+15',}},
-    sub="Alber Strap",
+
     ammo="Pemphredo Tathlum",
     head="Jhakri Coronal +2",
     body="Jhakri Robe +2",
@@ -534,8 +586,7 @@ function init_gear_sets()
     back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','"Mag.Atk.Bns."+10',}},
     })
 	
-	sets.midcast.Klimaform = {main="Grioavolr",
-		sub="Niobid Strap",
+	sets.midcast.Klimaform = {
 		ammo="Pemphredo Tathlum",
 		head={ name="Merlinic Hood", augments={'Mag. Acc.+24 "Mag.Atk.Bns."+24','Magic burst dmg.+8%','Mag. Acc.+2','"Mag.Atk.Bns."+13',}},
 		body="Vanya Robe",
@@ -551,8 +602,7 @@ function init_gear_sets()
 		back={ name="Taranus's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','INT+10','"Mag.Atk.Bns."+10',}}}
 	
 	sets.midcast.Flash = {
-		main="Ungeri Staff",
-		sub="Alber Strap",
+
 		ammo="Sapience Orb",
 		head={ name="Kaabnax Hat", augments={'Phys. dmg. taken -2%','Magic dmg. taken -2%','Phys. dmg. taken -2%',}},
 		body="Mallquis Saio +1",
@@ -605,8 +655,6 @@ function init_gear_sets()
 	-- remember to alter the refresh sets (Ctrl+F to find them)
 
     sets.idle = {
-        main="Contemplator +1",
-        sub="Alber Strap",
         head="Befouled Crown",
         body="Jhakri Robe +2",
         legs="Assid. Pants +1",
@@ -616,8 +664,7 @@ function init_gear_sets()
  
     -- Idle mode that keeps PDT gear on, but doesn't prevent normal gear swaps for precast/etc.
     sets.idle.PDT = {
-		main="Malignance Pole",
-    sub="Alber Strap",
+
     ammo="Amar Cluster",
     head="Nyame Helm",
     body="Nyame Mail",
@@ -633,7 +680,7 @@ function init_gear_sets()
     back="Moonlight Cape",
 	}
      
-    sets.Adoulin = {body="Councilor's Garb",}
+    sets.Adoulin = {}
 
     sets.MoveSpeed = {feet="Herald's Gaiters"}
     
@@ -647,8 +694,7 @@ function init_gear_sets()
 	--- the player.mp arguments will likely stop working properly
 	
     sets.defense.PDT = {
-        main="Malignance Pole",
-        sub="Alber Strap",
+
         ammo="Amar Cluster",
         head="Nyame Helm",
         body="Nyame Mail",
@@ -665,8 +711,7 @@ function init_gear_sets()
     }
  
     sets.defense.MDT = {
-		main="Malignance Pole",
-    sub="Alber Strap",
+
     ammo="Amar Cluster",
     head="Nyame Helm",
     body="Nyame Mail",
@@ -687,7 +732,6 @@ function init_gear_sets()
 	sets.latent_refresh = {waist="Fucho-no-Obi"}
 	
 	sets.auto_refresh = {
-        main="Contemplator +1",
         body="Jhakri Robe +2",
         legs="Assid. Pants +1",
         left_ring="Stikini Ring +1",
@@ -697,8 +741,6 @@ function init_gear_sets()
     -- Mana Wall idle set
 
     sets.buff['Mana Wall'] = {
-		main="Malignance Pole",
-		sub="Alber Strap",
 		ammo="Amar Cluster",
 		head="Nyame Helm",
 		body="Nyame Mail",
@@ -1051,13 +1093,8 @@ end
  
 -- Handle notifications of general user state change.
 function job_state_change(stateField, newValue, oldValue)
-    if state.WeaponLock.value == true then
-        disable('main','sub')
-    else
-        enable('main','sub')
-    end
-end
 
+end
  
  
 -------------------------------------------------------------------------------------------------------------------
@@ -1069,34 +1106,8 @@ end
 end]]
  
 function display_current_job_state(eventArgs)
-    local c_msg = state.CastingMode.value
 
-    local d_msg = 'None'
-    if state.DefenseMode.value ~= 'None' then
-        d_msg = state.DefenseMode.value .. state[state.DefenseMode.value .. 'DefenseMode'].value
-    end
-
-    local i_msg = state.IdleMode.value
-
-    local msg = ''
-    if state.MagicBurst.value then
-        msg = ' Burst: On |'
-    end
-    if state.DeathMode.value then
-        msg = msg .. ' Death: On |'
-    end
-    if state.Kiting.value then
-        msg = msg .. ' Kiting: On |'
-    end
-
-    add_to_chat(060, '| Magic: ' ..string.char(31,001)..c_msg.. string.char(31,002)..  ' |'
-        ..string.char(31,004).. ' Defense: ' ..string.char(31,001)..d_msg.. string.char(31,002)..  ' |'
-        ..string.char(31,008).. ' Idle: ' ..string.char(31,001)..i_msg.. string.char(31,002)..  ' |'
-        ..string.char(31,002)..msg)
-
-    eventArgs.handled = true
 end
-
  
 -- Custom spell mapping.
 function job_get_spell_map(spell, default_spell_map)

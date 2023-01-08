@@ -36,8 +36,7 @@ end
 function job_setup()
 
     state.Buff.Migawari = buffactive.migawari or false
-    state.WeaponLock = M(false, 'Weapon Lock')
-    state.MagicBurst = M(false, 'Magic Burst')
+
     state.Buff.Innin = buffactive.innin or false
 
 
@@ -78,7 +77,7 @@ end
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
     -- Options: Override default values
-    state.OffenseMode:options('Normal', 'Mid', 'Acc','CRIT', 'Sword', 'GK', 'Club', 'Staff', 'Dagger', 'Katana')
+    state.OffenseMode:options('Normal', 'Mid', 'Acc','CRIT', 'Sword', 'GK', 'Club', 'Staff', 'Dagger', 'Polearm', 'Katana', 'GS', 'Scythe')
     state.HybridMode:options('Normal', 'PDT', 'Proc')
     state.RangedMode:options('Normal', 'Acc')
     state.WeaponskillMode:options('Normal', 'Mid', 'Acc')
@@ -246,10 +245,7 @@ function init_gear_sets()
         left_ring="Rahab Ring",
         right_ring="Kishar Ring",
     }
-    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {
-        body="Passion Jacket",
-        feet="Hattori Kyahan +1",
-     })
+    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {body="Passion Jacket", })
 
     -- Midcast Sets
     sets.midcast.FastRecast = sets.precast.FC
@@ -288,14 +284,10 @@ function init_gear_sets()
     right_ring="Stikini Ring +1",
 }
     sets.midcast.Utsusemi = set_combine(sets.midcast.Ninjutsu, {    
-        feet="Hattori Kyahan +1",
-        back={ name="Andartia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Attack+10','"Dbl.Atk."+10','Occ. inc. resist. to stat. ailments+10',}},
-
 
     })
     sets.midcast.Migawari = {    neck="Incanter's Torque",
-    left_ring="Stikini Ring +1",
-    right_ring="Stikini Ring +1",
+
         back={ name="Andartia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Attack+10','"Dbl.Atk."+10','Occ. inc. resist. to stat. ailments+10',}},
     }
 
@@ -345,7 +337,7 @@ function init_gear_sets()
         body="Nyame Mail",
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
-        feet="Danzo Sune-Ate",
+        feet="Nyame Sollerets",
         neck={ name="Unmoving Collar +1", augments={'Path: A',}},
         waist="Carrier's Sash",
         left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
@@ -354,7 +346,6 @@ function init_gear_sets()
         right_ring="Paguroidea Ring",
         back="Moonlight Cape",
     }
-    sets.idle.Field = sets.idle
 
     sets.idle.Regen = set_combine(sets.idle, {
         head={ name="Rao Kabuto +1", augments={'Pet: HP+125','Pet: Accuracy+20','Pet: Damage taken -4%',}},
@@ -449,7 +440,8 @@ function init_gear_sets()
 
     -- Normal melee group without buffs
     sets.engaged = {
-
+        main={ name="Heishi Shorinken", augments={'Path: A',}},
+        sub={ name="Ternion Dagger +1", augments={'Path: A',}},
         ammo="Coiste Bodhar",
         head={ name="Ryuo Somen +1", augments={'HP+65','"Store TP"+5','"Subtle Blow"+8',}},
         body={ name="Tatena. Harama. +1", augments={'Path: A',}},
@@ -498,7 +490,7 @@ function init_gear_sets()
             sub=empty,
         })
         sets.engaged.GK = set_combine(sets.engaged, {
-            main="Uchigatana",
+            main="Zanmato +1",
             sub=empty,
         })
         sets.engaged.Club = set_combine(sets.engaged, {
@@ -511,6 +503,18 @@ function init_gear_sets()
         })
         sets.engaged.Katana = set_combine(sets.engaged, {
             main="Debahocho +1",
+            sub=empty,
+        })
+        sets.engaged.Polearm = set_combine(sets.engaged, {
+            main="Sha Wujing's La. +1",
+            sub=empty,
+        })
+        sets.engaged.GS = set_combine(sets.engaged, {
+            main="Lament",
+            sub=empty,
+        })
+        sets.engaged.Scythe = set_combine(sets.engaged, {
+            main="Lost Sickle",
             sub=empty,
         })
         sets.engaged.Dagger = set_combine(sets.engaged, {
@@ -990,11 +994,6 @@ function init_gear_sets()
         right_ear="Hattori Earring",     })
     sets.precast.WS['Blade: Teki'] = sets.precast.WS['Blade: Chi']
     sets.precast.WS['Blade: To'] = sets.precast.WS['Blade: Chi']
-    
-    sets.Doom = {    neck="Nicander's Necklace",
-    waist="Gishdubar Sash",
-    left_ring="Purity Ring",
-    right_ring="Blenmot's Ring +1",}
 
 end
 
@@ -1026,13 +1025,11 @@ function job_precast(spell, action, spellMap, eventArgs)
         -- If sneak is active when using, cancel before completion
         -- send_command('cancel 71')
     end
-    if spellMap == 'Utsusemi' then
-        if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
+    if string.find(spell.english, 'Utsusemi') then
+        if buffactive['Copy Image (3)'] or buffactive['Copy Image (4)'] then
             cancel_spell()
-            eventArgs.handled = true
+            eventArgs.cancel = true
             return
-        elseif buffactive['Copy Image'] or buffactive['Copy Image (2)'] then
-            send_command('cancel 66; cancel 444; cancel Copy Image; cancel Copy Image (2)')
         end
     end
 
@@ -1074,6 +1071,9 @@ end
 function job_midcast(spell, action, spellMap, eventArgs)
     if nukeList:contains(spell.english) and buffactive['Futae'] then
         equip(sets.Burst)
+    end
+    if spell.name == 'Utsusemi: Ichi' and overwrite then
+        send_command('cancel Copy Image|Copy Image (2)')
     end
     -- if spell.english == "Monomi: Ichi" then
     --     if buffactive['Sneak'] then
@@ -1202,18 +1202,6 @@ function job_buff_change(buff, gain)
     if S{'haste', 'march', 'mighty guard', 'embrava', 'haste samba', 'geo-haste', 'indi-haste'}:contains(buff:lower()) then
         determine_haste_group()
         if not midaction() then
-            handle_equipping_gear(player.status)
-        end
-    end
-    if buff == "doom" then
-        if gain then
-            equip(sets.Doom)
-            send_command('@input /p Doomed, please Cursna.')
-            send_command('@input /item "Holy Water" <me>')	
-             disable('ring1','ring2','waist','neck')
-        else
-            enable('ring1','ring2','waist','neck')
-            send_command('input /p Doom removed.')
             handle_equipping_gear(player.status)
         end
     end
@@ -1411,18 +1399,6 @@ function job_state_change(stateField, newValue, oldValue)
         add_to_chat(8, '------------WARPING-----------')
         --equip({ring1="Warp Ring"})
         send_command('input //gs equip sets.Warp;@wait 10.0;input /item "Warp Ring" <me>;')
-    end
-    if stateField == 'Offense Mode' then
-        if newValue == 'Normal' then
-            disable('main','sub','range')
-        else
-            enable('main','sub','range')
-        end
-    end
-    if state.WeaponLock.value == true then
-        disable('main','sub')
-    else
-        enable('main','sub')
     end
 end
 

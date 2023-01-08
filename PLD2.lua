@@ -1,4 +1,4 @@
-require 'organizer-lib'
+
 ---------------------------------------------------------------------------------------------------------------------------------------
 -------------------------------- Initialization function that defines sets and variables to be used -----------------------------------
 ---------------------------------------------------------------------------------------------------------------------------------------
@@ -9,6 +9,10 @@ require 'organizer-lib'
 function get_sets()
     -- Load and initialize the include file.
     include('Mote-IncludePLD.lua')
+    include('organizer-lib')
+    organizer_items = {
+        main="Mercurial Sword",
+    }
 end
 
  
@@ -230,7 +234,7 @@ left_ring="Beithir Ring",
     waist="Fotia Belt",
     left_ear="Thrud Earring",
     right_ear="Telos Earring",
-    left_ring="Moonbeam Ring",
+    left_ring="Moonlight Ring",
     right_ring="Petrov Ring",
     back="Atheling Mantle",
 
@@ -242,9 +246,9 @@ left_ring="Beithir Ring",
 {
     ammo="Pemphredo Tathlum",
     head={ name="Valorous Mask", augments={'Weapon skill damage +4%',}},
-    body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+    body="Nyame Mail",
     hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-    legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+    legs="Nyame Flanchard",
     feet="Sulev. Leggings +2",
     neck="Baetyl Pendant",
     waist="Orpheus's Sash",
@@ -277,9 +281,9 @@ sets.precast.WS['Cataclysm'] =
 {   
     ammo="Pemphredo Tathlum",
     head="Pixie Hairpin +1",
-    body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+    body="Nyame Mail",
     hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-    legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+    legs="Nyame Flanchard",
     feet="Sulev. Leggings +2",
     neck="Baetyl Pendant",
     waist="Orpheus's Sash",
@@ -442,7 +446,7 @@ feet="Sulev. Leggings +2",
     left_ear="Tuisto Earring",
     right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
     left_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
-    right_ring="Moonbeam Ring",
+    right_ring="Moonlight Ring",
     back="Moonlight Cape",
 }
      
@@ -856,21 +860,21 @@ sets.midcast['Frightful Roar'].DT =
     -- Shellra V can provide 75/256.
     sets.defense.MDT =
 {
-    main="Burtgang",
+    main={ name="Nixxer", augments={'DMG:+15','STR+15','Accuracy+10',}},
     sub="Aegis",
-    ammo="Staunch Tathlum +1",
-    head={ name="Founder's Corona", augments={'DEX+10','Accuracy+15','Mag. Acc.+15','Magic dmg. taken -5%',}},
-    body="Sakpata's Plate",
-    hands="Sakpata's Gauntlets",
-    legs="Sakpata's Cuisses",
-    feet="Sakpata's Leggings",
-    neck="Warder's Charm +1",
-    waist="Creed Baudrier",
-    left_ear="Genmei Earring",
-    right_ear="Sanare Earring",
-    left_ring="Shadow Ring",
-    right_ring="Defending Ring",
-    back="Engulfer Cape +1",
+    ammo="Staunch Tathlum",
+    head={ name="Founder's Corona", augments={'DEX+7','Accuracy+11','Magic dmg. taken -3%',}},
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck="Loricate Torque +1",
+    waist="Flume Belt +1",
+    left_ear="Cassie Earring",
+    right_ear="Odnowa Earring",
+    left_ring="Archon Ring",
+    right_ring="Shadow Ring",
+    back={ name="Rudianos's Mantle", augments={'VIT+20','Eva.+10 /Mag. Eva.+10','VIT+7','Enmity+10',}},
 }
 
 	sets.defense.Turtle =
@@ -878,17 +882,17 @@ sets.midcast['Frightful Roar'].DT =
     main="Burtgang",
     sub="Aegis",
     ammo="Staunch Tathlum +1",
-    head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    body="Hjarrandi Breast.",
-    hands={ name="Souv. Handsch. +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    legs={ name="Souv. Diechlings +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    feet={ name="Souveran Schuhs +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-    neck={ name="Unmoving Collar +1", augments={'Path: A',}},
-    waist="Nierenschutz",
+    head="Sakpata's Helm",
+    body="Sakpata's Plate",
+    hands="Sakpata's Gauntlets",
+    legs="Sakpata's Cuisses",
+    feet="Sakpata's Leggings",
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},
+    waist="Asklepian Belt",
     left_ear="Odnowa Earring",
     right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
-    left_ring="Patricius Ring",
-    right_ring="Moonbeam Ring",
+    left_ring="Shadow Ring",
+    right_ring="Moonlight Ring",
     back="Moonlight Cape",
 }
 
@@ -984,18 +988,27 @@ sets.defense.Dagger =
     left_ear="Tuisto Earring",
     right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
     left_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
-    right_ring="Moonbeam Ring",
+    right_ring="Moonlight Ring",
     back="Moonlight Cape",
  
 }
 
 sets.defense.HP = set_combine(sets.defense.HPBOOST, {
-    ammo="Iron Gobbet",
-    head="Sakpata's Helm",
-    body="Sakpata's Plate",
-    hands="Sakpata's Gauntlets",
-    legs="Sakpata's Cuisses",
-    feet="Sakpata's Leggings",
+    main={ name="Nixxer", augments={'DMG:+15','STR+15','Accuracy+10',}},
+    sub="Ochain",
+    ammo="Staunch Tathlum",
+    head="Nyame Helm",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck="Loricate Torque +1",
+    waist="Flume Belt +1",
+    left_ear="Cassie Earring",
+    right_ear="Odnowa Earring",
+    left_ring="Archon Ring",
+    right_ring="Shadow Ring",
+    back={ name="Rudianos's Mantle", augments={'VIT+20','Eva.+10 /Mag. Eva.+10','VIT+7','Enmity+10',}},
 })
 
 sets.defense.DEF = {
@@ -1020,7 +1033,7 @@ sets.defense.Convert = {
     main="Burtgang",
     sub="Ochain",
     ammo="Eluder's Sachet",
-    head="Chev. Armet +1",
+    head="Chev. Armet +2",
     body="Sakpata's Plate",
     hands="Sakpata's Gauntlets",
     legs="Sakpata's Cuisses",
@@ -1035,15 +1048,32 @@ sets.defense.Convert = {
 }
 --Doom/RR",
      
-    sets.defense.PDT.Reraise = set_combine(sets.defense.PDT, sets.Reraise)
-    sets.defense.PD.Reraise = set_combine(sets.defense.PD, sets.Reraise)
-    sets.defense.MDT.Reraise = set_combine(sets.defense.MDT, sets.Reraise)
-    sets.defense.PD.Reraise = set_combine(sets.defense.PD, sets.Reraise)
-     
-    sets.defense.PDT.Doom = set_combine(sets.defense.PDT, sets.Doom)
-    sets.defense.PD.Doom = set_combine(sets.defense.PD, sets.Doom)
-    sets.defense.MDT.Doom = set_combine(sets.defense.PDT, sets.Doom)
-    sets.defense.PD.Doom = set_combine(sets.defense.PD, sets.Doom)
+sets.defense.PDT.Reraise = set_combine(sets.defense.PDT, sets.Reraise)
+sets.defense.PD.Reraise = set_combine(sets.defense.PD, sets.Reraise)
+sets.defense.MDT.Reraise = set_combine(sets.defense.MDT, sets.Reraise)
+sets.defense.Turtle.Reraise = set_combine(sets.defense.Turtle, sets.Reraise)
+sets.defense.Enmity.Reraise = set_combine(sets.defense.Enmity, sets.Reraise)
+sets.defense.HPBOOST.Reraise = set_combine(sets.defense.HPBOOST, sets.Reraise)
+sets.defense.DEF.Reraise = set_combine(sets.defense.DEF, sets.Reraise)
+sets.defense.Convert.Reraise = set_combine(sets.defense.Convert, sets.Reraise)
+sets.defense.Block.Reraise = set_combine(sets.defense.Block, sets.Reraise)
+sets.defense.Dagger.Reraise = set_combine(sets.defense.Dagger, sets.Reraise)
+sets.defense.ResistCharm.Reraise = set_combine(sets.defense.ResistCharm, sets.Reraise)
+sets.defense.PDH.Reraise = set_combine(sets.defense.PDH, sets.Reraise)
+
+
+sets.defense.PDT.Doom = set_combine(sets.defense.PDT, sets.Doom)
+sets.defense.PD.Doom = set_combine(sets.defense.PD, sets.Doom)
+sets.defense.MDT.Doom = set_combine(sets.defense.MDT, sets.Doom)
+sets.defense.Turtle.Doom = set_combine(sets.defense.Turtle, sets.Doom)
+sets.defense.Enmity.Doom = set_combine(sets.defense.Enmity, sets.Doom)
+sets.defense.HPBOOST.Doom = set_combine(sets.defense.HPBOOST, sets.Doom)
+sets.defense.DEF.Doom = set_combine(sets.defense.DEF, sets.Doom)
+sets.defense.Convert.Doom = set_combine(sets.defense.Convert, sets.Doom)
+sets.defense.Block.Doom = set_combine(sets.defense.Block, sets.Doom)
+sets.defense.Dagger.Doom = set_combine(sets.defense.Dagger, sets.Doom)
+sets.defense.ResistCharm.Doom = set_combine(sets.defense.ResistCharm, sets.Doom)
+sets.defense.PDH.Doom = set_combine(sets.defense.PDH, sets.Doom)
      
     sets.Kiting = {
         
@@ -1079,7 +1109,9 @@ right_ear="Telos Earring",
 left_ring="Patricius Ring",
 right_ring="Petrov Ring",
 back="Atheling Mantle",
-}
+}   
+ sets.engaged.Reraise = set_combine(sets.engaged, {		head="Twilight Helm",
+body="Twilight Mail",})
 end
 ------------------------------------------------------------------------------------------------------------------------------------------
 ----------------------------------------Job-specific hooks that are called to process player actions at specific points in time-----------
@@ -1240,6 +1272,15 @@ function job_buff_change(buff, gain)
                 else                        
                         send_command('input /p '..player.name..' is no longer Paralysed Thank you !')
                     end	
+                    if buff == "weakness" then
+                        if gain then
+                            equip(sets.Reraise)
+                             disable('body','head')
+                            else
+                             enable('body','head')
+                        end
+                        return meleeSet
+                    end
 
         end
 	for index,value in pairs(buffWatcher.watchList) do

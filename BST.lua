@@ -45,10 +45,61 @@ function get_sets()
 	include('Mote-Include.lua')
 	include('organizer-lib')
 end
-
+organizer_items = {
+    ammo="Meaty Broth",
+    ammo="Livid Broth",
+    ammo="Turpid Broth",
+    ammo="Aged Humus",
+    ammo="Lyrical Broth",
+    ammo="Tant. Broth",
+    ammo="Furious Broth",
+    item="Rolan. Daifuku",
+    ammo="Dire Broth",
+    ammo="Bug-Ridden Broth",
+    ammo="C. Plasma Broth",
+    ammo="Vermihumus",
+    ammo="Bubbly Broth",
+    ammo="Putrescent Broth",
+    ammo="Pale Sap",
+}
+organizer_items = {
+item="Gyudon",
+item="Reraiser",
+item="Hi-Reraiser",
+item="Vile Elixir",
+item="Vile Elixir +1",
+item="Miso Ramen",
+item="Carbonara",
+item="Silent Oil",
+item="Salt Ramen",
+item="Panacea",
+item="Toolbag (Shika)",
+item="Sublime Sushi",
+item="Sublime Sushi 1+",
+item="Prism Powder",
+item="Antacid",
+item="Icarus Wing",
+sub="Warp Cudgel",
+item="Holy Water",
+item="Sanjaku-Tenugui",
+item="Shinobi-Tabi",
+item="Shihei",
+item="Remedy",
+head="Wh. Rarab Cap +1",
+ring="Emporox's Ring",
+item="Red Curry Bun",
+item="Instant Reraise",
+item="Black Curry Bun",
+item="Rolan. Daifuku",
+sub="Qutrub Knife",
+sub="Wind Knife +1",
+ear="Reraise Earring",
+}
 function job_setup()
 	state.Buff['Killer Instinct'] = buffactive['Killer Instinct'] or false
-	state.Buff.Doomed = buffactive.doomed or false
+	state.Buff.Doom = buffactive.doom or false
+	state.WeaponLock = M(false, 'Weapon Lock')
+    state.MagicBurst = M(false, 'Magic Burst')
 	send_command('wait 2;input /lockstyleset 200')
 	get_combat_form()
 end
@@ -474,9 +525,9 @@ function init_gear_sets()
 	sets.precast.WS = {
 			ammo="Ginsen",
 			head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
-			body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+			body="Nyame Mail",
 			hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-			legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+			legs="Nyame Flanchard",
 			feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
 			neck="Shulmanu Collar",
 			waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -490,9 +541,9 @@ function init_gear_sets()
 	sets.precast.WS.WSMedAcc = {
 		ammo="Ginsen",
 		head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
-		body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+		body="Nyame Mail",
 		hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-		legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+		legs="Nyame Flanchard",
 		feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
 		neck="Shulmanu Collar",
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -506,9 +557,9 @@ function init_gear_sets()
 	sets.precast.WS.WSHighAcc = {
 		ammo="Ginsen",
 		head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
-		body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+		body="Nyame Mail",
 		hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-		legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+		legs="Nyame Flanchard",
 		feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
 		neck="Shulmanu Collar",
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -525,14 +576,14 @@ function init_gear_sets()
              head={ name="Blistering Sallet +1", augments={'Path: A',}},
             body={ name="Emicho Haubert +1", augments={'Pet: Accuracy+20','Pet: Attack+20','Pet: "Dbl. Atk."+4',}},
             hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-         legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+         legs="Nyame Flanchard",
             feet={ name="Lustra. Leggings +1", augments={'Accuracy+20','DEX+8','Crit. hit rate+3%',}},
              neck="Fotia Gorget",
             waist="Fotia Belt",
             left_ear="Brutal Earring",
            right_ear="Sherida Earring",
             left_ring="Epona's Ring",
-            right_ring="Regal Ring",
+            right_ring="Gere Ring",
            back="Atheling Mantle",
 		})
 		
@@ -553,14 +604,14 @@ function init_gear_sets()
 		head={ name="Blistering Sallet +1", augments={'Path: A',}},
 	   body={ name="Emicho Haubert", augments={'Pet: Accuracy+15','Pet: Attack+15','Pet: "Dbl. Atk."+3',}},
 	   hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-	legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+	legs="Nyame Flanchard",
 	   feet={ name="Lustra. Leggings +1", augments={'Accuracy+20','DEX+8','Crit. hit rate+3%',}},
 		neck="Fotia Gorget",
 	   waist="Fotia Belt",
 	   left_ear="Brutal Earring",
 	  right_ear="Sherida Earring",
 	   left_ring="Epona's Ring",
-	   right_ring="Regal Ring",
+	   right_ring="Gere Ring",
 	  back="Atheling Mantle",
 	})
 
@@ -570,9 +621,9 @@ function init_gear_sets()
 	sets.precast.WS['Calamity'] = set_combine(sets.precast.WS, {
 		ammo="Aurgelmir Orb +1",
 		head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
-		body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+		body="Nyame Mail",
 		hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-		legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+		legs="Nyame Flanchard",
 		feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
 		neck="Shulmanu Collar",
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -589,9 +640,9 @@ function init_gear_sets()
 	sets.precast.WS['Primal Rend'] = {
 		ammo="Pemphredo Tathlum",
 		head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
-		body={ name="Valorous Mail", augments={'Accuracy+13 Attack+13','Weapon skill damage +4%','STR+2','Attack+8',}},
+		body="Nyame Mail",
 		hands={ name="Valorous Mitts", augments={'"Store TP"+1','MND+1','Weapon skill damage +8%','Accuracy+8 Attack+8','Mag. Acc.+1 "Mag.Atk.Bns."+1',}},
-		legs={ name="Valorous Hose", augments={'Weapon skill damage +5%','CHR+7','Accuracy+12 Attack+12','Mag. Acc.+15 "Mag.Atk.Bns."+15',}},
+		legs="Nyame Flanchard",
 		feet={ name="Valorous Greaves", augments={'Weapon skill damage +5%','STR+6','Attack+6',}},
 		neck="Baetyl Pendant",
 		waist="Orpheus's Sash",
@@ -776,7 +827,7 @@ function init_gear_sets()
 			ring2="Varar Ring +1 +1",
 			head="Totemic Helm +3",
 			body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',}},
-			legs={ name="Valor. Hose", augments={'Pet: Accuracy+28 Pet: Rng. Acc.+28','Pet: "Regen"+4','System: 1 ID: 1793 Val: 11','Pet: Attack+13 Pet: Rng.Atk.+13',}},
+			legs={ name="Valor. Hose", augments={'Pet: Accuracy+28 Pet: Rng. Acc.+28','Pet: "Regen"+4','Pet: Attack+13 Pet: Rng.Atk.+13',}},
 			feet="Tot. Gaiters +3",
 			hands="Nukumi Manoplas +1",
 			ammo="Demonry Core",
@@ -854,11 +905,19 @@ function init_gear_sets()
 		-- main="Charmer's Merlin",legs="Desultor Tassets",body="Tali'ah Manteel +2",feet="Totemic Gaiters +3",neck="Shulmanu Collar"}
 
         -- RESTING
-        sets.resting = {		body="Meg. Cuirie +2",
-		hands="Meg. Gloves +2",
-		neck={ name="Bathy Choker +1", augments={'Path: A',}},
-		left_ear="Infused Earring",
-		left_ring="Paguroidea Ring",}
+        sets.resting = {	
+			head="Gleti's Mask",
+			body="Meg. Cuirie +2",
+			hands="Meg. Gloves +2",
+			legs="Gleti's Breeches",
+			feet="Gleti's Boots",
+			neck="Empath Necklace",
+			waist="Isa Belt",
+			left_ear="Infused Earring",
+			right_ear="Hypaspist Earring",
+			left_ring="Chirich Ring +1",
+			right_ring="Chirich Ring +1",
+	}
         
         -- IDLE SETS
 	sets.ExtraRegen = {
@@ -1143,7 +1202,7 @@ sets.defense.Petregen = {
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
 		left_ear="Dedition Earring",
 		right_ear="Sherida Earring",
-		left_ring="Hetairoi Ring",
+		left_ring="Gere Ring",
 		right_ring="Epona's Ring",
 		back="Atheling Mantle",
 }
@@ -1178,7 +1237,7 @@ sets.defense.Petregen = {
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
 		left_ear="Suppanomimi",
 		right_ear="Sherida Earring",
-		left_ring="Hetairoi Ring",
+		left_ring="Gere Ring",
 		right_ring="Epona's Ring",
 		back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},
 		}
@@ -1269,10 +1328,11 @@ sets.defense.Petregen = {
 		waist="Reiki Yotai",
 		left_ear="Suppanomimi",
 		right_ear="Sherida Earring",
-		left_ring="Hetairoi Ring",
+		left_ring="Gere Ring",
 		right_ring="Epona's Ring",
 		back="Atheling Mantle",
 			}
+			
 			
 	sets.engaged.DW.Shield = {
 		
@@ -1286,7 +1346,7 @@ sets.defense.Petregen = {
 			waist="Windbuffet Belt +1",
 			left_ear="Brutal Earring",
 			right_ear="Sherida Earring",
-			left_ring="Hetairoi Ring",
+			left_ring="Gere Ring",
 			right_ring="Epona's Ring",
 			back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Accuracy+20 Attack+20','Pet: Attack+10 Pet: Rng.Atk.+10','"Dbl.Atk."+10',}},}
 	
@@ -1303,7 +1363,7 @@ sets.defense.Petregen = {
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
 		left_ear="Suppanomimi",
 		right_ear="Sherida Earring",
-		left_ring="Hetairoi Ring",
+		left_ring="Gere Ring",
 		right_ring="Epona's Ring",
 		back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},
 }
@@ -1373,7 +1433,7 @@ sets.defense.Petregen = {
 		waist="Reiki Yotai",
 		left_ear="Eabani Earring",
 		right_ear="Sherida Earring",
-		left_ring="Hetairoi Ring",
+		left_ring="Gere Ring",
 		right_ring="Epona's Ring",
 		back="Atheling Mantle",
 		})
@@ -1535,20 +1595,29 @@ sets.defense.Petregen = {
 			head="Anwig Salade",
 			hands="Regimen Mittens"})
 
-sets.buff['Killer Instinct'] = {
-main={ name="Arktoi", augments={'Accuracy+50','Pet: Accuracy+50','Pet: Attack+30',}},
-head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
-body="Nukumi Gausape +1",
+    sets.buff['Killer Instinct'] = {
+    main={ name="Arktoi", augments={'Accuracy+50','Pet: Accuracy+50','Pet: Attack+30',}},
+    head={ name="Ankusa Helm +3", augments={'Enhances "Killer Instinct" effect',}},
+    body="Nukumi Gausape +1",
 
-}
+    }         
+	sets.engaged.Reraise = set_combine(sets.engaged, {		head="Twilight Helm",
+    body="Twilight Mail",})
 
-sets.buff.Doomed = {neck="Nicander's Necklace",
+	sets.Reraise = {head="Twilight Helm", body="Twilight Mail"}
+
+	sets.idle.Weak = 
+	{
+		head="Twilight Helm", body="Twilight Mail"
+	}
+	sets.idle.Weak.Reraise = set_combine(sets.idle.Weak, sets.Reraise)
+	sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
-    right_ring="Saida Ring",}
+    right_ring="Blenmot's Ring +1",}
 
-sets.THBelt = {	
-			}
+
+    sets.THBelt = {}
 
 -------------------------------------------------------------------------------------------------------------------
 -- Complete Lvl 76-99 Jug Pet Precast List +Funguar +Courier +Amigo
@@ -1765,7 +1834,29 @@ function job_post_precast(spell, action, spellMap, eventArgs)
 	end
 end
 
-
+function job_buff_change(buff,gain)
+    if buff == "doom" then
+        if gain then
+            equip(sets.buff.Doom)
+            send_command('@input /p Doomed, please Cursna.')
+            send_command('@input /item "Holy Water" <me>')	
+             disable('ring1','ring2','waist','neck')
+        else
+            enable('ring1','ring2','waist','neck')
+            send_command('input /p Doom removed.')
+            handle_equipping_gear(player.status)
+        end
+    end
+	if buff == "weakness" then
+        if gain then
+            equip(sets.Reraise)
+             disable('body','head')
+            else
+             enable('body','head')
+        end
+        return meleeSet
+    end
+end
 
 function job_pet_midcast(spell, action, spellMap, eventArgs)
 -- Equip monster correlation gear, as appropriate
@@ -1844,6 +1935,18 @@ function job_state_change(stateField, newValue, oldValue)
         elseif stateField == 'Jug Mode' then
                 state.JugMode:set(newValue)
         end
+    if stateField == 'Offense Mode' then
+        if newValue == 'Normal' then
+            disable('main','sub','range')
+        else
+            enable('main','sub','range')
+        end
+    end
+    if state.WeaponLock.value == true then
+        disable('main','sub')
+    else
+        enable('main','sub')
+    end
 end
 
 function get_custom_wsmode(spell, spellMap, default_wsmode)
@@ -2072,15 +2175,14 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
-
+add_to_chat(159,'Author Aragan BST.Lua File (from Asura)')
+add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
 function get_combat_form()
 	if player.sub_job == 'NIN' or player.sub_job == 'DNC' then
                 state.CombatForm:set('DW')
 	else
 		state.CombatForm:reset()
         end
-		add_to_chat(159,'Author Aragan BST.Lua File (from Asura)')
-		add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
 	-- Default macro set/book
 	if player.sub_job == 'DNC' then
 		set_macro_page(9, 11)

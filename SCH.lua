@@ -328,30 +328,27 @@ function init_gear_sets()
         })
 
     sets.midcast.StatusRemoval = {
-        main="Musa",
-        sub="Khonsu",
-        head="Vanya Hood",
-        body="Vanya Robe",
-        hands="Peda. Bracers +3",
-        legs="Acad. Pants +3",
-        feet="Vanya Clogs",
-        neck="Incanter's Torque",
-        ear2="Meili Earring",
-        ring1="Haoma's Ring",
-        ring2="Menelaus's Ring",
-        waist="Bishop's Sash",
+        main={ name="Gada", augments={'Indi. eff. dur. +1','VIT+1','"Mag.Atk.Bns."+19',}},
+        ammo="Pemphredo Tathlum",
+        head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
+        hands={ name="Fanatic Gloves", augments={'MP+50','Healing magic skill +8','"Conserve MP"+5','"Fast Cast"+5',}},
+        feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
+        neck="Debilis Medallion",
+        left_ring="Ephedra Ring",
+        right_ring="Haoma's Ring",
         }
 
     sets.midcast.Cursna = set_combine(sets.midcast.StatusRemoval, {
-        main=gear.Gada_ENH,
-        sub="Ammurapi Shield",
-        hands="Hieros Mittens",
-        feet="Vanya Clogs",
-        --feet="Gende. Galosh. +1",
+        main={ name="Gada", augments={'Indi. eff. dur. +1','VIT+1','"Mag.Atk.Bns."+19',}},
+        ammo="Pemphredo Tathlum",
+        body={ name="Vanya Robe", augments={'HP+50','MP+50','"Refresh"+2',}},
+        hands={ name="Fanatic Gloves", augments={'MP+50','Healing magic skill +8','"Conserve MP"+5','"Fast Cast"+5',}},
+        feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
+        legs={ name="Vanya Slops", augments={'Healing magic skill +20','"Cure" spellcasting time -7%','Magic dmg. taken -3',}},
         neck="Debilis Medallion",
-        ear1="Beatific Earring",
-        ring2="Menelaus's Ring",
-        back="Oretan. Cape +1",
+        waist="Gishdubar Sash",
+        left_ring="Haoma's Ring",
+        right_ring="Haoma's Ring",
         })
 
     sets.midcast['Enhancing Magic'] = {
@@ -391,12 +388,14 @@ function init_gear_sets()
         hands=gear.Telchine_ENH_hands,
         legs=gear.Telchine_ENH_legs,
         feet=gear.Telchine_ENH_feet,
+        waist="Embla Sash",
         back="Bookworm's Cape",
         })
 
     sets.midcast.RegenDuration = set_combine(sets.midcast.EnhancingDuration, {
         head=gear.Telchine_ENH_head,
         back=gear.SCH_FC_Cape,
+        waist="Embla Sash",
         })
 
     sets.midcast.Haste = sets.midcast.EnhancingDuration
@@ -421,7 +420,7 @@ function init_gear_sets()
         ear1="Halasz Earring",
         ear2="Magnetic Earring",
         ring1="Freke Ring",
-        waist="Emphatikos Rope",
+        waist="Embla Sash",
         })
 
     sets.midcast.Storm = sets.midcast.EnhancingDuration
@@ -452,7 +451,7 @@ function init_gear_sets()
         waist="Luminary Sash",
         }
 
-    sets.midcast.IntEnfeebles = set_combine(sets.midcast.MndEnfeebles, {
+    sets.midcast.IntEnfeebles = set_combine(sets.midcast.Enfeebles, {
         main="Maxentius",
         sub="Ammurapi Shield",
         head="Acad. Mortar. +3",
@@ -558,13 +557,13 @@ function init_gear_sets()
         waist="Shinjutsu-no-Obi +1",
         })
 
-    sets.midcast.Helix = {
+    sets.midcast.Helix = set_combine(sets.midcast['Elemental Magic'], {
         main="Bunzi's Rod",
         sub="Ammurapi Shield",
         ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
         neck="Mizu. Kubikazari",
         waist="Orpheus's Sash",
-    }
+    })
 
     sets.midcast.DarkHelix = set_combine(sets.midcast.Helix, {
         head="Pixie Hairpin +1",
@@ -590,19 +589,19 @@ function init_gear_sets()
    }
 
     sets.idle.DT = set_combine(sets.idle, {
-        main="Daybreak",
-        sub="Genmei Shield", --10/0
-        ammo="Staunch Tathlum +1", --3/3
-        head="Volte Beret",
-        body="Mallquis Saio +2", --8/8
-        hands="Gende. Gages +1", --4/4
-        feet="Volte Gaiters",
-        neck="Loricate Torque +1", --6/6
-        ear1="Sanare Earring",
-        ring1="Gelatinous Ring +1", --7/(-1)
-        ring2="Defending Ring", --10/10
-        back="Moonlight Cape", --6/6
+        ammo="Staunch Tathlum +1",
+        head="Nyame Helm",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
         waist="Carrier's Sash",
+        left_ear="Tuisto Earring",
+        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        left_ring="Paguroidea Ring",
+        right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+        back="Moonlight Cape",
         })
 
     sets.idle.Vagary = sets.midcast['Elemental Magic']
@@ -612,16 +611,49 @@ function init_gear_sets()
         })
 
     sets.resting = set_combine(sets.idle, {
-        main="Chatoyant Staff",
-        waist="Shinjutsu-no-Obi +1",
+        head="Befouled Crown",
+        body="Jhakri Robe +2",
+        legs="Assid. Pants +1",
+        feet="Herald's Gaiters",
+        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        left_ear="Infused Earring",
+        right_ear="Musical Earring",
+        left_ring="Stikini Ring +1",
+        right_ring="Stikini Ring +1",
         })
 
     ------------------------------------------------------------------------------------------------
     ---------------------------------------- Defense Sets ------------------------------------------
     ------------------------------------------------------------------------------------------------
+    sets.defense.PDT = {
 
-    sets.defense.PDT = sets.idle.DT
-    sets.defense.MDT = sets.idle.DT
+        ammo="Staunch Tathlum +1",
+        head="Nyame Helm",
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+        waist="Carrier's Sash",
+        left_ear="Tuisto Earring",
+        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        left_ring="Paguroidea Ring",
+        right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+        back="Moonlight Cape",
+    }
+    sets.defense.MDT = {    ammo="Staunch Tathlum +1",
+    head="Nyame Helm",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},
+    waist="Carrier's Sash",
+    left_ear="Sanare Earring",
+    right_ear="Etiolation Earring",
+    left_ring="Vengeful Ring",
+    right_ring="Shadow Ring",
+    back="Moonlight Cape",}
     sets.Kiting = {feet="Herald's Gaiters"}
     sets.latent_refresh = {waist="Fucho-no-obi"}
 
@@ -630,19 +662,19 @@ function init_gear_sets()
     ------------------------------------------------------------------------------------------------
 
     sets.engaged = {
-        head="Blistering Sallet +1",
-        body="Jhakri Robe +2",
-        hands="Gazu Bracelet +1",
-        legs="Peda. Pants +3",
-        feet=gear.Telchine_STP_feet,
-        neck="Combatant's Torque",
-        ear1="Cessance Earring",
-        ear2="Telos Earring",
-        ring1="Hetairoi Ring",
-        ring2={name="Chirich Ring +1", bag="wardrobe4"},
-        back="Relucent Cape",
+        ammo="Amar Cluster",
+        head={ name="Blistering Sallet +1", augments={'Path: A',}},
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Lissome Necklace",
         waist="Windbuffet Belt +1",
-        head="Volte Cap", feet="Volte Boots", waist="Chaac Belt" --TH
+        left_ear="Crep. Earring",
+        right_ear="Telos Earring",
+        left_ring="Chirich Ring +1",
+        right_ring="Chirich Ring +1",
+        back={ name="Aurist's Cape +1", augments={'Path: A',}},
         }
 
     ------------------------------------------------------------------------------------------------
