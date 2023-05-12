@@ -13,11 +13,46 @@ function get_sets()
 
 	-- Load and initialize the include file.
 	include('Mote-Include.lua')
+    include('organizer-lib')
 end
-
+organizer_items = {
+    "Thr. Tomahawk",
+    "Gyudon",
+    "Reraiser",
+    "Hi-Reraiser",
+    "Vile Elixir",
+    "Vile Elixir +1",
+    "Miso Ramen",
+    "Carbonara",
+    "Silent Oil",
+    "Salt Ramen",
+    "Panacea",
+    "Sublime Sushi",
+    "Sublime Sushi 1+",
+    "Prism Powder",
+    "Antacid",
+    "Icarus Wing",
+    "Warp Cudgel",
+    "Holy Water",
+    "Sanjaku-Tenugui",
+    "Shinobi-Tabi",
+    "Shihei",
+    "Remedy",
+    "Wh. Rarab Cap +1",
+    "Emporox's Ring",
+    "Red Curry Bun",
+    "Instant Reraise",
+    "Black Curry Bun",
+    "Rolan. Daifuku",
+    "Qutrub Knife",
+    "Wind Knife +1",
+    "Reraise Earring",}
 
 -- Setup vars that are user-independent.
 function job_setup()
+
+    send_command('wait 2;input /lockstyleset 178')
+
     -- Table of entries
     rune_timers = T{}
     -- entry = rune, index, expires
@@ -599,7 +634,12 @@ function prune(rune)
     return cmd_queue
 end
 
-
+function sub_job_change(new,old)
+    if user_setup then
+        user_setup()
+        send_command('wait 2;input /lockstyleset 200')
+    end
+end
 ------------------------------------------------------------------
 -- Reset events
 ------------------------------------------------------------------

@@ -30,6 +30,11 @@ function job_setup()
     define_roll_values()
 end
 include('organizer-lib')
+organizer_items = {
+    "Trump Card Case",
+    waist="Chr. Bul. Pouch",  
+}
+
 -------------------------------------------------------------------------------------------------------------------
 -- User setup functions for this job.  Recommend that these be overridden in a sidecar file.
 -------------------------------------------------------------------------------------------------------------------
@@ -41,7 +46,8 @@ function user_setup()
     state.WeaponskillMode:options('Normal', 'Acc', 'Att', 'Mod')
     state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'PDT', 'Refresh')
-
+    
+    no_shoot_ammo = S{"Animikii Bullet", "Hauksbok Bullet"}
     gear.RAbullet = "Decimating Bullet"
     gear.WSbullet = "Chrono Bullet"
     gear.MAbullet = "Chrono Bullet"
@@ -138,7 +144,7 @@ function init_gear_sets()
     sets.precast.WS = {
         head="Nyame Helm",
         body="Laksa. Frac +3",
-        hands="Meg. Gloves +2",
+        hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
         neck="Sanctity Necklace",
@@ -169,7 +175,7 @@ function init_gear_sets()
         head="Meghanada Visor +2",
     body="Laksa. Frac +3",
     hands="Meg. Gloves +2",
-    legs="Meg. Chausses +2",
+    legs="Nyame Flanchard",
     feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
     neck="Caro Necklace",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -183,7 +189,7 @@ function init_gear_sets()
     sets.precast.WS['Aeolian Edge'] = set_combine(sets.precast.WS, {
         head="Nyame Helm",
         body="Laksa. Frac +3",
-        hands="Meg. Gloves +2",
+        hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
         neck="Baetyl Pendant",
@@ -214,7 +220,7 @@ function init_gear_sets()
     head={ name="Lanun Tricorne +3", augments={'Enhances "Winning Streak" effect',}},
     body="Laksa. Frac +3",
     hands="Meg. Gloves +2",
-    legs="Meg. Chausses +2",
+    legs="Nyame Flanchard",
     feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
     neck="Fotia Gorget",
     waist="Fotia Belt",
@@ -229,7 +235,7 @@ function init_gear_sets()
     head={ name="Lanun Tricorne +3", augments={'Enhances "Winning Streak" effect',}},
     body="Laksa. Frac +3",
     hands="Meg. Gloves +2",
-    legs="Meg. Chausses +2",
+    legs="Nyame Flanchard",
     feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
     neck="Fotia Gorget",
     waist="Fotia Belt",
@@ -244,7 +250,7 @@ function init_gear_sets()
     sets.precast.WS['Wildfire'] = {
         head="Nyame Helm",
         body="Laksa. Frac +3",
-        hands="Meg. Gloves +2",
+        hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
         neck="Baetyl Pendant",
@@ -279,7 +285,7 @@ function init_gear_sets()
     sets.midcast.CorsairShot = {
         head="Nyame Helm",
         body="Laksa. Frac +3",
-        hands="Meg. Gloves +2",
+        hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
         neck="Baetyl Pendant",
@@ -294,7 +300,7 @@ function init_gear_sets()
     sets.midcast.CorsairShot.Acc = {
         head="Nyame Helm",
         body="Laksa. Frac +3",
-        hands="Meg. Gloves +2",
+        hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet={ name="Lanun Bottes +3", augments={'Enhances "Wild Card" effect',}},
         neck="Baetyl Pendant",
@@ -777,7 +783,14 @@ function do_bullet_checks(spell, spellMap, eventArgs)
         state.warned:reset()
     end
 end
-
+function special_ammo_check()
+    -- Stop if Animikii/Hauksbok equipped
+    if no_shoot_ammo:contains(player.equipment.ammo) then
+        cancel_spell()
+        add_to_chat(123, '** Action Canceled: [ '.. player.equipment.ammo .. ' equipped!! ] **')
+        return
+    end
+end
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     set_macro_page(4, 2)

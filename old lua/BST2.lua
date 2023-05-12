@@ -37,7 +37,23 @@ function get_sets()
 	include('Mote-Include.lua')
 	include('organizer-lib')
 end
-
+organizer_items = {
+    ammo="Meaty Broth",
+    ammo="Livid Broth",
+    ammo="Turpid Broth",
+    ammo="Aged Humus",
+    ammo="Lyrical Broth",
+    ammo="Tant. Broth",
+    ammo="Furious Broth",
+    item="Rolan. Daifuku",
+    ammo="Dire Broth",
+    ammo="Bug-Ridden Broth",
+    ammo="C. Plasma Broth",
+    ammo="Vermihumus",
+    ammo="Bubbly Broth",
+    ammo="Putrescent Broth",
+    ammo="Pale Sap",
+}
 function job_setup()
 	state.Buff['Killer Instinct'] = buffactive['Killer Instinct'] or false
 	state.Buff.Doomed = buffactive.doomed or false
@@ -848,7 +864,7 @@ sets.precast.WS['Aeolian Edge'].WSMedAcc = set_combine(sets.precast.WS['Aeolian 
 			ring2="Varar Ring +1 +1",
 			head="Totemic Helm +3",
 			body={ name="Valorous Mail", augments={'Pet: Accuracy+27 Pet: Rng. Acc.+27','Pet: "Store TP"+1','Pet: DEX+14','Pet: Attack+13 Pet: Rng.Atk.+13',}},
-			legs={ name="Valor. Hose", augments={'Pet: Accuracy+28 Pet: Rng. Acc.+28','Pet: "Regen"+4','System: 1 ID: 1793 Val: 11','Pet: Attack+13 Pet: Rng.Atk.+13',}},
+			legs={ name="Valor. Hose", augments={'Pet: Accuracy+28 Pet: Rng. Acc.+28','Pet: "Regen"+4','Pet: Attack+13 Pet: Rng.Atk.+13',}},
 			feet="Tot. Gaiters +3",
 			hands="Nukumi Manoplas +1",
 			ammo="Demonry Core",
@@ -1096,20 +1112,11 @@ sets.precast.WS['Aeolian Edge'].WSMedAcc = set_combine(sets.precast.WS['Aeolian 
     right_ring="Varar Ring +1",
     back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
 	
-	sets.defense.Reraise =  {
-    ammo="Voluspa Tathlum",
-    head={ name="Emicho Coronet +1", augments={'Pet: Accuracy+20','Pet: Attack+20','Pet: "Dbl. Atk."+4',}},
-    body={ name="Emicho Haubert +1", augments={'Pet: Accuracy+20','Pet: Attack+20','Pet: "Dbl. Atk."+4',}},
-    hands="Nukumi Manoplas +1",
-    legs="Despair Cuisses",
-    feet={ name="Taeon Boots", augments={'Pet: Attack+25 Pet: Rng.Atk.+25',}},
-    neck="Shulmanu Collar",
-    waist="Incarnation Sash",
-    left_ear="Enmerkar Earring",
-    right_ear="Domes. Earring",
-    left_ring="Thurandaut Ring",
-    right_ring="Varar Ring +1",
-    back={ name="Artio's Mantle", augments={'Pet: Acc.+20 Pet: R.Acc.+20 Pet: Atk.+20 Pet: R.Atk.+20','Eva.+10 /Mag. Eva.+10','Pet: Attack+10 Pet: Rng.Atk.+10','Pet: "Regen"+10','Pet: Damage taken -5%',}},}
+	sets.defense.Reraise = set_combine(sets.defense.PDT, {
+	
+		ammo="Voluspa Tathlum",
+		head="Twilight Helm",body="Twilight Mail"
+})
 
 	sets.defense.MDT = set_combine(sets.defense.PDT, {
 		ammo="Staunch Tathlum +1",
@@ -1797,7 +1804,7 @@ if spell.type == "Monster" and not spell.interrupted then
  end
  
 	if buffactive['Unleash'] then
-                hands={ name="Valorous Mitts", augments={'Pet: Attack+30 Pet: Rng.Atk.+30','Pet: "Store TP"+10','System: 1 ID: 1792 Val: 13','Pet: Accuracy+3 Pet: Rng. Acc.+3',}}
+                hands={ name="Valorous Mitts", augments={'Pet: Attack+30 Pet: Rng.Atk.+30','Pet: "Store TP"+10','Pet: Accuracy+3 Pet: Rng. Acc.+3',}}
         end
  
 	if macc_ready_moves:contains(spell.english) and pet.status == 'Engaged' then

@@ -25,8 +25,6 @@ function get_sets()
     
     -- Load and initialize the include file.
     include('Mote-Include.lua')
-    include('organizer-lib')
-
 end
 
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
@@ -36,12 +34,14 @@ function job_setup()
     state.WeaponLock = M(false, 'Weapon Lock')
     -- Whether a warning has been given for low ammo
     state.warned = M(false)
-    send_command('wait 2;input /lockstyleset 168')
+    send_command('wait 2;input /lockstyleset 200')
     define_roll_values()
-    send_command('lua l AutoCOR')
-    include('organizer-lib')
 end
-
+include('organizer-lib')
+organizer_items = {
+    "Trump Card Case",
+    waist="Chr. Bul. Pouch",  
+}
 
 -------------------------------------------------------------------------------------------------------------------
 -- User setup functions for this job.  Recommend that these be overridden in a sidecar file.
@@ -89,63 +89,27 @@ function init_gear_sets()
     --------------------------------------
     -- Start defining the sets
     --------------------------------------
-    organizer_items  = {
-        "Decimating Bullet",
-        "Chrono Bullet",
-        "Trump Card Case",
-        "Trump Card",
-        "Chr. Bul. Pouch",  
-        "Gyudon",
-        "Reraiser",
-        "Hi-Reraiser",
-        "Vile Elixir",
-        "Vile Elixir +1",
-        "Miso Ramen",
-        "Carbonara",
-        "Silent Oil",
-        "Salt Ramen",
-        "Panacea",
-        "Sublime Sushi",
-        "Sublime Sushi 1+",
-        "Prism Powder",
-        "Antacid",
-        "Icarus Wing",
-        "Warp Cudgel",
-        "Holy Water",
-        "Sanjaku-Tenugui",
-        "Shinobi-Tabi",
-        "Shihei",
-        "Remedy",
-        "Wh. Rarab Cap +1",
-        "Emporox's Ring",
-        "Red Curry Bun",
-        "Instant Reraise",
-        "Black Curry Bun",
-        "Rolan. Daifuku",
-        "Qutrub Knife",
-        "Wind Knife +1",
-        "Reraise Earring",
-        }
+    
     -- Precast Sets
 
     -- Precast sets to enhance JAs
     
-    sets.precast.JA['Snake Eye'] = {}
+    sets.precast.JA['Snake Eye'] = {legs="Lanun Culottes"}
     sets.precast.JA['Wild Card'] = {feet="Lanun Bottes +3"}
     sets.precast.JA['Random Deal'] = {body="Lanun Frac +3"}
 
     
     sets.precast.CorsairRoll = {
     head={ name="Lanun Tricorne +3", augments={'Enhances "Winning Streak" effect',}},
-    hands="Chasseur's Gants +2",
+    hands="Chasseur's Gants +1",
     neck="Regal Necklace",
     back={ name="Camulus's Mantle", augments={'AGI+20','Mag. Acc+20 /Mag. Dmg.+20','Magic Damage +10','Weapon skill damage +10%','Damage taken-5%',}},}
     
     sets.precast.CorsairRoll["Caster's Roll"] = set_combine(sets.precast.CorsairRoll, {legs="Navarch's Culottes +2"})
     sets.precast.CorsairRoll["Courser's Roll"] = set_combine(sets.precast.CorsairRoll, {feet="Navarch's Bottes +2"})
-    sets.precast.CorsairRoll["Blitzer's Roll"] = set_combine(sets.precast.CorsairRoll, {head="Chass. Tricorne +2",})
-    sets.precast.CorsairRoll["Tactician's Roll"] = set_combine(sets.precast.CorsairRoll, {body="Chasseur's Frac +2",})
-    sets.precast.CorsairRoll["Allies' Roll"] = set_combine(sets.precast.CorsairRoll, {hands="Chasseur's Gants +2",})
+    sets.precast.CorsairRoll["Blitzer's Roll"] = set_combine(sets.precast.CorsairRoll, {head="Chass. Tricorne +1",})
+    sets.precast.CorsairRoll["Tactician's Roll"] = set_combine(sets.precast.CorsairRoll, {body="Chasseur's Frac +1",})
+    sets.precast.CorsairRoll["Allies' Roll"] = set_combine(sets.precast.CorsairRoll, {hands="Chasseur's Gants +1",})
     
     sets.precast.LuzafRing = {ring2="Luzaf's Ring"}
     sets.precast.FoldDoubleBust = {hands={ name="Lanun Gants +3", augments={'Enhances "Fold" effect',}},}
@@ -180,10 +144,10 @@ function init_gear_sets()
 
     sets.precast.RA = {
         hands={ name="Lanun Gants +3", augments={'Enhances "Fold" effect',}},
-        head="Chass. Tricorne +2",
+        head="Chass. Tricorne +1",
         body="Oshosi Vest",
         legs={ name="Adhemar Kecks +1", augments={'AGI+12','"Rapid Shot"+13','Enmity-6',}},
-    feet="Meg. Jam. +2",
+    feet="Meg. Jam. +1",
     waist="Yemaya Belt",
     back="Tactical Mantle",
 }
@@ -194,10 +158,10 @@ sets.precast.RA.Flurry1 = set_combine(sets.precast.RA, {
 
 sets.precast.RA.Flurry2 = set_combine(sets.precast.RA.Flurry1, {
     hands={ name="Carmine Fin. Ga. +1", augments={'Rng.Atk.+20','"Mag.Atk.Bns."+12','"Store TP"+6',}},
-    head="Chass. Tricorne +2",
+    head="Chass. Tricorne +1",
     body="Laksa. Frac +3",
 legs={ name="Adhemar Kecks +1", augments={'AGI+12','"Rapid Shot"+13','Enmity-6',}},
-feet="Meg. Jam. +2",
+feet="Meg. Jam. +1",
 waist="Yemaya Belt",
 back="Tactical Mantle",
     }) --32/73
@@ -695,7 +659,7 @@ sets.midcast.RA.Critical = set_combine(sets.midcast.RA, {
 
 sets.TripleShot = {
     head="Oshosi Mask +1",
-    body="Chasseur's Frac +2",
+    body="Chasseur's Frac +1",
     hands={ name="Lanun Gants +3", augments={'Enhances "Fold" effect',}},
     legs="Osh. Trousers +1",
     feet="Osh. Leggings +1",
@@ -875,9 +839,9 @@ end
 -- Called by the 'update' self-command, for common needs.
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.
 function job_update(cmdParams, eventArgs)
-    --if newStatus == 'Engaged' and player.equipment.main == 'Chatoyant Staff' then
-        --state.OffenseMode:set('Ranged')
-    --end
+    if newStatus == 'Engaged' and player.equipment.main == 'Chatoyant Staff' then
+        state.OffenseMode:set('Ranged')
+    end
 end
 
 
@@ -1044,5 +1008,5 @@ function special_ammo_check()
 end
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
-    set_macro_page(4, 26)
+    set_macro_page(4, 2)
 end
