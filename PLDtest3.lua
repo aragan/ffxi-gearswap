@@ -79,10 +79,8 @@ organizer_items = {
 -- Setup vars that are user-independent.
 function job_setup()
     state.WeaponLock = M(false, 'Weapon Lock')
-    state.MagicBurst = M(false, 'Magic Burst')
-    include('Mote-TreasureHunter')
-    state.TreasureMode:set('Tag')
-    send_command('wait 6;input /lockstyleset 150')
+
+    send_command('wait 6;input /lockstyleset 165')
 
     
     rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda',
@@ -141,7 +139,7 @@ function user_setup()
     --state.BreathDefenseModes:options'Turtle'
     --send_command('bind ^f11 gs c cycle MagicalDefenseModes')
  	--send_command('bind ^= gs c activate MDT')
-    send_command('wait 2;input /lockstyleset 150')
+    send_command('wait 2;input /lockstyleset 200')
     send_command('bind f1 gs c update user')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !` gs c toggle MagicBurst')
@@ -1018,11 +1016,11 @@ sets.midcast['Bomb Toss'].DT = {
 sets.midcast['Frightful Roar'] = 
 {   main="Naegling",
    range="Ullr",
-   head="Chev. Armet +3",
-   body="Chev. Cuirass +3",
-   hands="Chev. Gauntlets +3",
-   legs="Chev. Cuisses +3",
-   feet="Chev. Sabatons +3",
+   head="Sakpata's Helm",
+   body="Sakpata's Plate",
+   hands="Sakpata's Gauntlets",
+   legs="Sakpata's Cuisses",
+   feet="Sakpata's Leggings",
    neck="Erra Pendant",
    waist="Luminary Sash",
    left_ear="Crep. Earring",
@@ -1120,19 +1118,8 @@ sets.TreasureHunter = {
     head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
 }
    sets.idle.DeathSpike ={
-    main="Burtgang",
-    ammo="Staunch Tathlum +1",
-    head="Chev. Armet +3",
-    body={ name="Sakpata's Plate", augments={'Path: A',}},
-    hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
-    legs="Chev. Cuisses +3",
-    feet={ name="Sakpata's Leggings", augments={'Path: A',}},
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
-    waist="Flume Belt +1",
-    left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
-    right_ear="Chev. Earring +1",
-    left_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
-    right_ring="Moonlight Ring"}
+    body="Tartarus Platemail",
+}
    sets.idle.MEVA ={
     ammo="Staunch Tathlum +1",
     neck={ name="Warder's Charm +1", augments={'Path: A',}},
@@ -1460,7 +1447,7 @@ sets.defense.Block = {
    legs="Sakpata's Cuisses",
    feet="Sakpata's Leggings",
    neck="Subtlety Spec.",
-   waist={ name="Sailfi Belt +1", augments={'Path: A',}},
+   waist="Olseni Belt",
    left_ear="Crep. Earring",
    right_ear="Telos Earring",
    left_ring="Chirich Ring +1",
@@ -1487,21 +1474,21 @@ sets.engaged.Tp = --1179 / 1315 avec enlight up
   }
 
    sets.engaged.STP = --1179 / 1315 avec enlight up
-{  
+{   main="Naegling",
+   sub="Blurred Shield +1",
    ammo="Aurgelmir Orb +1",
    head="Flam. Zucchetto +2",
    body="Flamma Korazin +2",
    hands="Flam. Manopolas +2",
    legs="Flamma Dirs +2",
    feet="Flam. Gambieras +2",
-   neck="Ainia Collar",
+   neck="Lissome Necklace",
    waist={ name="Sailfi Belt +1", augments={'Path: A',}},
    left_ear="Dedition Earring",
    right_ear="Telos Earring",
    left_ring="Chirich Ring +1",
    right_ring="Chirich Ring +1",
-   back="Tactical Mantle",
-}
+   back="Annealed Mantle",}
 
 
 sets.engaged.Hybrid = --1179 / 1315 avec enlight up
@@ -1511,13 +1498,13 @@ sets.engaged.Hybrid = --1179 / 1315 avec enlight up
    hands="Sakpata's Gauntlets",
    legs="Sakpata's Cuisses",
    feet="Sakpata's Leggings",
-   neck="Ainia Collar",
+   neck="Lissome Necklace",
    waist="Tempus Fugit +1",
-   left_ear="Dedition Earring",
+   left_ear="Mache Earring +1",
    right_ear="Telos Earring",
    left_ring="Petrov Ring",
    right_ring="Moonlight Ring",
-   back="Tactical Mantle",
+   back="Annealed Mantle",
 }
 
 sets.engaged.CRIT = --1179 / 1315 avec enlight up
@@ -1535,7 +1522,6 @@ sets.engaged.CRIT = --1179 / 1315 avec enlight up
    left_ring="Defending Ring",
    right_ring="Hetairoi Ring",
    back="Annealed Mantle",}
-
    sets.engaged.PDT = --1179 / 1315 avec enlight up
    {
        ammo="Staunch Tathlum +1",
@@ -1596,9 +1582,10 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
     end
     if spell.skill == 'Elemental Magic' and state.MagicBurst.value then
         equip(sets.magic_burst)
-    elseif spell.skill == 'Divine Magic' and (spell.english == "Holy" or spell.english == "Holy II" or spell.english == "Banish" or spell.english == "Banish II") and state.MagicBurst.value then
-        equip(sets.magic_burst)
     end
+    --if spell.skill == 'Divine Magic' and (spell.english == "Holy" or spell.english == "Holy II" or spell.english == "Banish" or spell.english == "Banish II" ) and state.MagicBurst.value then
+        --equip(sets.magic_burst)
+    --end
     if spell.skill == 'Divine Magic' and (spell.english == "Holy" or spell.english == "Holy II" or spell.english == "Banish" or spell.english == "Banish II" ) then     
            if (spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element])) then
             equip(sets.Obi)
@@ -2038,7 +2025,7 @@ end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()
-        send_command('wait 6;input /lockstyleset 150')
+        send_command('wait 6;input /lockstyleset 200')
     end
 end
 function display_current_job_state(eventArgs)
