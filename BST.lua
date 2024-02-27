@@ -974,10 +974,10 @@ function init_gear_sets()
 		})
 			
     sets.idle.Refresh = set_combine(sets.idle, {
-		body="Twilight Mail"
+		body="Crepuscular Mail"
 })
 			
-	sets.idle.Reraise = set_combine(sets.idle, {head="Twilight Helm",body="Twilight Mail"})
+	sets.idle.Reraise = set_combine(sets.idle, {head="Crepuscular Helm",body="Crepuscular Mail"})
 
 	sets.idle.Pet = set_combine(sets.idle, { main="Glyph Axe",
           head={ name="Anwig Salade", augments={'Attack+3','Pet: Damage taken -10%','ATTACK+3','PET: "REGEN"+1',}},		
@@ -1069,7 +1069,7 @@ function init_gear_sets()
 	
 	sets.defense.Reraise =  {
 		ammo="Staunch Tathlum +1",
-		head="Twilight Helm",
+		head="Crepuscular Helm",
 		body="Crepuscular Mail",
 		hands="Gleti's Gauntlets",
 		legs={ name="Taeon Tights", augments={'Pet: Attack+22 Pet: Rng.Atk.+22','Pet: "Dbl. Atk."+5','Pet: Damage taken -4%',}},
@@ -1432,14 +1432,14 @@ sets.defense.Petregen = {
     body="Nukumi Gausape +2",
 
     }         
-	sets.engaged.Reraise = set_combine(sets.engaged, {		head="Twilight Helm",
+	sets.engaged.Reraise = set_combine(sets.engaged, {		head="Crepuscular Helm",
     body="Crepuscular Mail",})
 
-	sets.Reraise = {head="Twilight Helm", body="Twilight Mail"}
+	sets.Reraise = {head="Crepuscular Helm", body="Crepuscular Mail"}
 
 	sets.idle.Weak = 
 	{
-		head="Twilight Helm", body="Twilight Mail"
+		head="Crepuscular Helm", body="Crepuscular Mail"
 	}
 	sets.idle.Weak.Reraise = set_combine(sets.idle.Weak, sets.Reraise)
 	sets.buff.Doom = {    neck="Nicander's Necklace",
@@ -1676,6 +1676,34 @@ function job_buff_change(buff,gain)
             enable('ring1','ring2','waist','neck')
             send_command('input /p Doom removed.')
             handle_equipping_gear(player.status)
+        end
+    end
+	if buff == "Charm" then
+        if gain then  			
+           send_command('input /p Charmd, please Sleep me.')		
+        else	
+           send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
+        end
+    end
+    if buff == "petrification" then
+        if gain then    
+            equip(sets.defense.PDT)
+            send_command('input /p Petrification, please Stona.')		
+        else
+        send_command('input /p '..player.name..' is no longer Petrify!')
+        handle_equipping_gear(player.status)
+        end
+    end
+	if buff == "Sleep" then
+        if gain then    
+            send_command('input /p ZZZzzz, please cure.')		
+        else
+            send_command('input /p '..player.name..' is no longer Sleep!')
+            handle_equipping_gear(player.status)    
+        end
+        if not midaction() then
+            handle_equipping_gear(player.status)
+            job_update()
         end
     end
 	if buff == "weakness" then
@@ -2028,8 +2056,7 @@ function sub_job_change(new,old)
 end-------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
-add_to_chat(159,'Author Aragan BST.Lua File (from Asura)')
-add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
+
 
 function select_default_macro_book()
 	-- Default macro set/book
