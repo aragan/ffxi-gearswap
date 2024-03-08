@@ -41,6 +41,7 @@ function get_sets()
     res = require 'resources'
 end
 organizer_items = {
+    "Airmid's Gorget",
     "Tumult's Blood",
     "Sarama's Hide",
     "Hidhaegg's Scale",
@@ -128,7 +129,37 @@ function user_setup()
     state.Etude = M{['description']='Etude',  'Herculean Etude', 'Sage Etude', 'Sinewy Etude', 'Learned Etude',
         'Quick Etude', 'Swift Etude', 'Vivacious Etude', 'Vital Etude', 'Dextrous Etude', 'Uncanny Etude',
         'Spirited Etude', 'Logical Etude', 'Enchanting Etude', 'Bewitching Etude'}
-
+        Panacea = T{
+            'Bind',
+            'Bio',
+            'Dia',
+            'Accuracy Down',
+            'Attack Down',
+            'Evasion Down',
+            'Defense Down',
+            'Magic Evasion Down',
+            'Magic Def. Down',
+            'Magic Acc. Down',
+            'Magic Atk. Down',
+            'Max HP Down',
+            'Max MP Down',
+            'slow',
+            'weight'}
+            -- 'Out of Range' distance; WS will auto-cancel
+        range_mult = {
+                [0] = 0,
+                [2] = 1.70,
+                [3] = 1.490909,
+                [4] = 1.44,
+                [5] = 1.377778,
+                [6] = 1.30,
+                [7] = 1.20,
+                [8] = 1.30,
+                [9] = 1.377778,
+                [10] = 1.45,
+                [11] = 1.490909,
+                [12] = 1.70,
+            } 
     
     -- Adjust this if using the Terpander (new +song instrument)
     info.ExtraSongInstrument = 'Daurdabla'
@@ -156,8 +187,11 @@ function user_setup()
     send_command('bind f7 input //fillmode')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind f2 gs c cycle Etude')
+    send_command('bind !f2 gs c Etude')
     send_command('bind f3 gs c cycle Carol')
+    send_command('bind !f3 gs c Carol')
     send_command('bind f4 gs c cycle Threnody')
+    send_command('bind !f4 gs c Threnody')
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind @` gs c cycle LullabyMode')
 
@@ -286,30 +320,35 @@ function init_gear_sets()
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
         neck="Fotia Gorget",
-        ear1="Ishvara Earring",
-        ear2="Moonshade Earring",
+        ear2="Ishvara Earring",
+        ear1="Moonshade Earring",
         ring1="Ilabrat Ring",
         ring2="Cornelia's Ring",
         waist="Kentarch Belt +1",
         back="Intarabus's Cape",
     }
     
+    sets.precast.WS.PDL = set_combine(sets.precast.WS,{
+        body="Bunzi's Robe",
+        })
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
     sets.precast.WS['Evisceration'] = { range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         neck="Fotia Gorget",
-        left_ear="Brutal Earring",
-    right_ear="Balder Earring +1",
+        left_ear="Moonshade Earring",
+        right_ear="Mache Earring +1",
     body="Bihu Jstcorps. +3",
     hands="Bunzi's Gloves",
     ring1="Hetairoi Ring",
-    ring2="Cornelia's Ring",
+    ring2="Ilabrat Ring",
     back="Bleating Mantle",
     waist="Fotia Belt",
     legs="Lustr. Subligar +1",
     feet="Lustra. Leggings +1",
     }
-    
+    sets.precast.WS['Evisceration'].PDL = set_combine(sets.precast.WS['Evisceration'],{
+        body="Bunzi's Robe",
+        })
     sets.precast.WS['Exenterator'] = {range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Bihu Jstcorps. +3",
@@ -324,7 +363,9 @@ function init_gear_sets()
     waist="Fotia Belt",
     back="Bleating Mantle",
     }
-
+    sets.precast.WS['Exenterator'].PDL = set_combine(sets.precast.WS['Exenterator'],{
+        body="Bunzi's Robe",
+        })
     sets.precast.WS['Mordant Rime'] = {range="Linos",
     head={ name="Nyame Helm", augments={'Path: B',}},
     body="Bihu Jstcorps. +3",
@@ -333,13 +374,15 @@ function init_gear_sets()
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
         neck="Fotia Gorget",
         ear1="Ishvara Earring",
-        ear2="Moonshade Earring",
-        ring1="Ilabrat Ring",
+        ear2="Regal Earring",
+        ring1="Sroda Ring", 
         ring2="Cornelia's Ring",
-        waist="Kentarch Belt +1",
+        waist="Sailfi Belt +1",
         back="Intarabus's Cape",
 }
-
+sets.precast.WS['Mordant Rime'].PDL = set_combine(sets.precast.WS['Mordant Rime'],{
+    body="Bunzi's Robe",
+    })
 sets.precast.WS['Rudras Storm'] = {range="Linos",
 head={ name="Nyame Helm", augments={'Path: B',}},
 body="Bihu Jstcorps. +3",
@@ -347,14 +390,16 @@ hands={ name="Nyame Gauntlets", augments={'Path: B',}},
 legs={ name="Nyame Flanchard", augments={'Path: B',}},
 feet={ name="Nyame Sollerets", augments={'Path: B',}}, 
    neck="Fotia Gorget",
-    ear1="Ishvara Earring",
-    ear2="Moonshade Earring",
+    ear2="Ishvara Earring",
+    ear1="Moonshade Earring",
     ring1="Ilabrat Ring",
     ring2="Cornelia's Ring",
     waist="Kentarch Belt +1",
     back="Intarabus's Cape",
 }
-
+sets.precast.WS['Rudras Storm'].PDL = set_combine(sets.precast.WS['Rudras Storm'],{
+    body="Bunzi's Robe",
+    })
 
 sets.precast.WS['Aeolian Edge'] = {range="Linos",
     head="C. Palug Crown",
@@ -954,11 +999,13 @@ sets.engaged.Hybrid = {
 
 
 
+    --------------------------------------
+    -- Custom buff sets
+    --------------------------------------
 
 
 
-
-    sets.Doom = {    neck="Nicander's Necklace",
+    sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",}
@@ -969,10 +1016,22 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for standard casting events.
 -------------------------------------------------------------------------------------------------------------------
-
+function job_pretarget(spell, action, spellMap, eventArgs)
+    if spell.type:endswith('Magic') and buffactive.silence then
+        eventArgs.cancel = true
+        send_command('input /item "Remedy" <me>')
+    end
+end
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 function job_precast(spell, action, spellMap, eventArgs)
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
     if spellMap == 'Utsusemi' then
         if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
             cancel_spell()
@@ -1010,13 +1069,13 @@ function job_precast(spell, action, spellMap, eventArgs)
         end
     end
 end
-function job_pretarget(spell, action, spellMap, eventArgs)
-    if spell.type:endswith('Magic') and buffactive.silence then
-        eventArgs.cancel = true
-        send_command('input /item "Remedy" <me>')
-    end
-end
+
 function job_post_precast(spell, action, spellMap, eventArgs)
+    if spell.type:lower() == 'weaponskill' then
+		if player.tp == 3000 then  -- Replace Moonshade Earring if we're at cap TP
+            equip({left_ear="Ishvara Earring"})
+		end
+	end
     if spell.type == 'WeaponSkill' then
         if elemental_ws:contains(spell.name) then
             -- Matching double weather (w/o day conflict).
@@ -1086,7 +1145,7 @@ end
 function job_buff_change(buff,gain)
     if buff == "doom" then
         if gain then
-            equip(sets.Doom)
+            equip(sets.buff.Doom)
             send_command('@input /p Doomed, please Cursna.')
             send_command('@input /item "Holy Water" <me>')	
              disable('ring1','ring2','waist','neck')
@@ -1112,20 +1171,64 @@ function job_buff_change(buff,gain)
         handle_equipping_gear(player.status)
         end
     end
-    if buff == "Sleep" then
+    if buff == "Defense Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Attack Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Evasion Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Magic Evasion Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Magic Def. Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Accuracy Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Max HP Down" then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "INT Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "MND Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "VIT Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "STR Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "AGI Down" then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if not S(buffactive):intersection(Panacea):empty() then
+        send_command('input /item "Panacea" <me>')
+
+        add_to_chat(8,string.char(0x81,0x9A)..' Using Panacea '
+            ..'for Eraseable debuffs '..string.char(0x81,0x9A))
+    end
+    if buff == "curse" then
+        if gain then  
+        send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if buff == "sleep" then
         if gain then    
             send_command('input /p ZZZzzz, please cure.')		
         else
             send_command('input /p '..player.name..' is no longer Sleep!')
-            handle_equipping_gear(player.status)    
-        end
-        if not midaction() then
-            handle_equipping_gear(player.status)
-            job_update()
         end
     end
+    if not midaction() then
+        job_update()
+    end
 end
-
+function check_buffs(check)
+    return 
+end
 -- Set eventArgs.handled to true if we don't want automatic gear equipping to be done.
 function job_aftercast(spell, action, spellMap, eventArgs)
     if spell.type == 'BardSong' and not spell.interrupted then

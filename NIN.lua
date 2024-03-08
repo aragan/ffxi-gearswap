@@ -23,6 +23,7 @@ function get_sets()
     include('organizer-lib')
     include('Mote-TreasureHunter')
     organizer_items = {
+        "Airmid's Gorget",
         "Hachimonji",
         "Mafic Cudgel",
         "Toolbag (Shihe)",
@@ -83,6 +84,7 @@ function job_setup()
     state.Moving  = M(false, "moving")
     send_command('wait 6;input /lockstyleset 144')
     run_sj = player.sub_job == 'RUN' or false
+    elemental_ws = S{"Aeolian Edge", "Blade: Teki", "Blade: To", "Blade: Chi", "Blade: Ei", "Blade: Yu"}
 
     select_ammo()
     LugraWSList = S{'Blade: Ku', 'Blade: Jin'}
@@ -91,7 +93,9 @@ function job_setup()
     state.unProc = M(false, 'unProc')
 
 
-    swordList = S{"Naegling"}
+    swordList = S{'Naegling'}
+    GKList = S{'Naegling','Zanmato +1'}
+
     wsList = S{'Blade: Hi', 'Blade: Kamu', 'Blade: Ten'}
     nukeList = S{'Katon: San', 'Doton: San', 'Suiton: San', 'Raiton: San', 'Hyoton: San', 'Huton: San'}
 
@@ -129,7 +133,7 @@ function user_setup()
     send_command('bind @f9 gs c cycle HasteMode')
     send_command('bind f4 gs c cycle Runes')
     send_command('bind f3 gs c cycleback Runes')
-    send_command('bind f2 input //gs c rune')
+    send_command('bind f2 input //gs c UseRune')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^/ gs disable all')
@@ -141,6 +145,37 @@ function user_setup()
     Haste = 0
     DW_needed = 0
     DW = false
+    Panacea = T{
+        'Bind',
+        'Bio',
+        'Dia',
+        'Accuracy Down',
+        'Attack Down',
+        'Evasion Down',
+        'Defense Down',
+        'Magic Evasion Down',
+        'Magic Def. Down',
+        'Magic Acc. Down',
+        'Magic Atk. Down',
+        'Max HP Down',
+        'Max MP Down',
+        'slow',
+        'weight'}
+        -- 'Out of Range' distance; WS will auto-cancel
+    range_mult = {
+            [0] = 0,
+            [2] = 1.70,
+            [3] = 1.490909,
+            [4] = 1.44,
+            [5] = 1.377778,
+            [6] = 1.30,
+            [7] = 1.20,
+            [8] = 1.30,
+            [9] = 1.377778,
+            [10] = 1.45,
+            [11] = 1.490909,
+            [12] = 1.70,
+        }
     update_combat_form()
     determine_haste_group()
 end
@@ -833,7 +868,6 @@ sets.midcast.Absorb = {
         waist="Orpheus's Sash",
         left_ring="Cornelia's Ring",
         right_ring="Gere Ring",
-        left_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         back="Sacro Mantle",
        })
        
@@ -1354,7 +1388,7 @@ sets.Naegling = {main="Naegling", sub="Kunimitsu"}
 sets.Hachimonji = {main="Hachimonji", sub="Alber Strap",}
 sets.Zanmato = {main="Zanmato +1",sub="Sword Strap",}
 
-    sets.Doom = {    neck="Nicander's Necklace",
+    sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",}
@@ -1387,6 +1421,14 @@ function job_precast(spell, action, spellMap, eventArgs)
             classes.CustomClass = "SelfNinjutsu"
         end
     end
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
+
     if spell.name == 'Spectral Jig' and buffactive.sneak then
         -- If sneak is active when using, cancel before completion
         -- send_command('cancel 71')
@@ -1408,6 +1450,11 @@ function job_post_precast(spell, action, spellMap, eventArgs)
     if spell.action_type == 'Ranged Attack' and state.OffenseMode ~= 'Acc' then
         equip(  )
     end
+    if spell.type:lower() == 'weaponskill' then
+		if player.tp == 3000 then  -- Replace Moonshade Earring if we're at cap TP
+            equip({left_ear="Lugra Earring +1"})
+		end
+	end
     -- protection for lag
     if spell.type == 'WeaponSkill' then
         -- Mecistopins Mantle rule (if you kill with ws)
@@ -1415,7 +1462,10 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             equip(sets.CapacityMantle)
         end
         if spell.english == 'Blade: Yu' and (world.weather_element == 'Water' or world.day_element == 'Water') then
-            equip(sets.Obi)
+            equip({waist="Hachirin-no-Obi"})
+        end
+        if elemental_ws:contains(spell.name) and player.tp > 2900 then
+            equip({ear1="Crematio Earring"})
         end
         if is_sc_element_today(spell) then
             if state.OffenseMode.current == 'Normal' and wsList:contains(spell.english) then
@@ -1467,14 +1517,14 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
             equip(sets.magic_burst)
         end
         if (spell.element == world.day_element or spell.element == world.weather_element) then
-            equip(sets.Obi)
+            equip({waist="Hachirin-no-Obi"})
         end
         if state.Buff.Futae then
             equip(sets.precast.JA['Futae'])
         end
     end
     if state.Buff.Doom then
-        equip(sets.Doom)
+        equip(sets.buff.Doom)
     end
 end
 
@@ -1557,7 +1607,7 @@ function job_buff_change(buff, gain)
     end
     if buff == "doom" then
         if gain then
-            equip(sets.Doom)
+            equip(sets.buff.Doom)
             send_command('@input /p Doomed, please Cursna.')
             send_command('@input /item "Holy Water" <me>')	
              disable('ring1','ring2','waist','neck')
@@ -1584,9 +1634,64 @@ function job_buff_change(buff, gain)
            handle_equipping_gear(player.status)
         end
     end
+    if buff == "Defense Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Attack Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Evasion Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Magic Evasion Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Magic Def. Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Accuracy Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "Max HP Down" then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "INT Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "MND Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "VIT Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "STR Down" then
+            send_command('@input /item "panacea" <me>')
+        elseif buff == "AGI Down" then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if not S(buffactive):intersection(Panacea):empty() then
+        send_command('input /item "Panacea" <me>')
+
+        add_to_chat(8,string.char(0x81,0x9A)..' Using Panacea '
+            ..'for Eraseable debuffs '..string.char(0x81,0x9A))
+    end
+    if buff == "curse" then
+        if gain then  
+        send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if buff == "Sleep" then
+        if gain then    
+            send_command('input /p ZZZzzz, please cure.')		
+        else
+            send_command('input /p '..player.name..' is no longer Sleep!')
+        end
+    end
     if not midaction() then
         handle_equipping_gear(player.status)
     end
+end
+
+function check_buffs(check)
+    return 
 end
 
 function job_status_change(newStatus, oldStatus, eventArgs)
@@ -1695,15 +1800,19 @@ function job_handle_equipping_gear(playerStatus, eventArgs)
 end
 
 function job_update(cmdParams, eventArgs)
-    handle_equipping_gear(player.status)
+    check_moving()
     th_update(cmdParams, eventArgs)
 end
 function check_moving()
     if state.DefenseMode.value == 'None'  and state.Kiting.value == false then
         if state.Auto_Kite.value == false and moving then
             state.Auto_Kite:set(true)
+            send_command('gs c update')
+
         elseif state.Auto_Kite.value == true and moving == false then
             state.Auto_Kite:set(false)
+            send_command('gs c update')
+
         end
     end
 end
