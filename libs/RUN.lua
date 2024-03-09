@@ -19,6 +19,7 @@ function get_sets()
     res = require 'resources'
 end
 organizer_items = {
+    "Airmid's Gorget",
 "Reikiko",
 "Prime Sword",
 "Lycurgos",
@@ -68,7 +69,21 @@ function job_setup()
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda',
         'Lux','Tenebrae'}
-
+	-- 'Out of Range' distance; WS will auto-cancel
+    range_mult = {
+        [0] = 0,
+        [2] = 1.70,
+        [3] = 1.490909,
+        [4] = 1.44,
+        [5] = 1.377778,
+        [6] = 1.30,
+        [7] = 1.20,
+        [8] = 1.30,
+        [9] = 1.377778,
+        [10] = 1.45,
+        [11] = 1.490909,
+        [12] = 1.70,
+        }
     -- /BLU Spell Maps
     blue_magic_maps = {}
 
@@ -191,7 +206,7 @@ function init_gear_sets()
     sets.precast.JA['Embolden'] = {back="Evasionist's Cape"}
     sets.precast.JA['Vivacious Pulse'] = {
     head="Erilaz Galea +2",
-    legs="Rune. Trousers +2",
+    legs="Rune. Trousers +3",
     neck="Incanter's Torque",
     left_ring="Stikini Ring +1",
     right_ring="Stikini Ring +1",
@@ -203,7 +218,7 @@ function init_gear_sets()
 	-- Fast cast sets for spells
     sets.precast.FC = {
         ammo="Sapience Orb",
-        head="Rune. Bandeau +2",
+        head="Rune. Bandeau +3",
         hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
         body="Agwu's Robe",
         neck="Baetyl Pendant",
@@ -239,8 +254,8 @@ sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
     feet="Nyame Sollerets",
     neck="Fotia Gorget",
     waist="Fotia Belt",
-    left_ear="Ishvara Earring",
-    right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    right_ear="Ishvara Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Cornelia's Ring",
     right_ring="Regal Ring",
     back="Bleating Mantle",
@@ -298,8 +313,8 @@ sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
            feet="Nyame Sollerets",
     neck="Fotia Gorget",
     waist="Fotia Belt",
-    left_ear="Ishvara Earring",
-    right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    right_ear="Ishvara Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Cornelia's Ring",
     right_ring="Regal Ring",
     back="Bleating Mantle",
@@ -389,12 +404,12 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     })
     sets.midcast['Phalanx'].SIRD = sets.midcast.SIRD
     sets.midcast['Regen'] = set_combine(sets.midcast['Enhancing Magic'], {
-        head="Rune. Bandeau +2",
+        head="Rune. Bandeau +3",
         neck="Sacro Gorget",
         right_ear="Erilaz Earring +2",
     })
     sets.midcast['Regen'].SIRD = set_combine(sets.midcast.SIRD, {
-        head="Rune. Bandeau +2",
+        head="Rune. Bandeau +3",
         right_ear="Erilaz Earring +2",
     })
     sets.midcast['Stoneskin'] = set_combine(sets.midcast['Enhancing Magic'], {
@@ -520,7 +535,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         sub="Chanter's Shield",
         ammo="Staunch Tathlum +1",
         hands="Erilaz Gauntlets +2",
-        legs="Rune. Trousers +2",
+        legs="Rune. Trousers +3",
         neck={ name="Warder's Charm +1", augments={'Path: A',}},
         waist="Engraved Belt",
     })
@@ -619,7 +634,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         head={ name="Founder's Corona", augments={'DEX+10','Accuracy+15','Mag. Acc.+15','Magic dmg. taken -5%',}},
         body={ name="Sakpata's Plate", augments={'Path: A',}},
         hands="Erilaz Gauntlets +2",
-        legs="Rune. Trousers +2",
+        legs="Rune. Trousers +3",
         neck={ name="Warder's Charm +1", augments={'Path: A',}},
         waist="Engraved Belt",
     })
@@ -645,7 +660,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     }
     sets.defense.Parry = {
         --hands="Turms Mittens +1",
-        legs="Eri. Leg Guards +1",
+        legs="Eri. Leg Guards +2",
         --feet="Turms Leggings +1",
         back="Ogma's Cape",
     }
@@ -741,15 +756,87 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
 
 
-    sets.Doom = {    neck="Nicander's Necklace",
+    sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",}
 
+    sets.Embolden = {head="Erilaz Galea +2",
+    body="Nyame Mail",
+    hands="Regal Gauntlets",
+    legs="Futhark Trousers +3",
+    back="Evasionist's Cape"}
+    
+    sets.Obi = {waist="Hachirin-no-Obi"}
 
 end
-sets.Obi = {waist="Hachirin-no-Obi"}
+-------------------------------------------------------------------------------------------------------------------
+-- Job-specific hooks for standard casting events.
+-------------------------------------------------------------------------------------------------------------------
 
+-- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
+-- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
+function job_pretarget(spell, action, spellMap, eventArgs)
+    if spell.type:endswith('Magic') and buffactive.silence then
+        eventArgs.cancel = true
+        send_command('input /item "Remedy" <me>')
+    end
+end
+function job_precast(spell, action, spellMap, eventArgs)
+
+    if buffactive['terror'] or buffactive['petrification'] or buffactive['stun'] or buffactive['sleep'] then
+        add_to_chat(167, 'Action stopped due to status.')
+        eventArgs.cancel = true
+        return
+    end
+    if rune_enchantments:contains(spell.english) then
+        eventArgs.handled = true
+    end
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
+    if spell.english == 'Lunge' then
+        local abil_recasts = windower.ffxi.get_ability_recasts()
+        if abil_recasts[spell.recast_id] > 0 then
+            send_command('input /jobability "Swipe" <t>')
+--            add_to_chat(122, '***Lunge Aborted: Timer on Cooldown -- Downgrading to Swipe.***')
+            eventArgs.cancel = true
+            return
+        end
+    end
+    if spell.english == 'Valiance' then
+        local abil_recasts = windower.ffxi.get_ability_recasts()
+        if abil_recasts[spell.recast_id] > 0 then
+            send_command('input /jobability "Vallation" <me>')
+            eventArgs.cancel = true
+            return
+        elseif spell.english == 'Valiance' and buffactive['vallation'] then
+            cast_delay(0.2)
+            send_command('cancel Vallation') -- command requires 'cancel' add-on to work
+        end
+    end
+    if spellMap == 'Utsusemi' then
+        if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
+            cancel_spell()
+            add_to_chat(123, '**!! '..spell.english..' Canceled: [3+ IMAGES] !!**')
+            eventArgs.handled = true
+            return
+        elseif buffactive['Copy Image'] or buffactive['Copy Image (2)'] then
+            send_command('cancel 66; cancel 444; cancel Copy Image; cancel Copy Image (2)')
+        end
+    end
+end
+function job_post_precast(spell, action, spellMap, eventArgs)
+	if spell.type:lower() == 'weaponskill' then
+		if player.tp == 3000 then  -- Replace Moonshade Earring if we're at cap TP
+            equip({left_ear="Ishvara Earring"})
+		end
+	end
+end
 ------------------------------------------------------------------
 -- Action events
 ------------------------------------------------------------------
@@ -798,7 +885,7 @@ function job_buff_change(buff,gain)
     end
     if buff == "doom" then
         if gain then
-            equip(sets.Doom)
+            equip(sets.buff.Doom)
             send_command('@input /p Doomed, please Cursna.')
             send_command('@input /item "Holy Water" <me>')	
              disable('ring1','ring2','waist','neck')
@@ -806,6 +893,29 @@ function job_buff_change(buff,gain)
             enable('ring1','ring2','waist','neck')
             send_command('input /p Doom removed.')
             handle_equipping_gear(player.status)
+        end
+    end
+    if buff == "Charm" then
+        if gain then  			
+           send_command('input /p Charmd, please Sleep me.')		
+        else	
+           send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
+        end
+    end
+    if buff == "petrification" then
+        if gain then    
+            equip(sets.defense.PDT)
+            send_command('input /p Petrification, please Stona.')		
+        else
+        send_command('input /p '..player.name..' is no longer Petrify!')
+        handle_equipping_gear(player.status)
+        end
+    end
+    if buff == "Sleep" then
+        if gain then    
+            send_command('input /p ZZZzzz, please cure.')		
+        else
+            send_command('input /p '..player.name..' is no longer Sleep!')
         end
     end
     if buff == 'Embolden' then
@@ -821,57 +931,96 @@ function job_buff_change(buff,gain)
     if buff == 'Battuta' and not gain then
         status_change(player.status)
     end
+    if buff == "Defense Down" then
+        if gain then  			
+            send_command('input /item "Panacea" <me>')
+        end
+    elseif buff == "Magic Def. Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Max HP Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Evasion Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Magic Evasion Downn" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Dia" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end  
+    elseif buff == "Bio" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Bind" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "slow" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "weight" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Attack Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Accuracy Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "INT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "MND Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "STR Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "AGI Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if buff == "curse" then
+        if gain then  
+            send_command('input /item "Holy Water" <me>')
+        end
+    end
+
+    if not midaction() then
+        job_update()
+    end
     if not midaction() then
         handle_equipping_gear(player.status)
     end
-end
-function job_pretarget(spell, action, spellMap, eventArgs)
-    if spell.type:endswith('Magic') and buffactive.silence then
-        eventArgs.cancel = true
-        send_command('input /item "Remedy" <me>')
-    end
-end
-function job_precast(spell, action, spellMap, eventArgs)
+    check_buffs()
 
-    if buffactive['terror'] or buffactive['petrification'] or buffactive['stun'] or buffactive['sleep'] then
-        add_to_chat(167, 'Action stopped due to status.')
-        eventArgs.cancel = true
-        return
-    end
-    if rune_enchantments:contains(spell.english) then
-        eventArgs.handled = true
-    end
-    if spell.english == 'Lunge' then
-        local abil_recasts = windower.ffxi.get_ability_recasts()
-        if abil_recasts[spell.recast_id] > 0 then
-            send_command('input /jobability "Swipe" <t>')
---            add_to_chat(122, '***Lunge Aborted: Timer on Cooldown -- Downgrading to Swipe.***')
-            eventArgs.cancel = true
-            return
-        end
-    end
-    if spell.english == 'Valiance' then
-        local abil_recasts = windower.ffxi.get_ability_recasts()
-        if abil_recasts[spell.recast_id] > 0 then
-            send_command('input /jobability "Vallation" <me>')
-            eventArgs.cancel = true
-            return
-        elseif spell.english == 'Valiance' and buffactive['vallation'] then
-            cast_delay(0.2)
-            send_command('cancel Vallation') -- command requires 'cancel' add-on to work
-        end
-    end
-    if spellMap == 'Utsusemi' then
-        if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
-            cancel_spell()
-            add_to_chat(123, '**!! '..spell.english..' Canceled: [3+ IMAGES] !!**')
-            eventArgs.handled = true
-            return
-        elseif buffactive['Copy Image'] or buffactive['Copy Image (2)'] then
-            send_command('cancel 66; cancel 444; cancel Copy Image; cancel Copy Image (2)')
-        end
-    end
 end
+function check_buffs(check)
+     
+end
+
 
 -------------------------------------------------------------------------------------------------------------------
 -- Customization hooks for idle and melee sets, after they've been automatically constructed.
@@ -941,8 +1090,12 @@ function check_moving()
     if state.DefenseMode.value == 'None'  and state.Kiting.value == false then
         if state.Auto_Kite.value == false and moving then
             state.Auto_Kite:set(true)
+            send_command('gs c update')
+
         elseif state.Auto_Kite.value == true and moving == false then
             state.Auto_Kite:set(false)
+            send_command('gs c update')
+
         end
     end
 end
@@ -951,7 +1104,7 @@ function job_handle_equipping_gear(playerStatus, eventArgs)
     check_gear()
 end
 function job_update(cmdParams, eventArgs)
-    handle_equipping_gear(player.status)
+    check_moving()
 end
 
 function check_gear()

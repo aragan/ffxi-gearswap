@@ -46,8 +46,9 @@ function get_sets()
     include('organizer-lib')
 
 end
-organizer_items = {        
-"Mafic Cudgel",
+organizer_items = {   
+    "Airmid's Gorget",     
+    "Mafic Cudgel",
     "Gyudon",
     "Reraiser",
     "Hi-Reraiser",
@@ -100,6 +101,21 @@ function job_setup()
     "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Reraise Earring", "Reraise Gorget", "Airmid's Gorget",}
     send_command('wait 6;input /lockstyleset 164')
 
+    -- 'Out of Range' distance; WS will auto-cancel
+    range_mult = {
+        [0] = 0,
+        [2] = 1.70,
+        [3] = 1.490909,
+        [4] = 1.44,
+        [5] = 1.377778,
+        [6] = 1.30,
+        [7] = 1.20,
+        [8] = 1.30,
+        [9] = 1.377778,
+        [10] = 1.45,
+        [11] = 1.490909,
+        [12] = 1.70,
+    }
     state.Auto_Kite = M(false, 'Auto_Kite')
     Haste = 0
     DW_needed = 0
@@ -117,7 +133,7 @@ end
 function user_setup()
     state.OffenseMode:options('Normal', 'Acc', 'STP', 'CRIT')
     state.HybridMode:options('Normal', 'PDT')
-    state.WeaponskillMode:options('Normal', 'Acc', 'PDL')
+    state.WeaponskillMode:options('Normal', 'SC', 'PDL')
     state.PhysicalDefenseMode:options('Evasion', 'PDT', 'Enmity', 'HP')
     state.MagicalDefenseMode:options('MDT')
     state.IdleMode:options('Normal', 'PDT', 'HP', 'Evasion', 'EnemyCritRate')
@@ -387,12 +403,12 @@ function init_gear_sets()
     right_ring="Cornelia's Ring",
     back="Sacro Mantle",
 }
-    sets.precast.WS.Acc = set_combine(sets.precast.WS, {head="Nyame Helm",
+    sets.precast.WS.SC = set_combine(sets.precast.WS, {head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
-    right_ring="Mujin Band",})
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},})
     
     sets.precast.WS.Critical = {body="Meg. Cuirie +2"}
 
@@ -412,12 +428,12 @@ function init_gear_sets()
     left_ring="Ilabrat Ring",
     right_ring="Regal Ring",})
 
-    sets.precast.WS['Exenterator'].Acc = set_combine(sets.precast.WS['Exenterator'], {    head="Nyame Helm",
+    sets.precast.WS['Exenterator'].SC = set_combine(sets.precast.WS['Exenterator'], {    head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
-    right_ring="Mujin Band",})
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},})
     sets.precast.WS['Exenterator'].Fodder = set_combine(sets.precast.WS['Exenterator'], {})
 
     sets.precast.WS['Pyrrhic Kleos'] = set_combine(sets.precast.WS, {
@@ -435,14 +451,14 @@ function init_gear_sets()
         right_ring="Regal Ring",
         back="Bleating Mantle",
     })
-    sets.precast.WS['Pyrrhic Kleos'].Acc = set_combine(sets.precast.WS.Acc, {    head="Nyame Helm",
+    sets.precast.WS['Pyrrhic Kleos'].SC = set_combine(sets.precast.WS.SC, {    head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
-    right_ring="Mujin Band",})
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},})
 
-    sets.precast.WS['Pyrrhic Kleos'].PDL = set_combine(sets.precast.WS.Acc, {
+    sets.precast.WS['Pyrrhic Kleos'].PDL = set_combine(sets.precast.WS.SC, {
         ammo="Crepuscular Pebble",
         head="Gleti's Mask",
         body="Gleti's Cuirass",
@@ -471,13 +487,13 @@ function init_gear_sets()
         left_ring="Ilabrat Ring",
         right_ring="Regal Ring",
     })
-    sets.precast.WS['Evisceration'].Acc = set_combine(sets.precast.WS['Evisceration'], {  
+    sets.precast.WS['Evisceration'].SC = set_combine(sets.precast.WS['Evisceration'], {  
     head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
-    right_ring="Mujin Band",})
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},})
 
     sets.precast.WS['Evisceration'].PDL = set_combine(sets.precast.WS['Evisceration'], {})
 
@@ -497,12 +513,12 @@ function init_gear_sets()
         right_ring="Cornelia's Ring",
         back="Sacro Mantle",
     })
-    sets.precast.WS["Rudra's Storm"].Acc = set_combine(sets.precast.WS["Rudra's Storm"], {    head="Nyame Helm",
+    sets.precast.WS["Rudra's Storm"].SC = set_combine(sets.precast.WS["Rudra's Storm"], {    head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
-    right_ring="Mujin Band",})
+    neck={ name="Warder's Charm +1", augments={'Path: A',}},})
 
     sets.precast.WS["Rudra's Storm"].PDL = set_combine(sets.precast.WS["Rudra's Storm"], {
         ammo="Crepuscular Pebble",
@@ -524,8 +540,8 @@ function init_gear_sets()
     feet="Nyame Sollerets",
     neck="Sibyl Scarf",
     waist="Orpheus's Sash",
-    left_ear="Friomisi Earring",
-    right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    right_ear="Friomisi Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Dingir Ring",
     right_ring="Cornelia's Ring",
     back="Sacro Mantle",
@@ -1151,7 +1167,7 @@ sets.engaged.DW.CRIT = {
     sets.buff['Climactic Flourish'] = {}
     sets.buff['Closed Position'] = {feet="Horos T. Shoes +3"}
 
-    sets.Doom = {    neck="Nicander's Necklace",
+    sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",} -- +65%
@@ -1171,7 +1187,13 @@ end
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 -- Set eventArgs.useMidcastGear to true if we want midcast gear equipped on precast.
 function job_precast(spell, action, spellMap, eventArgs)
-    --auto_presto(spell)
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
     if spellMap == 'Utsusemi' then
         if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
             cancel_spell()
@@ -1186,6 +1208,17 @@ end
 
 
 function job_post_precast(spell, action, spellMap, eventArgs)
+    if spell.type:lower() == 'weaponskill' then
+		if player.tp == 3000 then  -- Replace Moonshade Earring if we're at cap TP
+            equip({left_ear="Ishvara Earring"})
+		end
+	end
+    if spell.type == 'WeaponSkill' then
+        -- Replace TP-bonus gear if not needed.
+        if spell.english == 'Aeolian Edge' and player.tp > 2900 then
+            equip({ear1="Crematio Earring"})
+        end
+    end
     if spell.type == "WeaponSkill" then
         if state.Buff['Sneak Attack'] == true then
             equip(sets.precast.WS.Critical)
@@ -1236,7 +1269,7 @@ function job_buff_change(buff,gain)
     end
     if buff == "doom" then
         if gain then
-            equip(sets.Doom)
+            equip(sets.buff.Doom)
             send_command('@input /p Doomed, please Cursna.')
             send_command('@input /item "Holy Water" <me>')	
              disable('ring1','ring2','waist','neck')
@@ -1246,7 +1279,108 @@ function job_buff_change(buff,gain)
             handle_equipping_gear(player.status)
         end
     end
+    if buff == "Charm" then
+        if gain then  			
+           send_command('input /p Charmd, please Sleep me.')		
+        else	
+           send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
+        end
+    end
+    if buff == "petrification" then
+        if gain then    
+            equip(sets.defense.PDT)
+            send_command('input /p Petrification, please Stona.')		
+        else
+            send_command('input /p '..player.name..' is no longer Petrify!')
+            handle_equipping_gear(player.status)
+        end
+    end
+    if buff == "Sleep" then
+        if gain then    
+            send_command('input /p ZZZzzz, please cure.')		
+        else
+            send_command('input /p '..player.name..' is no longer Sleep!')
+        end
+    end
+    if buff == "Defense Down" then
+        if gain then  			
+            send_command('input /item "Panacea" <me>')
+        end
+    elseif buff == "Magic Def. Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Max HP Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Evasion Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Magic Evasion Downn" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Dia" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end  
+    elseif buff == "Bio" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Bind" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "slow" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "weight" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Attack Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Accuracy Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    end
 
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "INT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "MND Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "STR Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "AGI Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if buff == "curse" then
+        if gain then  
+        send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if not midaction() then
+        job_update()
+    end
 end
 -- Called by the 'update' self-command, for common needs.
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.

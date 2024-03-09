@@ -21,6 +21,7 @@ function get_sets()
 
 end
 organizer_items = {
+    "Airmid's Gorget",
     "Gyudon",
     "Reraiser",
     "Hi-Reraiser",
@@ -91,6 +92,22 @@ function user_setup()
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     select_default_macro_book()
+
+        -- 'Out of Range' distance; WS will auto-cancel
+    range_mult = {
+            [0] = 0,
+            [2] = 1.70,
+            [3] = 1.490909,
+            [4] = 1.44,
+            [5] = 1.377778,
+            [6] = 1.30,
+            [7] = 1.20,
+            [8] = 1.30,
+            [9] = 1.377778,
+            [10] = 1.45,
+            [11] = 1.490909,
+            [12] = 1.70,
+        }
 end
 -- Called when this job file is unloaded (eg: job change)
 function file_unload()
@@ -111,7 +128,7 @@ function init_gear_sets()
     sets.precast.JA['Dodge'] = {feet="Anch. Gaiters +3"}
     sets.precast.JA['Focus'] = {head="Anchorite's Crown +1"}
     sets.precast.JA['Counterstance'] = {feet="Hesychast's Gaiters +1"}
-    sets.precast.JA['Footwork'] = {feet="Tantra Gaiters +2"}
+    sets.precast.JA['Footwork'] = {feet="Anch. Gaiters +3"}
     sets.precast.JA['Formless Strikes'] = {body="Hesychast's Cyclas"}
     sets.precast.JA['Mantra'] = {feet="Hesychast's Gaiters +1"}
 
@@ -182,10 +199,10 @@ function init_gear_sets()
     -- Default set for any weaponskill that isn't any more specifically defined
     sets.precast.WS = {
         ammo="Coiste Bodhar",
-        head="Mpaca's Cap",
+        head={ name="Mpaca's Cap", augments={'Path: A',}},
         body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
-        legs="Mpaca's Hose",
+        legs={ name="Mpaca's Hose", augments={'Path: A',}},
         feet="Mpaca's Boots",
         neck="Fotia Gorget",
         waist="Fotia Belt",
@@ -212,15 +229,15 @@ function init_gear_sets()
 
     sets.precast.WS['Raging Fists'] = set_combine(sets.precast.WS, {
         ammo="Coiste Bodhar",
-        head="Mpaca's Cap",
+        head={ name="Mpaca's Cap", augments={'Path: A',}},
         body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
         legs="Nyame Flanchard",
         feet="Mpaca's Boots",
         neck="Rep. Plat. Medal",
         waist="Moonbow Belt +1",
-        left_ear="Schere Earring",
-        right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+        right_ear="Schere Earring",
+        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Gere Ring",
         right_ring="Niqmaddu Ring",
         back="Segomo's Mantle",
@@ -234,15 +251,15 @@ function init_gear_sets()
 
     sets.precast.WS['Howling Fist'] = set_combine(sets.precast.WS, {
     ammo="Coiste Bodhar",
-    head="Mpaca's Cap",
+    head={ name="Mpaca's Cap", augments={'Path: A',}},
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
     neck="Fotia Gorget",
     waist="Moonbow Belt +1",
-    left_ear="Schere Earring",
-    right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    right_ear="Schere Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Gere Ring",
     right_ring="Niqmaddu Ring",
     back="Segomo's Mantle",
@@ -264,8 +281,8 @@ function init_gear_sets()
         feet="Nyame Sollerets",
         neck="Fotia Gorget",
         waist="Moonbow Belt +1",
-        left_ear="Schere Earring",
-        right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+        right_ear="Schere Earring",
+        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Gere Ring",
         right_ring="Niqmaddu Ring",
         back="Segomo's Mantle",
@@ -292,7 +309,7 @@ function init_gear_sets()
     head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     body="Mpaca's Doublet",
       hands="Mpaca's Gloves",
-    legs="Mpaca's Hose",
+    legs={ name="Mpaca's Hose", augments={'Path: A',}},
     feet="Mpaca's Boots",
     neck="Fotia Gorget",
     waist="Moonbow Belt +1",
@@ -314,7 +331,7 @@ function init_gear_sets()
         head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         body="Mpaca's Doublet",
           hands="Mpaca's Gloves",
-        legs="Mpaca's Hose",
+        legs={ name="Mpaca's Hose", augments={'Path: A',}},
         feet="Mpaca's Boots",
         neck="Fotia Gorget",
         waist="Moonbow Belt +1",
@@ -332,7 +349,7 @@ function init_gear_sets()
 
     sets.precast.WS['Dragon Kick'] = set_combine(sets.precast.WS, {
         ammo="Coiste Bodhar",
-        head="Mpaca's Cap",
+        head={ name="Mpaca's Cap", augments={'Path: A',}},
         body="Nyame Mail",
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
@@ -354,7 +371,7 @@ function init_gear_sets()
 
     sets.precast.WS['Tornado Kick'] = set_combine(sets.precast.WS, {
         ammo="Coiste Bodhar",
-    head="Mpaca's Cap",
+    head={ name="Mpaca's Cap", augments={'Path: A',}},
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
@@ -437,7 +454,7 @@ function init_gear_sets()
         head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         body="Mpaca's Doublet",
           hands="Mpaca's Gloves",
-        legs="Mpaca's Hose",
+        legs={ name="Mpaca's Hose", augments={'Path: A',}},
         feet="Mpaca's Boots",
         neck="Fotia Gorget",
         waist="Moonbow Belt +1",
@@ -473,8 +490,8 @@ function init_gear_sets()
         feet="Nyame Sollerets",
         neck="Sibyl Scarf",
         waist="Orpheus's Sash",
-        left_ear="Friomisi Earring",
-        right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+        right_ear="Friomisi Earring",
+        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Archon Ring",
         right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
         back="Sacro Mantle",
@@ -650,8 +667,8 @@ function init_gear_sets()
 
     -- Defensive melee hybrid sets
     sets.engaged.PDT = {       
-        ammo={ name="Coiste Bodhar", augments={'Path: A',}},
-        head="Malignance Chapeau",
+    ammo={ name="Coiste Bodhar", augments={'Path: A',}},
+    head="Malignance Chapeau",
     body="Malignance Tabard",
     hands="Malignance Gloves",
     legs="Malignance Tights",
@@ -667,7 +684,7 @@ function init_gear_sets()
 
     sets.engaged.Acc.PDT = {	
         ammo={ name="Coiste Bodhar", augments={'Path: A',}},
-        head="Mpaca's Cap",
+        head={ name="Mpaca's Cap", augments={'Path: A',}},
     body="Mpaca's Doublet",
     hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
     legs="Malignance Tights",
@@ -748,12 +765,16 @@ sets.engaged.Acc.SubtleBlow = set_combine(sets.engaged.Acc, {
     -- Hundred Fists/Impetus melee set mods
     sets.engaged.HF = set_combine(sets.engaged)
     sets.engaged.HF.Impetus = set_combine(sets.engaged, {body="Bhikku Cyclas +2"})
+    sets.engaged.Impetus = set_combine(sets.engaged, {body="Bhikku Cyclas +2"})
+    sets.engaged.Acc.Impetus = set_combine(sets.engaged.Acc, {body="Bhikku Cyclas +2"})
     sets.engaged.Acc.HF = set_combine(sets.engaged.Acc)
     sets.engaged.Acc.HF.Impetus = set_combine(sets.engaged.Acc, {body="Bhikku Cyclas +2"})
     sets.engaged.Counter.HF = set_combine(sets.engaged.Counter)
     sets.engaged.Counter.HF.Impetus = set_combine(sets.engaged.Counter, {body="Bhikku Cyclas +2"})
     sets.engaged.Acc.Counter.HF = set_combine(sets.engaged.Acc.Counter)
     sets.engaged.Acc.Counter.HF.Impetus = set_combine(sets.engaged.Acc.Counter, {body="Bhikku Cyclas +2"})
+    sets.engaged.Acc.Impetus = set_combine(sets.engaged.Acc, {body="Bhikku Cyclas +2"})
+
     --sets.engaged.SubtleBlow.HF = set_combine(sets.SubtleBlow, {body="Bhikku Cyclas +2"})
     --sets.engaged.SubtleBlow.HF.Impetus = set_combine(sets.SubtleBlow, {body="Bhikku Cyclas +2"})
     --sets.engaged.SubtleBlow.Impetus = set_combine(sets.SubtleBlow, {body="Bhikku Cyclas +2"})
@@ -761,13 +782,13 @@ sets.engaged.Acc.SubtleBlow = set_combine(sets.engaged.Acc, {
 
 
     -- Footwork combat form
-    sets.engaged.Footwork = {}
-    sets.engaged.Footwork.Acc = {}
+    --sets.engaged.Footwork = {}
+    --sets.engaged.Footwork.Acc = {} 
         
     -- Quick sets for post-precast adjustments, listed here so that the gear can be Validated.
     sets.impetus_body = {body="Bhikku Cyclas +2"}
     sets.footwork_kick_feet = {feet="Anch. Gaiters +3"}
-    sets.Doom = {neck="Nicander's Necklace",
+    sets.buff.Doom = {neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",}
@@ -785,10 +806,22 @@ function job_precast(spell, action, spellMap, eventArgs)
     if spell.type == 'WeaponSkill' and state.DefenseMode.current ~= 'None' then
         eventArgs.handled = true
     end
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
 end
 
 -- Run after the general precast() is done.
 function job_post_precast(spell, action, spellMap, eventArgs)
+    if spell.type:lower() == 'weaponskill' then
+		if player.tp == 3000 then  -- Replace Moonshade Earring if we're at cap TP
+            equip({left_ear="Lugra Earring +1"})
+		end
+	end
     if spell.type == 'WeaponSkill' and state.DefenseMode.current ~= 'None' then
         if state.Buff.Impetus and (spell.english == "Ascetic's Fury" or spell.english == "Victory Smite") then
             -- Need 6 hits at capped dDex, or 9 hits if dDex is uncapped, for Tantra to tie or win.
@@ -805,11 +838,18 @@ function job_post_precast(spell, action, spellMap, eventArgs)
         end
         -- Replace Moonshade Earring if we're at cap TP
     end
+    
 end
 
 function job_aftercast(spell, action, spellMap, eventArgs)
     if spell.type == 'WeaponSkill' and not spell.interrupted and state.FootworkWS and state.Buff.Footwork then
         send_command('cancel Footwork')
+    end
+    if (buff == "Impetus" and gain) or buffactive.impetus then
+        equip({body="Bhikku Cyclas +2"})
+    end
+    if state.Buff["Impetus"] then
+        equip({body="Bhikku Cyclas +2"})
     end
 end
 
@@ -838,7 +878,7 @@ function job_buff_change(buff, gain)
     end
     if buff == "doom" then
         if gain then
-            equip(sets.Doom)
+            equip(sets.buff.Doom)
             send_command('@input /p Doomed, please Cursna.')
             send_command('@input /item "Holy Water" <me>')	
              disable('ring1','ring2','waist','neck')
@@ -860,8 +900,8 @@ function job_buff_change(buff, gain)
             equip(sets.defense.PDT)
             send_command('input /p Petrification, please Stona.')		
         else
-        send_command('input /p '..player.name..' is no longer Petrify!')
-        handle_equipping_gear(player.status)
+            send_command('input /p '..player.name..' is no longer Petrify!')
+            handle_equipping_gear(player.status)
         end
     end
     if buff == "Charm" then
@@ -869,7 +909,6 @@ function job_buff_change(buff, gain)
            send_command('input /p Charmd, please Sleep me.')		
         else	
            send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
-           handle_equipping_gear(player.status)
         end
     end
     if buff == "Sleep" then
@@ -877,13 +916,85 @@ function job_buff_change(buff, gain)
             send_command('input /p ZZZzzz, please cure.')		
         else
             send_command('input /p '..player.name..' is no longer Sleep!')
-            handle_equipping_gear(player.status)    
-        end
-        if not midaction() then
-            handle_equipping_gear(player.status)
-            job_update()
         end
     end
+    if buff == "Defense Down" then
+        if gain then  			
+            send_command('input /item "Panacea" <me>')
+        end
+    elseif buff == "Magic Def. Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Max HP Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Evasion Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Magic Evasion Downn" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Dia" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end  
+    elseif buff == "Bio" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Bind" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "slow" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "weight" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Attack Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Accuracy Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "INT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "MND Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "STR Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "AGI Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if buff == "curse" then
+        if gain then  
+        send_command('input /item "Holy Water" <me>')
+        end
+    end
+
     -- Hundred Fists and Impetus modify the custom melee groups
     if buff == "Hundred Fists" or buff == "Impetus" then
         classes.CustomMeleeGroups:clear()
@@ -901,13 +1012,18 @@ function job_buff_change(buff, gain)
         if state.Buff["Impetus"] then
             equip({body="Bhikku Cyclas +2"})
         end
-
+    
     -- Update gear if any of the above changed
     if buff == "Hundred Fists" or buff == "Impetus" or buff == "Footwork" then
         handle_equipping_gear(player.status)
     end
+    if not midaction() then
+        job_update()
+    end
 end
-
+function check_buffs(check)
+     
+end
 
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
@@ -928,7 +1044,12 @@ function customize_melee_set(meleeSet)
     if state.TreasureMode.value == 'Fulltime' then
         meleeSet = set_combine(meleeSet, sets.TreasureHunter)
     end
-    
+    if (buff == "Impetus" and gain) or buffactive.impetus then
+        equip({body="Bhikku Cyclas +2"})
+    end
+    if state.Buff["Impetus"] then
+        equip({body="Bhikku Cyclas +2"})
+    end
     return meleeSet
 end
 -- Called by the 'update' self-command.
@@ -942,6 +1063,12 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if (buff == "Impetus" and gain) or buffactive.impetus then
+        equip({body="Bhikku Cyclas +2"})
+    end
+    if state.Buff["Impetus"] then
+        equip({body="Bhikku Cyclas +2"})
     end
 end
 

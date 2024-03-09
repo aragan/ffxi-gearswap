@@ -26,6 +26,7 @@ function get_sets()
     res = require 'resources'
 end
 organizer_items = {
+    "Airmid's Gorget",
     "Tumult's Blood",
     "Sarama's Hide",
     "Hidhaegg's Scale",
@@ -84,7 +85,7 @@ function job_setup()
     state.TreasureMode:set('None')
     send_command('wait 6;input /lockstyleset 150')
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
-    "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Nexus Cape"}
+    "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Nexus Cape", "Airmid's Gorget",}
     
     rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda',
         'Lux','Tenebrae'}
@@ -120,12 +121,10 @@ end
 -------------------------------------------------------------------------------------------------------------------
 
 function user_setup()
-    state.ShieldMode = M{['description']='Shield Mode', 'normal','Ochain','Duban', 'Aegis', 'Priwen'} -- , 'Priwen', 'Srivatsa' }
+    state.ShieldMode = M{['description']='Shield Mode', 'normal','Ochain','Duban', 'Srivatsa', 'Aegis', 'Priwen'} -- , 'Priwen' }
     state.HippoMode = M{['description']='Hippo Mode', 'normal', 'Hippo'}
     state.TartarusMode = M{['description']='Tartarus Mode', 'normal', 'Tartarus'}
     --areas.AdoulinCity = S{'Eastern Adoulin','Western Adoulin','Mog Garden','Celennia Memorial Library'}
-    state.Auto_Kite = M(false, 'Auto_Kite')
-    moving = false
     -- Options: Override default values
     state.OffenseMode:options('Normal', 'Tp', 'Acc', 'Hybrid', 'STP', 'CRIT')
 	--state.DefenseMode:options('Normal', 'PDT')
@@ -161,7 +160,22 @@ function user_setup()
      --Alt+/ enable all
     send_command('bind !/ gs enable all')
     state.Runes = M{['description']='Runes', 'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda', 'Lux', 'Tenebrae'}
-	
+
+    -- 'Out of Range' distance; WS will auto-cancel
+    range_mult = {
+        [0] = 0,
+        [2] = 1.70,
+        [3] = 1.490909,
+        [4] = 1.44,
+        [5] = 1.377778,
+        [6] = 1.30,
+        [7] = 1.20,
+        [8] = 1.30,
+        [9] = 1.377778,
+        [10] = 1.45,
+        [11] = 1.490909,
+        [12] = 1.70,
+    }
     state.Auto_Kite = M(false, 'Auto_Kite')
 
     Haste = 0
@@ -295,8 +309,8 @@ legs="Nyame Flanchard",
 feet="Nyame Sollerets",
 neck="Rep. Plat. Medal",
 waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-left_ear="Thrud Earring",
-right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+right_ear="Thrud Earring",
+left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 left_ring="Regal Ring",
 right_ring="Cornelia's Ring",
 }
@@ -342,8 +356,8 @@ sets.precast.WS['Requiescat'].None = {}
        feet="Nyame Sollerets",
        neck="Sibyl Scarf",
        waist="Orpheus's Sash",
-       left_ear="Friomisi Earring",
-       right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+       right_ear="Friomisi Earring",
+       left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
        left_ring="Archon Ring",
        right_ring="Cornelia's Ring",
        back="Argocham. Mantle",
@@ -359,8 +373,8 @@ sets.precast.WS['Sanguine Blade'].None = {}
    feet="Nyame Sollerets",
    neck="Sibyl Scarf",
    waist="Orpheus's Sash",
-   left_ear="Friomisi Earring",
-   right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+   right_ear="Friomisi Earring",
+   left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
    left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
    right_ring="Cornelia's Ring",
    back="Argocham. Mantle",
@@ -375,8 +389,8 @@ sets.precast.WS['Cataclysm'] = {
    feet="Nyame Sollerets",
    neck="Sibyl Scarf",
    waist="Orpheus's Sash",
-   left_ear="Friomisi Earring",
-   right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+   right_ear="Friomisi Earring",
+   left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
    left_ring="Archon Ring",
    right_ring="Cornelia's Ring",
    back="Argocham. Mantle",
@@ -391,8 +405,8 @@ legs="Nyame Flanchard",
 feet="Nyame Sollerets",
 neck="Rep. Plat. Medal",
 waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-left_ear="Thrud Earring",
-right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+right_ear="Thrud Earring",
+left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 left_ring="Sroda Ring", 
 right_ring="Cornelia's Ring",
 back="Bleating Mantle",
@@ -1535,7 +1549,7 @@ sets.engaged.Tp = --1179 / 1315 avec enlight up
    waist={ name="Sailfi Belt +1", augments={'Path: A',}},
    left_ear="Cessance Earring",
    right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
-   left_ring="Moonbeam Ring",
+   left_ring="Moonlight Ring",
    right_ring="Moonlight Ring",
    back="Tactical Mantle",
   }
@@ -1544,7 +1558,7 @@ sets.engaged.Tp = --1179 / 1315 avec enlight up
 {  
    ammo="Aurgelmir Orb +1",
    head="Flam. Zucchetto +2",
-   body="Flamma Korazin +2",
+   body="Volte Harness",
    hands="Flam. Manopolas +2",
    legs="Flamma Dirs +2",
    feet="Flam. Gambieras +2",
@@ -1583,7 +1597,7 @@ sets.engaged.CRIT = --1179 / 1315 avec enlight up
       waist="Tempus Fugit +1",
       left_ear="Dedition Earring",
       right_ear="Telos Earring",
-      left_ring="Petrov Ring",
+      left_ring="Moonlight Ring",
       right_ring="Moonlight Ring",
       back="Tactical Mantle",
    }
@@ -1743,7 +1757,7 @@ sets.engaged.DW.Hybrid.MaxHaste = set_combine(sets.engaged.DW.Hybrid)-- 12%
     waist="Carrier's Sash",
     left_ear="Trux Earring",
     right_ear="Cryptic Earring",
-    left_ring="Moonbeam Ring",
+    left_ring="Moonlight Ring",
     right_ring="Moonlight Ring",
     back="Rudianos's Mantle",
 }
@@ -1824,6 +1838,13 @@ function job_precast(spell, action, spellMap, eventArgs)
         equip({})
         end
     end]]
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
     if rune_enchantments:contains(spell.english) then
         eventArgs.handled = true
     end
@@ -1855,6 +1876,15 @@ function job_precast(spell, action, spellMap, eventArgs)
             return
         elseif buffactive['Copy Image'] or buffactive['Copy Image (2)'] then
             send_command('cancel 66; cancel 444; cancel Copy Image; cancel Copy Image (2)')
+        end
+    end
+end
+
+function job_post_precast(spell, action, spellMap, eventArgs)
+
+    if spell.type:lower() == 'weaponskill' then
+        if player.tp == 3000 then  -- Replace Moonshade Earring if we're at cap TP
+            equip({left_ear="Ishvara Earring"})
         end
     end
 end
@@ -1947,8 +1977,8 @@ function job_buff_change(buff,gain)
             equip(sets.defense.PDT)
             send_command('input /p Petrification, please Stona.')		
         else
-        send_command('input /p '..player.name..' is no longer Petrify!')
-        handle_equipping_gear(player.status)
+            send_command('input /p '..player.name..' is no longer Petrify!')
+            handle_equipping_gear(player.status)
         end
     end
     if buff == "Rampart" then
@@ -1958,35 +1988,116 @@ function job_buff_change(buff,gain)
             send_command('input /p "Rampart" [OFF]')
         end
     end
-    if buff == "Charm" then
+    if buff == "charm" then
         if gain then  			
            send_command('input /p Charmd, please Sleep me.')		
         else	
            send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
-           handle_equipping_gear(player.status)
         end
     end
-    if buff == "Sleep" then
-        if gain then    
-            equip(sets.buff.Sleep)
-            send_command('input /p ZZZzzz, please cure.')		
-            disable('neck')
-        else
-            enable('neck')
-            send_command('input /p '..player.name..' is no longer Sleep!')
-            handle_equipping_gear(player.status)    
-        end
-        if not midaction() then
+    if S{'terror','petrification','sleep','stun'}:contains(name) then
+        if gain then
+            equip(sets.defense.PDT)
+        elseif not gain then 
             handle_equipping_gear(player.status)
-            job_update()
         end
     end
+    if buff == 'sleep' then
+        if gain and player.hp > 120 and player.status == 'Engaged' then -- Equip Vim Torque When You Are Asleep
+            equip({neck="Vim Torque +1"})
+			disable('neck')
+        elseif not gain then 
+			enable('neck')
+            handle_equipping_gear(player.status)
+        end
+    end	
+    if buff == "Defense Down" then
+        if gain then  			
+            send_command('input /item "Panacea" <me>')
+        end
+    elseif buff == "Magic Def. Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Max HP Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Evasion Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Magic Evasion Downn" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Dia" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end  
+    elseif buff == "Bio" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Bind" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "slow" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "weight" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Attack Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Accuracy Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "INT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "MND Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "STR Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "AGI Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if buff == "curse" then
+        if gain then  
+        send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if not midaction() then
+        job_update()
+    end
+end
+function check_buffs(check)
+     
 end
 function job_handle_equipping_gear(playerStatus, eventArgs)   
     determine_haste_group()
     check_moving()
     update_combat_form()
-    check_gear()
     if state.ShieldMode.value == "Duban" then
 	   equip({sub="Duban"})
     elseif state.ShieldMode.value == "Ochain" then
@@ -1995,36 +2106,27 @@ function job_handle_equipping_gear(playerStatus, eventArgs)
 	   equip({sub="Aegis"})
     elseif state.ShieldMode.value == "Priwen" then
         equip({sub="Priwen"})
+    elseif state.ShieldMode.value == "Srivatsa" then
+	    equip({sub="Srivatsa"})
     elseif state.ShieldMode.value == "normal" then
       equip({})
     end
-	--elseif state.ShieldMode.value == "Srivatsa" then
-	   --equip({sub="Srivatsa"})
+
     if state.HippoMode.value == "Hippo" then
         equip({feet="Hippo. Socks +1"})
     elseif state.HippoMode.value == "normal" then
-       equip({})
-    end
-    if state.TartarusMode.value == "Tartarus" then
-        equip({body="Tartarus Platemail"})
-    elseif state.TartarusMode.value == "normal" then
        equip({})
     end
 end
 
 function job_update(cmdParams, eventArgs)
     check_moving()
-    handle_equipping_gear(player.status)
+    --handle_equipping_gear(player.status)
 end
 -------------------------------------------------------------------------------------------------------------------
 -- Customization hooks for idle and melee sets, after they've been automatically constructed.
 -------------------------------------------------------------------------------------------------------------------
 function customize_idle_set(idleSet)
-    if state.TartarusMode.value == "Tartarus" then
-        idleSet = set_combine(idleSet, {body="Tartarus Platemail"})
-    elseif state.TartarusMode.value == "normal" then
-       equip({})
-    end
     if state.HippoMode.value == "Hippo" then
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
     elseif state.HippoMode.value == "normal" then
@@ -2057,15 +2159,15 @@ function customize_idle_set(idleSet)
     if world.area:contains("Adoulin") then
         idleSet = set_combine(idleSet, {body="Councilor's Garb"})
     end
+    if state.TartarusMode.value == "Tartarus" then
+        idleSet = set_combine(idleSet, {body="Tartarus Platemail"})
+    elseif state.TartarusMode.value == "normal" then
+       equip({})
+    end
   return idleSet
 end
 -- Modify the default melee set after it was constructed.
 function customize_melee_set(meleeSet)
-    if state.TartarusMode.value == "Tartarus" then
-        meleeSet = set_combine(meleeSet, {body="Tartarus Platemail"})
-    elseif state.TartarusMode.value == "normal" then
-       equip({})
-    end
     if state.HybridMode.current == 'MDT' then
         meleeSet = set_combine(meleeSet, sets.engaged.MDT)
     end
@@ -2074,6 +2176,11 @@ function customize_melee_set(meleeSet)
     end
     if state.HybridMode.current == 'ReverenceGauntlets' then
         meleeSet = set_combine(meleeSet, sets.engaged.ReverenceGauntlets)
+    end
+    if state.TartarusMode.value == "Tartarus" then
+        meleeSet = set_combine(meleeSet, {body="Tartarus Platemail"})
+    elseif state.TartarusMode.value == "normal" then
+       equip({})
     end
   return meleeSet
 end
@@ -2182,45 +2289,15 @@ function check_moving()
     if state.DefenseMode.value == 'None' and state.Kiting.value == false then
         if not state.Auto_Kite.value and moving then
             state.Auto_Kite:set(true)
+            send_command('gs c update')
+
         elseif state.Auto_Kite.value == true and moving == false then
             state.Auto_Kite:set(false)
-        end
-    end
-end
-function check_gear()
-    if no_swap_gear:contains(player.equipment.left_ring) then
-        disable("ring1")
-    else
-        enable("ring1")
-    end
-    if no_swap_gear:contains(player.equipment.right_ring) then
-        disable("ring2")
-    else
-        enable("ring2")
-    end
-    if no_swap_gear:contains(player.equipment.waist) then
-        disable("waist")
-    else
-        enable("waist")
-    end
-end
+            send_command('gs c update')
 
-windower.register_event('zone change',
-    function()
-        if no_swap_gear:contains(player.equipment.left_ring) then
-            enable("ring1")
-            equip(sets.idle)
-        end
-        if no_swap_gear:contains(player.equipment.right_ring) then
-            enable("ring2")
-            equip(sets.idle)
-        end
-        if no_swap_gear:contains(player.equipment.waist) then
-            enable("waist")
-            equip(sets.idle)
         end
     end
-)
+end
 
 ------------------------------------------------------------------
 -- Timer manipulation
