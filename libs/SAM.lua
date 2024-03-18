@@ -1,9 +1,3 @@
--------------------------------------------------------------------------------------------------------------------
--- Initialization function that defines sets and variables to be used.
--------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------
--- This lua is based off of the Kinematics template and uses Motenten globals. --
---                                                                             --
 -----------------------------Authors of this file--------------------------------
 ------           ******************************************                ------
 ---                                                                           ---
@@ -1222,6 +1216,9 @@ function customize_melee_set(meleeSet)
     if player.hpp < 5 then --if u hp 10% or down click f12 to change to sets.Reraise this code add from Aragan Asura
         meleeSet = set_combine(meleeSet, sets.Reraise)
         send_command('input //gs equip sets.Reraise')
+    end
+    if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
+        meleeSet = set_combine(meleeSet,{neck="Vim Torque +1"})
     end
     return meleeSet
 end

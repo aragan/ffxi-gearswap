@@ -1,9 +1,3 @@
--------------------------------------------------------------------------------------------------------------------
--- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------
--- This lua is based off of the Kinematics template and uses Motenten globals. --
---                                                                             --
 -----------------------------Authors of this file--------------------------------
 ------           ******************************************                ------
 ---                                                                           ---
@@ -121,7 +115,8 @@ function user_setup()
     state.PhysicalDefenseMode:options('PDT', 'HP', 'Enmity', 'Dread Spikes', 'SEboost', 'Reraise')
     state.MagicalDefenseMode:options('MDT')
     state.IdleMode:options('Normal','PDT', 'Refresh')
-
+    
+    state.AutoEquipBurst = M(true)
     state.RP = M(false, "Reinforcement Points Mode")    
     war_sj = player.sub_job == 'WAR' or false
     state.Auto_Kite = M(false, 'Auto_Kite')
@@ -1658,7 +1653,9 @@ sets.engaged.Haste.Apocalypse.CRIT.DT = set_combine(sets.engaged.Haste.Apocalyps
     sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
-    right_ring="Blenmot's Ring +1",}
+    right_ring="Blenmot's Ring +1",
+    legs="Shabti Cuisses +1",
+}
     sets.Reraise = {head="Crepuscular Helm",body="Crepuscular Mail"}
     sets.Sleep = {neck="Vim Torque +1",left_ear="Infused Earring",}
     sets.RP = {neck="Abyssal Beads +2"}
@@ -1739,7 +1736,7 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
     if (state.HybridMode.current == 'PDT' and state.PhysicalDefenseMode.current == 'Reraise') then
         equip(sets.Reraise)
     end
-    if spell.skill == 'Elemental Magic' and state.MagicBurst.value then
+    if spell.skill == 'Elemental Magic' and (state.MagicBurst.value or AEBurst) then
         equip(sets.magic_burst)
         if spell.english == "Impact" then
             equip(sets.midcast.Impact)
@@ -1848,7 +1845,10 @@ function customize_melee_set(meleeSet)
         disable('neck')
     else
         enable('neck')
-    end  
+    end
+    if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
+        meleeSet = set_combine(meleeSet,{neck="Vim Torque +1"})
+    end
     if swordList:contains(player.equipment.main) then
         send_command('input /lockstyleset 152')
     elseif gsList:contains(player.equipment.main) then
@@ -2129,7 +2129,7 @@ end
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.
 function job_update(cmdParams, eventArgs)
     get_combat_form()
-    --handle_equipping_gear(player.status)
+    handle_equipping_gear(player.status)
 
 end
 mov = {counter=0}
@@ -2308,6 +2308,46 @@ function sub_job_change(new,old)
         send_command('wait 6;input /lockstyleset 152')
     end
 end
+
+-- Auto toggle Magic burst set.
+MB_Window = 0
+time_start = 0
+AEBurst = false
+
+if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+
+    windower.raw_register_event('action', function(act)
+        for _, target in pairs(act.targets) do
+            local battle_target = windower.ffxi.get_mob_by_target("t")
+            if battle_target ~= nil and target.id == battle_target.id then
+                for _, action in pairs(target.actions) do
+                    if action.add_effect_message > 287 and action.add_effect_message < 302 then
+                        --last_skillchain = skillchains[action.add_effect_message]
+                        MB_Window = 11
+                        MB_Time = os.time()
+                    end
+                end
+            end
+        end
+    end)
+
+    windower.raw_register_event('prerender', function()
+        --Items we want to check every second
+        if os.time() > time_start then
+            time_start = os.time()
+            if MB_Window > 0 then
+                MB_Window = 11 - (os.time() - MB_Time)
+                if state.AutoEquipBurst.value then
+                    AEBurst = true
+                end
+            else
+                AEBurst = false
+            end
+        end
+    end)
+end
+
+
 function user_job_lockstyle()
     if newStatus == "Idle" then
         if gsList:contains(player.equipment.main) then

@@ -130,8 +130,8 @@ function user_setup()
     state.PhysicalDefenseMode:options('PDT', 'Evasion', 'HP')
     state.MagicalDefenseMode:options('MDT')
     swordList = S{"Naegling", "Demers. Degen +1"}
-    daggerList = S{"Tauret", "Demers. Degen +1"}
-    sub_weapons = S{"Sangarius +1", "Usonmunku", "Perun 1+", "Tanmogayi +1", "Reikiko", "Digirbalag", "Twilight Knife",
+    daggerList = S{"Tauret",}
+    sub_weapons = S{"Sangarius +1", "Perun 1+", "Tanmogayi +1", "Reikiko", "Digirbalag", "Twilight Knife",
     "Kustawi +1", "Zantetsuken", "Excalipoor II", "Warp Cudgel", "Qutrub Knife", "Wind Knife +1", "Firetongue", "Nihility",
         "Extinction", "Heartstopper +1", "Twashtar", "Aeneas", "Gleti's Knife", "Naegling", "Tauret", "Caduceus", "Loxotic Mace +1",
         "Debahocho +1", "Dolichenus", "Arendsi Fleuret", "Demers. Degen +1", "Ternion Dagger +1", "Blurred Knife +1",}
