@@ -1,9 +1,3 @@
--------------------------------------------------------------------------------------------------------------------
--- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------
--- This lua is based off of the Kinematics template and uses Motenten globals. --
---                                                                             --
 -----------------------------Authors of this file--------------------------------
 ------           ******************************************                ------
 ---                                                                           ---
@@ -40,7 +34,6 @@ organizer_items = {
     "Sword Strap",
     "Mafic Cudgel",
     "Maliya Sickle +1",
-    "Foreshock Sword",
     "Hepatizon Axe +1",
     "Gyudon",
     "Reraiser",
@@ -99,8 +92,11 @@ function job_setup()
     -- Mote has capitalization errors in the default Absorb mappings, so we use our own
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     -- Offhand weapons used to activate DW mode
-    swordList = S{"Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
+    swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
     sets.weaponList = {"Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
+    state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
+
     get_combat_form()
     update_melee_groups()
     update_combat_form()
@@ -119,7 +115,8 @@ function user_setup()
     state.PhysicalDefenseMode:options('PDT', 'HP', 'Enmity', 'Dread Spikes', 'SEboost', 'Reraise')
     state.MagicalDefenseMode:options('MDT')
     state.IdleMode:options('Normal','PDT', 'Refresh')
-
+    
+    state.AutoEquipBurst = M(true)
     state.RP = M(false, "Reinforcement Points Mode")    
     war_sj = player.sub_job == 'WAR' or false
     state.Auto_Kite = M(false, 'Auto_Kite')
@@ -152,6 +149,8 @@ function user_setup()
     send_command('bind !/ gs enable all')
     send_command('wait 2;input /lockstyleset 152')
     send_command('bind !w gs c toggle WeaponLock')
+    send_command('bind f7 gs c cycle shield')
+    send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !- gs c toggle RP')  
 
     select_default_macro_book()
@@ -169,6 +168,20 @@ end
   
 -- Define sets and vars used by this job file.
 function init_gear_sets()
+
+--Weaponsets
+sets.Normal = {}
+sets.Apocalypse = {main="Apocalypse", sub="Utu Grip"}
+sets.AgwuClaymore = {main="Agwu's Claymore", sub="Utu Grip"}
+sets.Lycurgos = {main="Lycurgos", sub="Utu Grip",}
+sets.Naegling = {main="Naegling", sub="Reikiko",}
+sets.Loxotic = {main="Loxotic Mace +1", sub="Reikiko",}
+sets.TernionDagger = {main="Ternion Dagger +1", sub="Reikiko",}
+
+sets.Normal = {}
+sets.shield = {sub="Blurred Shield +1"}
+sets.DefaultShield = {sub="Blurred Shield +1"}
+
     --------------------------------------
     -- Precast sets
     --------------------------------------
@@ -275,11 +288,11 @@ function init_gear_sets()
         })
 
     sets.precast.WS.PDL = set_combine(sets.precast.WS, {
-    ammo="Crepuscular Pebble",
     head="Heath. Burgeon. +2",
     neck="Abyssal Beads +2",
-    right_ear={ name="Heathen's Earring", augments={'Accuracy+9','Mag. Acc.+9',}},
-    right_ring="Sroda Ring",
+    right_ear="Heathen's Earring",
+    left_ring="Sroda Ring",
+
     })
     sets.precast.WS.SC = set_combine(sets.precast.WS, {       
        head="Nyame Helm",
@@ -301,7 +314,7 @@ function init_gear_sets()
         head="Heath. Burgeon. +2",
         neck="Abyssal Beads +2",
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
     sets.precast.WS.Judgment.SC = set_combine(sets.precast.WS.Judgment, {
         head="Nyame Helm",
@@ -341,7 +354,7 @@ function init_gear_sets()
         feet="Heath. Sollerets +2",
         neck="Abyssal Beads +2",
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-        right_ear={ name="Heathen's Earring", augments={'Accuracy+9','Mag. Acc.+9',}},
+        right_ear="Heathen's Earring",
         left_ear="Thrud Earring",
         right_ring="Cornelia's Ring",
         left_ring="Niqmaddu Ring",
@@ -357,12 +370,11 @@ function init_gear_sets()
         feet="Heath. Sollerets +2",
     })
     sets.precast.WS['Catastrophe'].PDL = set_combine(sets.precast.WS['Catastrophe'], {
-        ammo="Crepuscular Pebble",
         head="Heath. Burgeon. +2",
         neck="Abyssal Beads +2",
-        waist="Fotia Belt",
-        right_ear={ name="Heathen's Earring", augments={'Accuracy+9','Mag. Acc.+9',}},
-        right_ring="Sroda Ring",
+        right_ear="Heathen's Earring",
+        left_ring="Sroda Ring",
+
     })
     sets.precast.WS['Catastrophe'].SC = set_combine(sets.precast.WS['Catastrophe'], {
         head="Nyame Helm",
@@ -386,11 +398,10 @@ function init_gear_sets()
         right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
     })
     sets.precast.WS['Spiral Hell'].PDL = set_combine(sets.precast.WS['Spiral Hell'], {
-        ammo="Crepuscular Pebble",
         head="Heath. Burgeon. +2",
         neck="Abyssal Beads +2",
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
     sets.precast.WS['Spiral Hell'].SC = set_combine(sets.precast.WS['Spiral Hell'], {
         head="Nyame Helm",
@@ -426,11 +437,13 @@ sets.precast.WS['Insurgency'] = {
         legs="Nyame Flanchard",
         feet="Nyame Sollerets",    })
     sets.precast.WS['Insurgency'].PDL = set_combine(sets.precast.WS['Insurgency'], {
-        ammo="Crepuscular Pebble",
         head="Heath. Burgeon. +2",
+        hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
+        body={ name="Sakpata's Plate", augments={'Path: A',}},
         legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",    })
+        left_ring="Sroda Ring",
+    })
 
     sets.precast.WS['Insurgency'].SC = set_combine(sets.precast.WS['Insurgency'], {
         head="Nyame Helm",
@@ -461,8 +474,9 @@ sets.precast.WS['Insurgency'] = {
     })
     sets.precast.WS['Cross Reaper'].PDL = set_combine(sets.precast.WS['Cross Reaper'], {
         head="Heath. Burgeon. +2",
+        neck="Abyssal Beads +2",
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
     sets.precast.WS['Cross Reaper'].SC = set_combine(sets.precast.WS['Cross Reaper'], {
         head="Nyame Helm",
@@ -497,9 +511,9 @@ sets.precast.WS['Quietus'].Mid = set_combine(sets.precast.WS['Quietus'], {
     feet="Heath. Sollerets +2",
 })
 sets.precast.WS['Quietus'].PDL = set_combine(sets.precast.WS['Quietus'], {
-    ammo="Crepuscular Pebble",
     head="Heath. Burgeon. +2",
     hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
+    body={ name="Sakpata's Plate", augments={'Path: A',}},
     right_ear="Heathen's Earring",
     right_ring="Sroda Ring",
 })
@@ -533,9 +547,10 @@ sets.precast.WS['Entropy'].Mid = set_combine(sets.precast.WS['Entropy'], {})
 sets.precast.WS['Entropy'].PDL = set_combine(sets.precast.WS['Entropy'], {
     ammo="Crepuscular Pebble",
     head="Heath. Burgeon. +2",
+    neck="Abyssal Beads +2",
     hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
     right_ear="Heathen's Earring",
-    right_ring="Sroda Ring",
+    left_ring="Sroda Ring",
 })
 sets.precast.WS['Entropy'].SC = set_combine(sets.precast.WS['Entropy'], {
     head="Nyame Helm",
@@ -635,7 +650,7 @@ sets.precast.WS['Nightmare Scythe'] = {
         head="Heath. Burgeon. +2",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
     sets.precast.WS['Resolution'].None  = {}
 
@@ -669,7 +684,7 @@ sets.precast.WS['Nightmare Scythe'] = {
         head="Heath. Burgeon. +2",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
     sets.precast.WS['Ground Strike'].SC = set_combine(sets.precast.WS['Ground Strike'], {
         head="Nyame Helm",
@@ -686,7 +701,7 @@ sets.precast.WS['Nightmare Scythe'] = {
         head="Heath. Burgeon. +2",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
       
     sets.precast.WS['Torcleaver'] = {
@@ -707,10 +722,9 @@ sets.precast.WS['Nightmare Scythe'] = {
     sets.precast.WS['Torcleaver'].Dread  = sets.defense['Dread Spikes']
     sets.precast.WS['Torcleaver'].Mid = set_combine(sets.precast.WS['Torcleaver'], {})
     sets.precast.WS['Torcleaver'].PDL = set_combine(sets.precast.WS['Torcleaver'], {
-        ammo="Crepuscular Pebble",
         head="Heath. Burgeon. +2",
         right_ear="Heathen's Earring",
-        right_ring="Sroda Ring",
+        left_ring="Sroda Ring",
     })
     sets.precast.WS['Torcleaver'].SC = set_combine(sets.precast.WS['Torcleaver'], {
         head="Nyame Helm",
@@ -737,7 +751,6 @@ sets.precast.WS['Nightmare Scythe'] = {
         back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 }
     sets.precast.WS['Spinning Scythe'].PDL = set_combine(sets.precast.WS['Spinning Scythe'], {
-        ammo="Crepuscular Pebble",
         head="Heath. Burgeon. +2",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         right_ear="Heathen's Earring",
@@ -758,7 +771,6 @@ sets.precast.WS['Spinning Slash'].SC = set_combine(sets.precast.WS['Spinning Scy
     neck={ name="Warder's Charm +1", augments={'Path: A',}},
 })
 sets.precast.WS['Spinning Slash'].PDL = set_combine(sets.precast.WS['Spinning Scythe'], {
-    ammo="Crepuscular Pebble",
     head="Heath. Burgeon. +2",
     hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
     feet={ name="Sakpata's Leggings", augments={'Path: A',}},
@@ -1409,14 +1421,22 @@ sets.engaged.SubtleBlow = set_combine(sets.engaged, {
 
     ---------------------------------------- DW-HASTE ------------------------------------------
 
-sets.engaged.DW = set_combine(sets.engaged, {
+sets.DW =  {
     left_ear="Suppanomimi",  --5
-    waist="Reiki Yotai", --7
-})
-sets.engaged.DW.MaxAcc = set_combine(sets.engaged.DW.MaxAcc, sets.engaged.DW)
-sets.engaged.DW.STP = set_combine(sets.engaged.DW.STP, sets.engaged.DW)
-sets.engaged.DW.DA = set_combine(sets.engaged.DW.DA, sets.engaged.DW)
-sets.engaged.DW.CRIT = set_combine(sets.engaged.DW.CRIT, sets.engaged.DW)
+    right_ear="Eabani Earring",
+
+}
+sets.engaged.DW = set_combine(sets.engaged, sets.DW)
+
+sets.engaged.DW.MaxAcc = set_combine(sets.engaged.MaxAcc, sets.DW)
+sets.engaged.DW.STP = set_combine(sets.engaged.STP, sets.DW)
+sets.engaged.DW.DA = set_combine(sets.engaged.DA, sets.DW)
+sets.engaged.DW.CRIT = set_combine(sets.engaged.CRIT, sets.DW)
+
+sets.engaged.DW.MaxAcc.Haste = set_combine(sets.engaged.Haste.MaxAcc, sets.DW)
+sets.engaged.DW.STP.Haste = set_combine(sets.engaged.Haste.STP, sets.DW)
+sets.engaged.DW.DA.Haste = set_combine(sets.engaged.Haste.DA, sets.DW)
+sets.engaged.DW.CRIT.Haste = set_combine(sets.engaged.Haste.CRIT, sets.DW)
 ------------------------------------------------------------------------------------------------
 ---------------------------------------- Hybrid Sets -------------------------------------------
 ------------------------------------------------------------------------------------------------
@@ -1633,7 +1653,9 @@ sets.engaged.Haste.Apocalypse.CRIT.DT = set_combine(sets.engaged.Haste.Apocalyps
     sets.buff.Doom = {    neck="Nicander's Necklace",
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
-    right_ring="Blenmot's Ring +1",}
+    right_ring="Blenmot's Ring +1",
+    legs="Shabti Cuisses +1",
+}
     sets.Reraise = {head="Crepuscular Helm",body="Crepuscular Mail"}
     sets.Sleep = {neck="Vim Torque +1",left_ear="Infused Earring",}
     sets.RP = {neck="Abyssal Beads +2"}
@@ -1714,7 +1736,7 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
     if (state.HybridMode.current == 'PDT' and state.PhysicalDefenseMode.current == 'Reraise') then
         equip(sets.Reraise)
     end
-    if spell.skill == 'Elemental Magic' and state.MagicBurst.value then
+    if spell.skill == 'Elemental Magic' and (state.MagicBurst.value or AEBurst) then
         equip(sets.magic_burst)
         if spell.english == "Impact" then
             equip(sets.midcast.Impact)
@@ -1745,6 +1767,8 @@ function job_aftercast(spell, action, spellMap, eventArgs)
     if state.Buff[spell.english] ~= nil then
         state.Buff[spell.english] = not spell.interrupted or buffactive[spell.english]
     end
+
+    check_weaponset()
 end
 function job_state_change(stateField, newValue, oldValue)
     if state.WeaponLock.value == true then
@@ -1752,6 +1776,8 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
+
+    check_weaponset()
 end
 function job_post_aftercast(spell, action, spellMap, eventArgs)
     --if spell.type == 'WeaponSkill' then
@@ -1773,6 +1799,10 @@ function job_handle_equipping_gear(status, eventArgs)
     job_self_command()
     update_combat_form()
     user_job_lockstyle()
+end
+function check_weaponset()
+    equip(sets[state.WeaponSet.current])
+    equip(sets[state.shield.current])
 end
 function job_self_command(cmdParams, eventArgs)
     if player.hpp < 5 then --if u hp 10% or down click f12 to change to sets.Reraise this code add from Aragan Asura
@@ -1815,13 +1845,18 @@ function customize_melee_set(meleeSet)
         disable('neck')
     else
         enable('neck')
-    end  
+    end
+    if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
+        meleeSet = set_combine(meleeSet,{neck="Vim Torque +1"})
+    end
     if swordList:contains(player.equipment.main) then
         send_command('input /lockstyleset 152')
     elseif gsList:contains(player.equipment.main) then
         send_command('input /lockstyleset 165')
     end
     --meleeSet = set_combine(meleeSet, select_earring())
+    check_weaponset()
+
     return meleeSet
 end
   
@@ -1912,15 +1947,13 @@ function job_buff_change(buff, gain)
             handle_equipping_gear(player.status)
         end
     end
-    if buff == 'sleep' then
-        if gain and player.hp > 120 and player.status == 'Engaged' then -- Equip Vim Torque When You Are Asleep   
-            equip(sets.Sleep)
-            send_command('input /p ZZZzzz, please cure.')		
-            disable('neck')
-        else
-            enable('neck')
-            send_command('input /p '..player.name..' is no longer Sleep Thank you !')
-            handle_equipping_gear(player.status)    
+    if name == 'sleep' then
+        if gain and player.hp > 120 and player.status == 'Engaged' then -- Equip Vim Torque When You Are Asleep
+            equip({neck="Vim Torque +1"})
+			disable('neck')
+        elseif not gain then 
+			enable('neck')
+            handle_equipping_gear(player.status)
         end
     end
     if buff == "Defense Down" then
@@ -2189,10 +2222,9 @@ function get_combat_form()
     elseif gsList:contains(player.equipment.main) then
         send_command('input /lockstyleset 165')
     end]]
-    if S{'NIN', 'DNC'}:contains(player.sub_job) and swordList:contains(player.equipment.main) then
+    if S{'NIN', 'DNC'}:contains(player.sub_job) and swordList:contains(player.equipment.sub) then
         state.CombatForm:set("DW")
-    --elseif player.equipment.sub == '' or shields:contains(player.equipment.sub) then
-    elseif swordList:contains(player.equipment.main) then
+    elseif player.equipment.sub == '' or player.equipment.sub == 'Blurred Shield +1' then
         state.CombatForm:set("SW")
     elseif buffactive['Last Resort'] then
         if (buffactive.embrava or buffactive.haste) and buffactive.march then
@@ -2276,6 +2308,46 @@ function sub_job_change(new,old)
         send_command('wait 6;input /lockstyleset 152')
     end
 end
+
+-- Auto toggle Magic burst set.
+MB_Window = 0
+time_start = 0
+AEBurst = false
+
+if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+
+    windower.raw_register_event('action', function(act)
+        for _, target in pairs(act.targets) do
+            local battle_target = windower.ffxi.get_mob_by_target("t")
+            if battle_target ~= nil and target.id == battle_target.id then
+                for _, action in pairs(target.actions) do
+                    if action.add_effect_message > 287 and action.add_effect_message < 302 then
+                        --last_skillchain = skillchains[action.add_effect_message]
+                        MB_Window = 11
+                        MB_Time = os.time()
+                    end
+                end
+            end
+        end
+    end)
+
+    windower.raw_register_event('prerender', function()
+        --Items we want to check every second
+        if os.time() > time_start then
+            time_start = os.time()
+            if MB_Window > 0 then
+                MB_Window = 11 - (os.time() - MB_Time)
+                if state.AutoEquipBurst.value then
+                    AEBurst = true
+                end
+            else
+                AEBurst = false
+            end
+        end
+    end)
+end
+
+
 function user_job_lockstyle()
     if newStatus == "Idle" then
         if gsList:contains(player.equipment.main) then

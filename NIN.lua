@@ -1,8 +1,3 @@
-
-
-------------------------------------------------------------------------------------------------------------------
--- Initialization function that defines sets and variables to be used.
--------------------------------------------------------------------------------------------------------------------
 ---------------------------------------------------------------------------------
 -- This lua is based off of the Kinematics template and uses Motenten globals. --
 --                                                                             --
@@ -133,7 +128,7 @@ function user_setup()
     send_command('bind @f9 gs c cycle HasteMode')
     send_command('bind f4 gs c cycle Runes')
     send_command('bind f3 gs c cycleback Runes')
-    send_command('bind f2 input //gs c UseRune')
+    send_command('bind f2 input //gs c toggle UseRune')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^/ gs disable all')
@@ -1784,6 +1779,9 @@ end
 
 function job_self_command(cmdParams, eventArgs)
     gearinfo(cmdParams, eventArgs)
+    if cmdParams[1]:lower() == 'UseRune' then
+        send_command('@input /ja '..state.Runes.value..' <me>')
+    end
 end
 
 function gearinfo(cmdParams, eventArgs)

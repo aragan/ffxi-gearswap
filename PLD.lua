@@ -1,15 +1,9 @@
--------------------------------------------------------------------------------------------------------------------
--- Initialization function that defines sets and variables to be used.
--------------------------------------------------------------------------------------------------------------------
----------------------------------------------------------------------------------
---                                                                             --
 -----------------------------Authors of this file--------------------------------
 ------           ******************************************                ------
 ---                                                                           ---
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
------------------------------------------------------------------------------------ It is added to the repository to allow people to have a baseline to build from,
--- and make sure it is up-to-date with the library API.
+---------------------------------------------------------------------------------
 
 
 -------------------------------------------------------------------------------------------------------------------
@@ -32,7 +26,6 @@ organizer_items = {
     "Hidhaegg's Scale",
     "Sovereign's Hide",
     "Grape Daifuku",
-    "Soy Ramen",
     "G. Curry Bun +1",
     "Pukatrice Egg",
     "Moogle Amp.",
@@ -43,7 +36,6 @@ organizer_items = {
     "Red Curry Bun",
     "Foreshock Sword",
     "Hepatizon Axe +1",
-    "Aettir",
     "Sword Strap",
     "Mafic Cudgel",
     "Gyudon",
@@ -126,7 +118,7 @@ function user_setup()
     state.TartarusMode = M{['description']='Tartarus Mode', 'normal', 'Tartarus'}
     --areas.AdoulinCity = S{'Eastern Adoulin','Western Adoulin','Mog Garden','Celennia Memorial Library'}
     -- Options: Override default values
-    state.OffenseMode:options('Normal', 'Tp', 'Acc', 'Hybrid', 'STP', 'CRIT')
+    state.OffenseMode:options('Normal', 'Hybrid', 'TP', 'Acc', 'STP', 'CRIT')
 	--state.DefenseMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'PDL', 'None')
     state.CastingMode:options('Normal', 'DT', 'MB') 
@@ -177,6 +169,7 @@ function user_setup()
         [12] = 1.70,
     }
     state.Auto_Kite = M(false, 'Auto_Kite')
+    state.AutoEquipBurst = M(true)
 
     Haste = 0
     DW_needed = 0
@@ -1099,7 +1092,12 @@ sets.TreasureHunter = {
    -- Idle/resting/defense/etc sets
    --------------------------------------
  sets.Cover = set_combine(sets.precast.JA['Rampart'], { head="Rev. Coronet +2", body="Cab. Surcoat +1"})
-   sets.Doom = {neck="Nicander's Necklace",left_ring="Eshmun's Ring",right_ring="Blenmot's Ring +1", waist="Gishdubar Sash"} -- +65%
+   sets.Doom = {neck="Nicander's Necklace",
+   left_ring="Eshmun's Ring",
+   right_ring="Blenmot's Ring +1", 
+   waist="Gishdubar Sash",
+   legs="Shabti Cuisses +1",
+} -- +65%
    sets.Petri = {back="Sand Mantle"} 
  sets.Reraise = {head="Crepuscular Helm", body="Crepuscular Mail",}
  sets.buff.Sleep = {neck={ name="Vim Torque +1", augments={'Path: A',}},left_ear="Infused Earring",}
@@ -1517,10 +1515,23 @@ sets.defense.Block = {
     
    sets.engaged = --1124 / 1264 avec enlight up 
    {}
-
+   sets.engaged.Hybrid = --1179 / 1315 avec enlight up
+   {   ammo="Aurgelmir Orb +1",
+   head="Hjarrandi Helm",
+   body="Hjarrandi Breast.",
+   hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
+   legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
+   feet={ name="Sakpata's Leggings", augments={'Path: A',}},
+   neck="Ainia Collar",
+   waist="Tempus Fugit +1",
+   left_ear="Dedition Earring",
+   right_ear="Telos Earring",
+   left_ring="Moonlight Ring",
+   right_ring="Moonlight Ring",
+   back="Tactical Mantle",
+   }
    sets.engaged.Acc = --1179 / 1315 avec enlight up
-   {main="Naegling",
-   sub="Blurred Shield +1",
+   {
    ammo="Amar Cluster",
    head={ name="Sakpata's Helm", augments={'Path: A',}},
    body={ name="Sakpata's Plate", augments={'Path: A',}},
@@ -1536,9 +1547,8 @@ sets.defense.Block = {
    back={ name="Weard Mantle", augments={'VIT+1','Enmity+3','Phalanx +5',}},
 }
 
-sets.engaged.Tp = --1179 / 1315 avec enlight up
-{   main="Naegling",
-   sub="Blurred Shield +1",
+sets.engaged.TP = --1179 / 1315 avec enlight up
+{ 
    ammo="Aurgelmir Orb +1",
    head={ name="Sakpata's Helm", augments={'Path: A',}},
    body={ name="Sakpata's Plate", augments={'Path: A',}},
@@ -1555,7 +1565,8 @@ sets.engaged.Tp = --1179 / 1315 avec enlight up
   }
 
    sets.engaged.STP = --1179 / 1315 avec enlight up
-{  
+{  main="Naegling",
+   sub="Blurred Shield +1",
    ammo="Aurgelmir Orb +1",
    head="Flam. Zucchetto +2",
    body="Volte Harness",
@@ -1586,21 +1597,7 @@ sets.engaged.CRIT = --1179 / 1315 avec enlight up
    right_ring="Hetairoi Ring",
    back="Annealed Mantle",}
 
-   sets.engaged.Hybrid = --1179 / 1315 avec enlight up
-   {   ammo="Aurgelmir Orb +1",
-      head="Hjarrandi Helm",
-      body="Hjarrandi Breast.",
-      hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
-      legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
-      feet={ name="Sakpata's Leggings", augments={'Path: A',}},
-      neck="Ainia Collar",
-      waist="Tempus Fugit +1",
-      left_ear="Dedition Earring",
-      right_ear="Telos Earring",
-      left_ring="Moonlight Ring",
-      right_ring="Moonlight Ring",
-      back="Tactical Mantle",
-   }
+
 
 ------------------------------------------------------------------------------------------------
     ---------------------------------------- DW ------------------------------------------
@@ -1616,7 +1613,7 @@ sets.engaged.DW.Acc = set_combine(sets.engaged.Acc,{
     right_ear="Eabani Earring", --4
 left_ear="Suppanomimi",
 }) -- 12%
-sets.engaged.DW.Tp = set_combine(sets.engaged.Tp,{
+sets.engaged.DW.TP = set_combine(sets.engaged.TP,{
     right_ear="Eabani Earring", --4
 left_ear="Suppanomimi",
 }) -- 12%
@@ -1656,7 +1653,7 @@ sets.engaged.DW.Acc.LowHaste = set_combine(sets.engaged.DW.Acc, {
     --waist={ name="Sailfi Belt +1", augments={'Path: A',}},
     --waist="Reiki Yotai", --7
 }) -- 15%
-sets.engaged.DW.Tp.LowHaste = set_combine(sets.engaged.DW.Tp, {
+sets.engaged.DW.TP.LowHaste = set_combine(sets.engaged.DW.TP, {
     legs="Carmine Cuisses +1", --6
     left_ear="Suppanomimi",  --5
     right_ear="Eabani Earring", --4
@@ -1695,7 +1692,7 @@ sets.engaged.DW.Acc.MidHaste = set_combine(sets.engaged.DW.Acc,{
     --waist={ name="Sailfi Belt +1", augments={'Path: A',}},
     --waist="Reiki Yotai", --7
 }) -- 15%
-sets.engaged.DW.Tp.MidHaste = set_combine(sets.engaged.DW.Tp,{ 
+sets.engaged.DW.TP.MidHaste = set_combine(sets.engaged.DW.TP,{ 
     left_ear="Suppanomimi",  --5
     right_ear="Eabani Earring", --4
     legs="Carmine Cuisses +1", --6
@@ -1725,7 +1722,7 @@ sets.engaged.DW.Hybrid.MidHaste = set_combine(sets.engaged.DW.Hybrid,{
 
 sets.engaged.DW.MaxHaste = set_combine(sets.engaged.DW)
 sets.engaged.DW.Acc.MaxHaste = set_combine(sets.engaged.DW.Acc)-- 12%
-sets.engaged.DW.Tp.MaxHaste = set_combine(sets.engaged.DW.Tp)-- 12%
+sets.engaged.DW.TP.MaxHaste = set_combine(sets.engaged.DW.TP)-- 12%
 sets.engaged.DW.STP.MaxHaste = set_combine(sets.engaged.DW.STP)-- 12%
 sets.engaged.DW.CRIT.MaxHaste = set_combine(sets.engaged.DW.CRIT)-- 12%
 sets.engaged.DW.Hybrid.MaxHaste = set_combine(sets.engaged.DW.Hybrid)-- 12%
@@ -1765,6 +1762,14 @@ sets.engaged.DW.Hybrid.MaxHaste = set_combine(sets.engaged.DW.Hybrid)-- 12%
     hands="Rev. Gauntlets +3",
  }
 
+
+
+
+    ------------------------------------------------------------------------------------------------
+    ----------------------------------------DW - Hybrid Sets -------------------------------------------
+    ------------------------------------------------------------------------------------------------
+
+
  sets.engaged.DW.Acc.PDT = set_combine(sets.engaged.DW.Acc,{
     ammo="Staunch Tathlum +1",
     left_ring="Defending Ring",
@@ -1773,7 +1778,7 @@ sets.engaged.DW.Hybrid.MaxHaste = set_combine(sets.engaged.DW.Hybrid)-- 12%
     left_ear="Suppanomimi",
     waist="Reiki Yotai",
 })
-sets.engaged.DW.Tp.PDT = set_combine(sets.engaged.DW.Tp,{
+sets.engaged.DW.TP.PDT = set_combine(sets.engaged.DW.TP,{
     ammo="Staunch Tathlum +1",
     left_ring="Defending Ring",
     right_ring="Moonlight Ring",
@@ -1804,9 +1809,9 @@ sets.engaged.DW.CRIT.PDT = set_combine(sets.engaged.DW.CRIT,{
     sets.engaged.DW.Acc.PDT.LowHaste = set_combine(sets.engaged.DW.Acc.LowHaste, sets.engaged.PDT)
     sets.engaged.DW.Acc.PDT.MidHaste = set_combine(sets.engaged.DW.Acc.MidHaste, sets.engaged.PDT)
     sets.engaged.DW.Acc.PDT.MaxHaste = set_combine(sets.engaged.DW.Acc.PDT.MaxHaste, sets.engaged.PDT)
-    sets.engaged.DW.Tp.PDT.LowHaste = set_combine(sets.engaged.DW.Tp.LowHaste, sets.engaged.PDT)
-    sets.engaged.DW.Tp.PDT.MidHaste = set_combine(sets.engaged.DW.Tp.MidHaste, sets.engaged.PDT)
-    sets.engaged.DW.Tp.PDT.MaxHaste = set_combine(sets.engaged.DW.Tp.PDT.MaxHaste, sets.engaged.PDT)
+    sets.engaged.DW.TP.PDT.LowHaste = set_combine(sets.engaged.DW.TP.LowHaste, sets.engaged.PDT)
+    sets.engaged.DW.TP.PDT.MidHaste = set_combine(sets.engaged.DW.TP.MidHaste, sets.engaged.PDT)
+    sets.engaged.DW.TP.PDT.MaxHaste = set_combine(sets.engaged.DW.TP.PDT.MaxHaste, sets.engaged.PDT)
     sets.engaged.DW.STP.PDT.LowHaste = set_combine(sets.engaged.DW.STP.LowHaste, sets.engaged.PDT)
     sets.engaged.DW.STP.PDT.MidHaste = set_combine(sets.engaged.DW.STP.MidHaste, sets.engaged.PDT)
     sets.engaged.DW.STP.PDT.MaxHaste = set_combine(sets.engaged.DW.STP.PDT.MaxHaste, sets.engaged.PDT)
@@ -1823,7 +1828,12 @@ end
 ------------------------------------------------------------------
 -- Action events
 ------------------------------------------------------------------
-
+function job_pretarget(spell, action, spellMap, eventArgs)
+    if spell.type:endswith('Magic') and buffactive.silence then
+        eventArgs.cancel = true
+        send_command('input /item "Remedy" <me>')
+    end
+end
 -- Run after the default midcast() is done.
 -- eventArgs is the same one used in job_midcast, in case information needs to be persisted.
 function job_precast(spell, action, spellMap, eventArgs)
@@ -1904,9 +1914,7 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
             equip(sets.Obi)
         end
     end
-    if spell.skill == 'Elemental Magic' and state.MagicBurst.value then
-        equip(sets.magic_burst)
-    elseif spell.skill == 'Divine Magic' and (spell.english == "Holy" or spell.english == "Holy II" or spell.english == "Banish" or spell.english == "Banish II") and state.MagicBurst.value then
+    if (spell.skill == 'Elemental Magic' or spell.skill == 'Divine Magic') and (state.MagicBurst.value or AEBurst) then
         equip(sets.magic_burst)
     end
     if spell.skill == 'Divine Magic' and (spell.english == "Holy" or spell.english == "Holy II" or spell.english == "Banish" or spell.english == "Banish II" ) then     
@@ -1924,15 +1932,12 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
         -- Match day or weather.
        elseif (spell.element == world.day_element or spell.element == world.weather_element) then
             equip(sets.Obi)
+        elseif state.MagicBurst.value then
+            equip(sets.magic_burst)
         end
     end
 end
-function job_pretarget(spell, action, spellMap, eventArgs)
-    if spell.type:endswith('Magic') and buffactive.silence then
-        eventArgs.cancel = true
-        send_command('input /item "Remedy" <me>')
-    end
-end
+
 
 function job_aftercast(spell)
     if not spell.interrupted then
@@ -2182,8 +2187,12 @@ function customize_melee_set(meleeSet)
     elseif state.TartarusMode.value == "normal" then
        equip({})
     end
+    if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
+        meleeSet = set_combine(meleeSet,{neck="Vim Torque +1"})
+    end
   return meleeSet
 end
+
 windower.register_event('hpp change',
 function(new_hpp,old_hpp)
     if new_hpp < 5 then
@@ -2503,7 +2512,43 @@ end)
 -------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
+-- Auto toggle Magic burst set.
+MB_Window = 0
+time_start = 0
+AEBurst = false
 
+if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+
+    windower.raw_register_event('action', function(act)
+        for _, target in pairs(act.targets) do
+            local battle_target = windower.ffxi.get_mob_by_target("t")
+            if battle_target ~= nil and target.id == battle_target.id then
+                for _, action in pairs(target.actions) do
+                    if action.add_effect_message > 287 and action.add_effect_message < 302 then
+                        --last_skillchain = skillchains[action.add_effect_message]
+                        MB_Window = 11
+                        MB_Time = os.time()
+                    end
+                end
+            end
+        end
+    end)
+
+    windower.raw_register_event('prerender', function()
+        --Items we want to check every second
+        if os.time() > time_start then
+            time_start = os.time()
+            if MB_Window > 0 then
+                MB_Window = 11 - (os.time() - MB_Time)
+                if state.AutoEquipBurst.value then
+                    AEBurst = true
+                end
+            else
+                AEBurst = false
+            end
+        end
+    end)
+end
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     if player.sub_job == 'DNC' then

@@ -1,10 +1,3 @@
-
-
-
-
----------------------------------------------------------------------------------
--- This lua is based off of the Kinematics template and uses Motenten globals. --
---                                                                             --
 -----------------------------Authors of this file--------------------------------
 ------           ******************************************                ------
 ---                                                                           ---
@@ -12,12 +5,6 @@
 --                                                                             --
 ---------------------------------------------------------------------------------
 
-	
--- This file should be treated as a work in progress, check back to The Black Sacrament Guide or Github for updates
-
-
-	
-	
 -------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job.  Generally should not be modified.
 -------------------------------------------------------------------------------------------------------------------
@@ -37,6 +24,7 @@ end
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
     send_command('wait 2;input /lockstyleset 174')
+
 end
 -------------------------------------------------------------------------------------------------------------------
 -- User setup functions for this job.  Recommend that these be overridden in a sidecar file.
@@ -57,6 +45,8 @@ function user_setup()
     state.Moving  = M(false, "moving")
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
+    state.AutoEquipBurst = M(true)
+
     --state.RP = M(false, "Reinforcement Points Mode")
     send_command('wait 6;input /lockstyleset 174')
     state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
@@ -65,13 +55,23 @@ function user_setup()
 
     element_table = L{'Earth','Wind','Ice','Fire','Water','Lightning'}
 	absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
- 
     lowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder'}
-
- 
-    degrade_array = {
-        ['Aspirs'] = {'Aspir','Aspir II','Aspir III'}
-        }
+    degrade_array = {['Aspirs'] = {'Aspir','Aspir II','Aspir III'}}
+    -- 'Out of Range' distance; WS will auto-cancel
+    range_mult = {
+        [0] = 0,
+        [2] = 1.70,
+        [3] = 1.490909,
+        [4] = 1.44,
+        [5] = 1.377778,
+        [6] = 1.30,
+        [7] = 1.20,
+        [8] = 1.30,
+        [9] = 1.377778,
+        [10] = 1.45,
+        [11] = 1.490909,
+        [12] = 1.70,
+    }
     send_command('bind f4 @input /ja "Sublimation" <me>')
     send_command('bind f3 input //Sublimator')
 	send_command('bind f10 gs c cycle IdleMode')
@@ -79,6 +79,7 @@ function user_setup()
 	send_command('bind ^f11 gs c cycle Enfeebling')
     send_command('bind @w gs c toggle WeaponLock')
     send_command('bind !` gs c toggle MagicBurst')
+    send_command('bind @q gs c toggle AutoEquipBurst')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind ^/ gs disable all')
     send_command('bind ^; gs enable all')
@@ -958,6 +959,12 @@ function init_gear_sets()
         back={ name="Aurist's Cape +1", augments={'Path: A',}},
 }
 
+
+sets.buff.Doom = {    neck="Nicander's Necklace",
+waist="Gishdubar Sash",
+left_ring="Purity Ring",
+right_ring="Blenmot's Ring +1",}
+
     --sets.RP = {neck="Src. Stole +2"}
 
 end
@@ -973,6 +980,14 @@ end
 --- function block for this file.
  
 function job_precast(spell, action, spellMap, eventArgs)
+    local spell_recasts = windower.ffxi.get_spell_recasts()
+    if spell.type == "WeaponSkill" then
+        if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: [Out of /eq]')
+            return
+        end
+    end
     if spell.english == "Impact" then
         equip(sets.precast.FC.Impact)
     end
@@ -1027,7 +1042,7 @@ end
 -- rather than simply capping you to whatever your Aspir potency set's max MP value happens to be.
 
 function job_post_midcast(spell, action, spellMap, eventArgs)
-    if spell.skill == 'Elemental Magic' and state.MagicBurst.value then
+    if spell.skill == 'Elemental Magic' and (state.MagicBurst.value or AEBurst) then
         equip(sets.magic_burst)
         if spell.english == "Impact" then
             equip(sets.midcast.Impact)
@@ -1117,6 +1132,7 @@ function nuke(spell, action, spellMap, eventArgs)
 end
  
 function job_self_command(commandArgs, eventArgs)
+    gearinfo(cmdParams, eventArgs)
     if commandArgs[1] == 'element' then
         if commandArgs[2] then
             if element_table:contains(commandArgs[2]) then
@@ -1133,7 +1149,10 @@ function job_self_command(commandArgs, eventArgs)
         nuke()
     end
 end
- 
+
+function gearinfo(cmdParams, eventArgs)
+
+end
  
 function refine_various_spells(spell, action, spellMap, eventArgs)
     local aspirs = S{'Aspir','Aspir II','Aspir III'}
@@ -1205,7 +1224,7 @@ function job_buff_change(buff, gain)
 	end]]
     -- Unlock feet when Mana Wall buff is lost.
 	if buff == "Mana Wall" then
-	send_command('wait 0.5;gs c update')
+	    send_command('wait 0.5;gs c update')
 	end
     if buff == "Mana Wall" and not gain then
         enable('feet','back')
@@ -1214,12 +1233,121 @@ function job_buff_change(buff, gain)
     if buff == "doom" then
         if gain then
             equip(sets.buff.Doom)
-            send_command('@input /p Doomed.')
-            disable('ring1','ring2','waist')
+            send_command('@input /p Doomed, please Cursna.')
+            send_command('@input /item "Holy Water" <me>')	
+             disable('ring1','ring2','waist','neck')
         else
-            enable('ring1','ring2','waist')
+            enable('ring1','ring2','waist','neck')
+            send_command('input /p Doom removed.')
             handle_equipping_gear(player.status)
         end
+    end
+    if buff == "Charm" then
+        if gain then  			
+           send_command('input /p Charmd, please Sleep me.')		
+        else	
+           send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
+        end
+    end
+    if buff == "petrification" then
+        if gain then    
+            equip(sets.defense.PDT)
+            send_command('input /p Petrification, please Stona.')		
+        else
+            send_command('input /p '..player.name..' is no longer Petrify!')
+            handle_equipping_gear(player.status)
+        end
+    end
+    if buff == "Sleep" then
+        if gain then    
+            send_command('input /p ZZZzzz, please cure.')		
+        else
+            send_command('input /p '..player.name..' is no longer Sleep!')
+        end
+    end
+    if buff == "Defense Down" then
+        if gain then  			
+            send_command('input /item "Panacea" <me>')
+        end
+    elseif buff == "Magic Def. Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Max HP Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Evasion Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Magic Evasion Downn" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Dia" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end  
+    elseif buff == "Bio" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Bind" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "slow" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "weight" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Attack Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "Accuracy Down" then
+        if gain then  			
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+
+    if buff == "VIT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "INT Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "MND Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "STR Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    elseif buff == "AGI Down" then
+        if gain then
+            send_command('@input /item "panacea" <me>')
+        end
+    end
+    if buff == "curse" then
+        if gain then  
+            send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if buff == "curse" then
+        if gain then  
+        send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if not midaction() then
+        job_update()
     end
 end
  
@@ -1237,10 +1365,9 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
 -------------------------------------------------------------------------------------------------------------------
---[[function job_update(cmdParams, eventArgs)
-    job_display_current_state(eventArgs)
-    eventArgs.handled = true
-end]]
+function job_update(cmdParams, eventArgs)
+
+end
  
 function display_current_job_state(eventArgs)
     local c_msg = state.CastingMode.value
@@ -1256,11 +1383,12 @@ function display_current_job_state(eventArgs)
     if state.MagicBurst.value then
         msg = ' Burst: On |'
     end
-    if state.DeathMode.value then
-        msg = msg .. ' Death: On |'
-    end
+
     if state.Kiting.value then
         msg = msg .. ' Kiting: On |'
+    end
+    if state.AutoEquipBurst.value then
+        msg = msg ..'Auto Equip Magic Burst Set: On'
     end
 
     add_to_chat(060, '| Magic: ' ..string.char(31,001)..c_msg.. string.char(31,002)..  ' |'
@@ -1269,6 +1397,44 @@ function display_current_job_state(eventArgs)
         ..string.char(31,002)..msg)
 
     eventArgs.handled = true
+end
+
+-- Auto toggle Magic burst set.
+MB_Window = 0
+time_start = 0
+AEBurst = false
+
+if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+
+    windower.raw_register_event('action', function(act)
+        for _, target in pairs(act.targets) do
+            local battle_target = windower.ffxi.get_mob_by_target("t")
+            if battle_target ~= nil and target.id == battle_target.id then
+                for _, action in pairs(target.actions) do
+                    if action.add_effect_message > 287 and action.add_effect_message < 302 then
+                        --last_skillchain = skillchains[action.add_effect_message]
+                        MB_Window = 11
+                        MB_Time = os.time()
+                    end
+                end
+            end
+        end
+    end)
+
+    windower.raw_register_event('prerender', function()
+        --Items we want to check every second
+        if os.time() > time_start then
+            time_start = os.time()
+            if MB_Window > 0 then
+                MB_Window = 11 - (os.time() - MB_Time)
+                if state.AutoEquipBurst.value then
+                    AEBurst = true
+                end
+            else
+                AEBurst = false
+            end
+        end
+    end)
 end
 
  
