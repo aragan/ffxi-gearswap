@@ -898,7 +898,7 @@ sets.midcast.Absorb = {
     sets.idle = {
         ammo="Yamarang",
         head="Malignance Chapeau",
-        body="Malignance Tabard",
+        body="Adamantite Armor",
         hands="Malignance Gloves",
         legs="Malignance Tights",
         feet="Malignance Boots",
@@ -914,7 +914,7 @@ sets.midcast.Absorb = {
     sets.idle.PDT = {
         ammo="Staunch Tathlum +1",
         head="Nyame Helm",
-        body="Nyame Mail",
+        body="Adamantite Armor",
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet="Nyame Sollerets",
@@ -944,7 +944,7 @@ sets.midcast.Absorb = {
     sets.idle.HP = {
         ammo="Coiste Bodhar",
         head="Nyame Helm",
-        body="Nyame Mail",
+        body="Adamantite Armor",
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet="Nyame Sollerets",
@@ -982,7 +982,7 @@ sets.midcast.Absorb = {
     sets.defense.PDT = {
     ammo="Staunch Tathlum +1",
     head="Nyame Helm",
-    body="Nyame Mail",
+    body="Adamantite Armor",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
@@ -1012,7 +1012,7 @@ sets.midcast.Absorb = {
     sets.defense.HP = {
         ammo="Coiste Bodhar",
         head="Nyame Helm",
-        body="Nyame Mail",
+        body="Adamantite Armor",
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet="Nyame Sollerets",
@@ -1582,7 +1582,7 @@ end
 -- gain == true if the buff was gained, false if it was lost.
 function job_buff_change(buff, gain)
     if buff == "Migawari" and not gain then
-        add_to_chat(61, "*** MIGAWARI DOWN ***")
+        add_to_chat(123, "*** MIGAWARI DOWN ***")
     end
     if buff == "doom" then
         if gain then

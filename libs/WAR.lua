@@ -90,14 +90,16 @@ function job_setup()
     wsList = S{ 'Savage Blade', 'Impulse Drive', 'Torcleaver', 'Ukko\'s Fury', 'Upheaval'}
     swordList = S{"Naegling", "Sangarius +1", "Perun +1", "Tanmogayi +1", "Loxotic Mace +1", "Reikiko", "Firetongue", "Demers. Degen +1", "Zantetsuken", "Excalipoor II"}
     gsList = S{'Macbain', 'Nandaka', 'Agwu\'s Claymore'}
-    war_sub_weapons = S{"Sangarius +1", "Perun 1+", "Tanmogayi +1", "Reikiko", "Digirbalag", "Twilight Knife",
+    Hand_weapon = S{'Naegling', 'Ikenga\'s Axe', 'Ternion Dagger +1' ,'Loxotic Mace +1','Dolichenus','Zantetsuken',
+    'Reikiko','Perun +1','Demers. Degen +1','Sangarius +1'}
+    war_sub_weapons = S{"Sangarius +1", "Perun +1", "Tanmogayi +1", "Reikiko", "Digirbalag", "Twilight Knife",
     "Kustawi +1", "Zantetsuken", "Excalipoor II", "Warp Cudgel", "Qutrub Knife", "Wind Knife +1", "Firetongue", "Nihility",
         "Extinction", "Heartstopper +1", "Twashtar", "Aeneas", "Gleti's Knife", "Naegling", "Tauret", "Caduceus", "Loxotic Mace +1",
         "Debahocho +1", "Dolichenus", "Arendsi Fleuret", "Demers. Degen +1", "Ternion Dagger +1",}
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
               "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Thr. Tomahawk",}
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Naegling','Chango', 'Shining', 'AgwuClaymore', 'Drepanum', 'Loxotic', 'TernionDagger','IkengaAxe'}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Naegling', 'Loxotic', 'Shining','Chango', 'AgwuClaymore', 'Drepanum', 'TernionDagger','IkengaAxe'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
     get_combat_form()
     get_combat_weapon()
@@ -138,8 +140,9 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind !w gs c toggle WeaponLock')
-    send_command('bind f7 gs c cycle shield')
+    send_command('bind !f7 gs c cycle shield')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind f7 gs c cycleback WeaponSet')
     send_command('bind != gs c toggle CapacityMode')
     send_command('bind ^` input /ja "Hasso" <me>')
     send_command('bind !` input /ja "Seigan" <me>')
@@ -209,15 +212,14 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
      --sets.precast.JA['Mighty Strikes'] = {hands="Fallen's Finger Gauntlets +1"}
      sets.precast.JA['Blood Rage'] = {body="Boii Lorica +3",}
      sets.precast.JA['Provoke'] = set_combine(sets.Enmity, { })
-     sets.precast.JA['Berserk'] = { body="Pummeler's Lorica +3"}
+     sets.precast.JA['Berserk'] = { body="Pummeler's Lorica +3",feet="Agoge Calligae +3"}
      sets.precast.JA['Warcry'] = { head={ name="Agoge Mask +3", augments={'Enhances "Savagery" effect',}},}
-     sets.precast.JA['Mighty Strikes'] = {}
+     sets.precast.JA['Mighty Strikes'] = {hands="Boii Mufflers"}
      sets.precast.JA['Retaliation'] = {}
      sets.precast.JA['Aggressor'] = {}
      sets.precast.JA['Restraint'] = { hands="Boii Mufflers +3"}
      sets.precast.JA['Warrior\'s Charge'] = {}
-     sets.precast.JA.Tomahawk = set_combine(sets.precast.JA, {ammo="Thr. Tomahawk"})
-
+     sets.precast.JA.Tomahawk = set_combine(sets.precast.JA, {ammo="Thr. Tomahawk",feet="Agoge Calligae +3"})
 
      --sets.CapacityMantle  = { back="Mecistopins Mantle" }
      --sets.Berserker       = { neck="Berserker's Torque" }
@@ -1021,7 +1023,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
      -- Idle sets
     sets.idle = {
         head={ name="Sakpata's Helm", augments={'Path: A',}},
-        body={ name="Sakpata's Plate", augments={'Path: A',}},
+        body="Adamantite Armor",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
         feet={ name="Sakpata's Leggings", augments={'Path: A',}},
@@ -1034,6 +1036,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         back="Moonlight Cape",
     }
         sets.idle.Town ={
+        body="Adamantite Armor",
         feet="Hermes' Sandals +1",
         left_ear="Infused Earring",}      
 
@@ -1073,7 +1076,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
     sets.defense.PDT = {
         ammo="Staunch Tathlum +1",
         head={ name="Sakpata's Helm", augments={'Path: A',}},
-        body={ name="Sakpata's Plate", augments={'Path: A',}},
+        body="Adamantite Armor",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
         feet={ name="Sakpata's Leggings", augments={'Path: A',}},
@@ -1090,7 +1093,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         sub="Blurred Shield +1",
         ammo="Staunch Tathlum +1",
         head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-        body={ name="Souv. Cuirass +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
+        body="Adamantite Armor",
         hands={ name="Souv. Handsch. +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
         legs={ name="Souv. Diechlings +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
         feet={ name="Souveran Schuhs +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
@@ -1148,7 +1151,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
     sets.defense.MP = set_combine(sets.defense.PDT, {
         ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
         head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
-        body={ name="Nyame Mail", augments={'Path: B',}},
+        body="Adamantite Armor",
         hands={ name="Nyame Gauntlets", augments={'Path: B',}},
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
@@ -1473,6 +1476,7 @@ function job_handle_equipping_gear(playerStatus, eventArgs)
     get_combat_form()
     get_combat_weapon()
     update_combat_form()
+    check_weaponset()
 end
 
 function check_moving()
@@ -1552,34 +1556,73 @@ end
  
 -- Called when the player's status changes.
 function job_status_change(newStatus, oldStatus, eventArgs)
+    handle_equipping_gear(player.status)
     if newStatus == "Engaged" then
         if buffactive.Berserk and not state.Buff.Retaliation then
             equip(sets.buff.Berserk)
+        end
+        if not buffactive['Restraint'] then
+            send_command('@input /ja "Restraint" <me>')
+        end
+        if not buffactive['Berserk'] then
+            send_command('@wait 1.5;input /ja "Berserk" <me>')
         end
         get_combat_weapon()
 
     end
 
-
 end
 function check_weaponset()
     equip(sets[state.WeaponSet.current])
     equip(sets[state.shield.current])
+    if (player.sub_job ~= 'NIN' and player.sub_job ~= 'DNC' and Hand_weapon:contains(player.equipment.main) ) then
+        equip(sets.DefaultShield)
+    elseif (player.sub_job == 'NIN' and player.sub_job_level < 10 or player.sub_job == 'DNC' and player.sub_job_level < 20 and Hand_weapon:contains(player.equipment.main) ) then
+        equip(sets.DefaultShield)
+    end
+
 end
 -- Called when a player gains or loses a buff.
 -- buff == buff gained or lost
 -- gain == true if the buff was gained, false if it was lost.
 function job_buff_change(buff, gain)
+    job_handle_equipping_gear(player.status)
     buff = string.lower(buff)
-    if buff == "sleep" and gain and player.hp > 200 and player.status == "Engaged" then
-        equip({neck="Vim Torque +1"})
-    else
-        if not midaction() then
-            status_change(player.status)
-        end
-    end
     if state.Buff[buff] ~= nil then
         handle_equipping_gear(player.status)
+    end
+    if buff == "Mighty Strikes" then
+        if gain then  			
+            send_command('input /p "Mighty Strikes" [ON]')		
+        else	
+            send_command('input /p "Mighty Strikes" [OFF]')
+        end
+    end
+	if buff == "Warcry" then
+        if gain then  			
+            send_command('input /p "Warcry" [ON]')		
+        else	
+            send_command('input /p "Warcry" [OFF]')
+        end
+    end
+    if buff == "Blood Rage" then
+        if gain then  			
+            send_command('input /p "Blood Rage" [ON]')		
+        else	
+            send_command('input /p "Blood Rage" [OFF]')
+        end
+    end    
+    if buff == "sleep" and gain and player.hp > 200 and player.status == "Engaged" then
+        equip({neck="Vim Torque +1"})
+    end
+    if buff == "Restraint" and not gain then
+        if player.status == 'Engaged' then
+            send_command('@input /ja "Restraint" <me>')		
+        else
+            if not midaction() then
+                status_change(player.status)
+            end
+        end
     end
     -- Warp ring rule, for any buff being lost
     if S{'Warp', 'Vocation', 'Capacity'}:contains(player.equipment.ring2) then
@@ -1749,12 +1792,6 @@ function job_self_command(cmdParams, eventArgs)
     if cmdParams[1]:lower() == 'rune' then
         send_command('@input /ja '..state.Runes.value..' <me>')
     end
-    if player.hpp < 5 then --if have lag click f12 to change to sets.Reraise this code add from Aragan Asura
-        equip(sets.Reraise)
-        send_command('input //gs equip sets.Reraise')
-        eventArgs.handled = true
-    end
-    return 
 end
 function gearinfo(cmdParams, eventArgs)
     if cmdParams[1] == 'gearinfo' then
@@ -1772,6 +1809,8 @@ function gearinfo(cmdParams, eventArgs)
 end
 function job_update(cmdParams, eventArgs)
     check_moving()
+    check_weaponset()
+
 end
 
 mov = {counter=0}
@@ -1839,7 +1878,7 @@ function get_combat_form()
     else
         state.CombatForm:reset()
     end
-
+    check_weaponset()
 end
 
 function get_combat_weapon()
@@ -1857,6 +1896,8 @@ function update_combat_form()
     else
         state.CombatForm:set('DW')
     end
+    check_weaponset()
+
 end
 
 -- Handle notifications of general user state change.
@@ -1875,6 +1916,7 @@ function job_state_change(stateField, newValue, oldValue)
         enable('main','sub')
     end
     check_weaponset()
+    job_handle_equipping_gear(player.status)
 
 end
 function sub_job_change(new,old)
