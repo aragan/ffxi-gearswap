@@ -52,7 +52,8 @@ function user_setup()
     state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
     state.StaffMode = M{['description']='Staff Mode', 'normal','Mpaca', 'Marin'} 
 
-
+	Elemental_Aja = S{'Stoneja', 'Waterja', 'Aeroja', 'Firaja', 'Blizzaja', 'Thundaja', 'Comet'}
+	Elemental_Debuffs = S {'Shock', 'Rasp', 'Choke', 'Frost', 'Burn', 'Drown'}
     element_table = L{'Earth','Wind','Ice','Fire','Water','Lightning'}
 	absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     lowTierNukes = S{'Stone', 'Water', 'Aero', 'Fire', 'Blizzard', 'Thunder'}
@@ -242,11 +243,13 @@ function init_gear_sets()
             ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
             head="Pixie Hairpin +1",
             body={ name="Ros. Jaseran +1", augments={'Path: A',}},
+            hands="Regal Cuffs",
             legs={ name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
+            feet="Nyame Sollerets",
             neck="Sanctity Necklace",
             waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
-            left_ear="Etiolation Earring",
-            right_ear="Evans Earring",
+            left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+            right_ear="Etiolation Earring",
             left_ring="Mephitas's Ring",
             right_ring={ name="Mephitas's Ring +1", augments={'Path: A',}},
             back={ name="Aurist's Cape +1", augments={'Path: A',}},
@@ -326,12 +329,12 @@ function init_gear_sets()
         back={ name="Aurist's Cape +1", augments={'Path: A',}},
     }
 
-    sets.precast.WS['Starburst'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Sunburst'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Earth Crusher'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Rock Crusher'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Seraph Strike'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Shining Strike'] = sets.precast.WS['Myrkr']
+    sets.precast.WS['Starburst'] = sets.precast.WS['Cataclysm']
+    sets.precast.WS['Sunburst'] = sets.precast.WS['Cataclysm']
+    sets.precast.WS['Earth Crusher'] = sets.precast.WS['Cataclysm']
+    sets.precast.WS['Rock Crusher'] = sets.precast.WS['Cataclysm']
+    sets.precast.WS['Seraph Strike'] = sets.precast.WS['Cataclysm']
+    sets.precast.WS['Shining Strike'] = sets.precast.WS['Cataclysm']
     sets.precast.WS['Vidohunir'] = sets.precast.WS['Cataclysm']
 
     sets.precast.WS['Shattersoul'] = {
@@ -367,7 +370,6 @@ function init_gear_sets()
 
     sets.midcast['Enhancing Magic'] = {
         main="Oranyan",
-        sub="Enki Strap",
         ammo="Pemphredo Tathlum",
         head="Telchine Cap",
         body="Telchine Chas.",
@@ -375,7 +377,7 @@ function init_gear_sets()
         legs="Telchine Braconi",
         feet="Telchine Pigaches",
         neck="Incanter's Torque",
-        waist="Olympus Sash",
+        waist="Embla Sash",
         left_ear="Mendi. Earring",
         right_ear="Andoaa Earring",
         left_ring="Stikini Ring +1",
@@ -412,7 +414,8 @@ function init_gear_sets()
     sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {})
 	
     sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {
-		waist="Siegel Sash",})
+        neck="Nodens Gorget",
+		})
  
     sets.midcast['Enfeebling Magic'] = {
         ammo="Pemphredo Tathlum",
@@ -1091,29 +1094,53 @@ function job_aftercast(spell, action, spellMap, eventArgs)
         equip(sets.buff['Mana Wall'])
         disable('feet','back')
     end
-    if not spell.interrupted then
-        if spell.english == "Sleep II" or spell.english == "Sleepga II" then -- Sleep II Countdown --
-            send_command('wait 60;input /echo Sleep Effect: [WEARING OFF IN 30 SEC.];wait 15;input /echo Sleep Effect: [WEARING OFF IN 15 SEC.];wait 10;input /echo Sleep Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Sleep" or spell.english == "Sleepga" then -- Sleep & Sleepga Countdown --
-            send_command('wait 30;input /echo Sleep Effect: [WEARING OFF IN 30 SEC.];wait 15;input /echo Sleep Effect: [WEARING OFF IN 15 SEC.];wait 10;input /echo Sleep Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Break" or spell.english == "Breakga" then -- Break Countdown --
-            send_command('wait 25;input /echo Break Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Paralyze" then -- Paralyze Countdown --
-             send_command('wait 115;input /echo Paralyze Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Slow" then -- Slow Countdown --
-            send_command('wait 115;input /echo Slow Effect: [WEARING OFF IN 5 SEC.]')        
+    if spell.action_type == 'Magic' then
+        if Elemental_Aja:contains(spell.english) then	
+            send_command('timers create "'.. spell.english .. '" 105 down spells/01015.png')
+            send_command("@wait 105;input /echo <----- All Cumulative Magic Duration Effects Have Expired ----->")
         end
     end
-	--if buffactive['poison'] then
-	--send_command('input /item "antidote" <me>')
-	--end
+    if not spell.interrupted then
+        if spell.english == "Sleep" then
+            send_command('timers create "Sleep ' ..tostring(spell.target.name).. ' " 60 down spells/00235.png')
+        elseif spell.english == "Sleepga" then
+            send_command('timers create "Sleepga ' ..tostring(spell.target.name).. ' " 60 down spells/00273.png')
+        elseif spell.english == "Sleep II" then
+            send_command('timers create "Sleep II ' ..tostring(spell.target.name).. ' " 90 down spells/00259.png')
+        elseif spell.english == "Sleepga II" then
+            send_command('timers create "Sleepga II ' ..tostring(spell.target.name).. ' " 90 down spells/00274.png')
+        elseif spell.english == 'Impact' then
+                send_command('timers create "Impact ' ..tostring(spell.target.name).. ' " 180 down spells/00502.png')
+        elseif Elemental_Debuffs:contains(spell.english) then
+            if spell.english == 'Burn' then
+                send_command('timers create "Burn ' ..tostring(spell.target.name).. ' " 180 down spells/00235.png')
+            elseif spell.english == 'Choke' then
+                send_command('timers create "Choke ' ..tostring(spell.target.name).. ' " 180 down spells/00237.png')
+            elseif spell.english == 'Shock' then
+                send_command('timers create "Shock ' ..tostring(spell.target.name).. ' " 180 down spells/00239.png')
+            elseif spell.english == 'Frost' then
+                send_command('timers create "Frost ' ..tostring(spell.target.name).. ' " 180 down spells/00236.png')
+            elseif spell.english == 'Drown' then
+                send_command('timers create "Drown ' ..tostring(spell.target.name).. ' " 180 down spells/00240.png')
+            elseif spell.english == 'Rasp' then
+                send_command('timers create "Rasp ' ..tostring(spell.target.name).. ' " 180 down spells/00238.png')
+            end
+        elseif spell.english == "Bind" then
+            send_command('timers create "Bind" 60 down spells/00258.png')
+        elseif spell.english == "Break" then
+            send_command('timers create "Break Petrification" 33 down spells/00255.png')
+        elseif spell.english == "Breakga" then
+            send_command('timers create "Breakga Petrification" 33 down spells/00365.png') 
+        end
+    end
 end
+
 
 function job_handle_equipping_gear(playerStatus, eventArgs)
     if state.StaffMode.value == "Marin" then
-        equip({main="Marin Staff +1"})
+        equip({main="Marin Staff +1",sub="Enki Strap"})
     elseif state.StaffMode.value == "Mpaca" then
-        equip({main="Mpaca's Staff"})
+        equip({main="Mpaca's Staff",sub="Enki Strap"})
     elseif state.StaffMode.value == "normal" then
         equip({})
     end

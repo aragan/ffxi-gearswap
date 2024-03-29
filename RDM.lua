@@ -62,12 +62,26 @@ function job_setup()
 	state.Enfeeb = M('None', 'Macc', 'Potency', 'Skill')
     state.Moving = M(false, "moving")
     state.MagicBurst = M(false, 'Magic Burst')
+	state.Buff.Composure = buffactive.Composure or false
+    state.Buff.Saboteur = buffactive.Saboteur or false
+    state.Buff.Stymie = buffactive.Stymie or false
 	state.AutoEquipBurst = M(true)
+
     send_command('wait 6;input /lockstyleset 152')
 	state.WeaponLock = M(false, 'Weapon Lock')
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
     "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Reraise Earring", "Reraise Gorget", "Airmid's Gorget",}
 	absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
+    enfeebling_magic_acc = S{'Bind', 'Break', 'Dispel', 'Distract', 'Distract II', 'Frazzle',
+        'Frazzle II',  'Gravity', 'Gravity II', 'Silence'}
+    enfeebling_magic_skill = S{'Distract III', 'Frazzle III', 'Poison II'}
+    enfeebling_magic_effect = S{'Dia', 'Dia II', 'Dia III', 'Diaga', 'Blind', 'Blind II'}
+    enfeebling_magic_sleep = S{'Sleep', 'Sleep II', 'Sleepga'}
+    enfeebling_magic = S{'Bind', 'Break', 'Distract', 'Distract II', 'Frazzle',
+        'Frazzle II', 'Gravity', 'Gravity II', 'Silence','Sleep', 'Sleep II', 'Sleepga', 'Distract III', 'Frazzle III', 'Poison II'}
+    skill_spells = S{
+        'Temper', 'Temper II', 'Enfire', 'Enfire II', 'Enblizzard', 'Enblizzard II', 'Enaero', 'Enaero II',
+        'Enstone', 'Enstone II', 'Enthunder', 'Enthunder II', 'Enwater', 'Enwater II'}
 
 end
 
@@ -80,14 +94,21 @@ function user_setup()
     state.OffenseMode:options('None', 'Normal', 'Acc', 'CRIT', 'Enspell')
 	state.HybridMode:options('Normal', 'PDT')
 	state.WeaponskillMode:options('Normal', 'PDL', 'SC')
-    state.IdleMode:options('Normal', 'PDT', 'MDT', 'HP', 'Enmity')
+    state.IdleMode:options('Normal', 'PDT', 'MDT', 'HP', 'Evasion', 'Enmity')
 	state.PhysicalDefenseMode:options('PDT')
     state.MagicalDefenseMode:options('MDT')
 	state.CastingMode:options('Normal', 'Burst', 'Duration', 'SIRD')
-	state.WeaponSet = M{['description']='Weapon Set', 'normal', 'SWORDS', 'Crocea', 'DAGGERS', 'IDLE'}
-	state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
+	state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'SWORDS', 'Crocea', 'DAGGERS', 'Club'}
+	state.Shield = M{['description']='Weapon Set', 'Normal', 'Shield'}
     state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
+    state.EnSpell = M{['description']='EnSpell', 'Enfire', 'Enblizzard', 'Enaero', 'Enstone', 'Enthunder', 'Enwater'}
+    state.BarElement = M{['description']='BarElement', 'Barfire', 'Barblizzard', 'Baraero', 'Barstone', 'Barthunder', 'Barwater'}
+    state.BarStatus = M{['description']='BarStatus', 'Baramnesia', 'Barvirus', 'Barparalyze', 'Barsilence', 'Barpetrify', 'Barpoison', 'Barblind', 'Barsleep'}
+    state.GainSpell = M{['description']='GainSpell', 'Gain-STR', 'Gain-INT', 'Gain-AGI', 'Gain-VIT', 'Gain-DEX', 'Gain-MND', 'Gain-CHR'}
+    state.SleepMode = M{['description']='Sleep Mode', 'Normal', 'MaxDuration'}
+    state.EnspellMode = M(false, 'Enspell Melee Mode')
+	state.NM = M(false, 'NM')
 
 	select_default_macro_book()
 	send_command('bind f10 gs c cycle IdleMode')
@@ -101,6 +122,13 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
 	send_command('bind !` gs c toggle MagicBurst')
 	send_command('bind @q gs c toggle AutoEquipBurst')
+	send_command('bind @z gs c cycle EnSpell')
+    send_command('bind f2 gs c cycle GainSpell')
+    send_command('bind f3 gs c cycle BarElement')
+    send_command('bind f4 gs c cycle BarStatus')
+    send_command('bind @a gs c toggle NM')
+    send_command('bind @s gs c cycle SleepMode')
+
 	send_command('wait 2;input /lockstyleset 152')
     state.Auto_Kite = M(false, 'Auto_Kite')
 
@@ -121,15 +149,18 @@ function user_setup()
     }
 	DW_needed = 0
     DW = false
+    moving = false
 
     update_combat_form()
 end
  
 -- Called when this job file is unloaded (eg: job change)
 function user_unload()
-    send_command('unbind f12')
+    --[[send_command('unbind f12')
     send_command('unbind f11')
 	send_command('unbind f10')
+	send_command('unbind f8')]]
+
 end
 
 -- Define sets and vars used by this job file.
@@ -137,6 +168,14 @@ function init_gear_sets()
     --------------------------------------
     -- Start defining the sets
     --------------------------------------
+
+	sets.Normal = {}
+	sets.SWORDS = {main="Naegling", sub="Demers. Degen +1"}
+	sets.Crocea = {main="Crocea Mors", sub="Naegling",}
+	sets.Club = {main="Daybreak", sub="Sacro Bulwark"}
+	sets.DAGGERS = {main="Tauret", sub="Gleti's Knife",}
+
+	sets.Shield = {sub="Sacro Bulwark"}
 	sets.DefaultShield = {sub="Sacro Bulwark"}
 
     -- Precast Sets
@@ -992,7 +1031,21 @@ sets.TreasureHunter = {
 		right_ring={ name="Cacoethic Ring +1", augments={'Path: A',}},
 		back="Reiki Cloak",
 	}
-    
+    sets.idle.Evasion = {
+		ammo="Amar Cluster",
+		head={ name="Nyame Helm", augments={'Path: B',}},
+		body={ name="Nyame Mail", augments={'Path: B',}},
+		hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+		legs={ name="Nyame Flanchard", augments={'Path: B',}},
+		feet={ name="Nyame Sollerets", augments={'Path: B',}},
+		neck={ name="Bathy Choker +1", augments={'Path: A',}},
+		waist="Svelt. Gouriz +1",
+		left_ear="Infused Earring",
+		right_ear="Eabani Earring",
+		left_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+		right_ring="Vengeful Ring",
+		back="Moonlight Cape",
+	}
     
     -- Defense sets
     sets.defense.PDT = {
@@ -1267,6 +1320,7 @@ sets.TreasureHunter = {
     waist="Gishdubar Sash",
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",}
+    sets.buff.Saboteur = {}
 
 end
 
@@ -1290,9 +1344,16 @@ function job_pretarget(spell, action, spellMap, eventArgs)
     end
 end
 function job_precast(spell, action, spellMap, eventArgs)
-	--[[if spell.english == 'Refresh' then
-		equip(sets.midcast['Enhancing Magic'].Duration)
-	end]]
+    if spellMap == 'Utsusemi' then
+        if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
+            cancel_spell()
+            add_to_chat(123, '**!! '..spell.english..' Canceled: [3+ IMAGES] !!**')
+            eventArgs.handled = true
+            return
+        elseif buffactive['Copy Image'] or buffactive['Copy Image (2)'] then
+            send_command('cancel 66; cancel 444; cancel Copy Image; cancel Copy Image (2)')
+        end
+    end
 	if spell.type == "WeaponSkill" then
         if (spell.target.model_size + spell.range * range_mult[spell.range]) < spell.target.distance then
             cancel_spell()
@@ -1411,27 +1472,15 @@ end
 
 
 function job_aftercast(spell, action, spellMap, eventArgs)
-if not spell.interrupted then
-        if spell.english == "Sleep II" or spell.english == "Sleepga II" then -- Sleep II Countdown --
-            send_command('wait 60;input /echo Sleep Effect: [WEARING OFF IN 30 SEC.];wait 15;input /echo Sleep Effect: [WEARING OFF IN 15 SEC.];wait 10;input /echo Sleep Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Sleep" or spell.english == "Sleepga" then -- Sleep & Sleepga Countdown --
-            send_command('wait 30;input /echo Sleep Effect: [WEARING OFF IN 30 SEC.];wait 15;input /echo Sleep Effect: [WEARING OFF IN 15 SEC.];wait 10;input /echo Sleep Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Break" or spell.english == "Breakga" then -- Break Countdown --
-            send_command('wait 25;input /echo Break Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Paralyze" then -- Paralyze Countdown --
-             send_command('wait 115;input /echo Paralyze Effect: [WEARING OFF IN 5 SEC.]')
-        elseif spell.english == "Slow" then -- Slow Countdown --
-            send_command('wait 115;input /echo Slow Effect: [WEARING OFF IN 5 SEC.]')        
-        end
+    if spell.english:lower(enfeebling_magic) and not spell.interrupted then
+        set_debuff_timer(spell)
+    end
+	if player.status ~= 'Engaged' and state.WeaponLock.value == false then
+        check_weaponset()
     end
 end
 
-function refine_various_spells(spell, action, spellMap, eventArgs)
-    local refreshes = S{'Refresh','Refresh II','Refresh III'}
-	local newSpell = spell.english
-    local spell_recasts = windower.ffxi.get_spell_recasts()
-	local spell_index
-end
+
 
 -------------------------------------------------------------------------------------------------------------------
 -- Job-specific hooks for non-casting events.
@@ -1439,18 +1488,13 @@ end
 
 -- Handle notifications of general user state change.
 function job_state_change(stateField, newValue, oldValue)
-    if stateField == 'Offense Mode' then
-        if newValue == 'None' then
-            enable('main','sub','range')
-        else
-            disable('main','sub','range')
-        end
-	end
 	if state.WeaponLock.value == true then
         disable('main','sub')
     else
         enable('main','sub')
     end
+
+	check_weaponset()
 end
 
 
@@ -1464,6 +1508,20 @@ function job_buff_change(buff, gain)
 	if (buff and gain) or (buff and not gain) then
 	send_command('gs c update')
 	end
+	if buff == "Stymie" then
+        if gain then  			
+            send_command('input /p "Stymie" [ON]')		
+        else	
+            send_command('input /p "Stymie" [OFF]')
+        end
+    end
+	if buff == "Saboteur" then
+        if gain then  			
+            send_command('input /p "Saboteur" [ON]')		
+        else	
+            send_command('input /p "Saboteur" [OFF]')
+        end
+    end
 	if buff == "doom" then
         if gain then
             equip(sets.buff.Doom)
@@ -1587,6 +1645,7 @@ function customize_melee_set(meleeSet)
     if state.TreasureMode.value == 'Fulltime' then
         meleeSet = set_combine(meleeSet, sets.TreasureHunter)
     end
+    check_weaponset()
 
 	return meleeSet
 end
@@ -1627,48 +1686,100 @@ function check_moving()
 end
 function job_self_command(cmdParams, eventArgs)
     gearinfo(cmdParams, eventArgs)
+	if cmdParams[1]:lower() == 'enspell' then
+		send_command('@input /ma '..state.EnSpell.value..' <me>')
+	elseif cmdParams[1]:lower() == 'barelement' then
+		send_command('@input /ma '..state.BarElement.value..' <me>')
+	elseif cmdParams[1]:lower() == 'barstatus' then
+		send_command('@input /ma '..state.BarStatus.value..' <me>')
+	elseif cmdParams[1]:lower() == 'gainspell' then
+		send_command('@input /ma '..state.GainSpell.value..' <me>')
+	end
 end
+
+function check_weaponset()
+    equip(sets[state.WeaponSet.current])
+	equip(sets[state.Shield.current])
+    --[[if (player.sub_job ~= 'NIN' and player.sub_job ~= 'DNC') then
+        equip(sets.DefaultShield)
+    elseif player.sub_job == 'NIN' and player.sub_job_level < 10 or player.sub_job == 'DNC' and player.sub_job_level < 20 then
+        equip(sets.DefaultShield)
+    end]]
+end
+
+function set_debuff_timer(spell)
+    local self = windower.ffxi.get_player()
+	base = 90
+
+    if spell.en == "Sleep II" then
+        base = 90
+    elseif spell.en == "Sleep" or spell.en == "Sleepga" then
+        base = 60
+    end
+    if spell.en == "Gravity" then
+        base = 100
+    end
+    if spell.en == "Gravity II" then
+        base = 100
+    end
+	if spell.en == "Bind" then
+        base = 30
+    end
+    if state.Buff.Saboteur then
+        if state.NM.value then
+            base = base * 1.25
+        else
+            base = base * 2
+        end
+    end
+
+    -- Merit Points Duration Bonus
+    base = base + self.merits.enfeebling_magic_duration*6
+
+    -- Relic Head Duration Bonus
+    if not ((buffactive.Stymie and buffactive.Composure) or state.SleepMode.value == 'MaxDuration') then
+        base = base + self.merits.enfeebling_magic_duration*3
+    end
+
+    -- Job Points Duration Bonus
+    base = base + self.job_points.rdm.enfeebling_magic_duration
+
+    --Enfeebling duration non-augmented gear total
+    gear_mult = 1.40
+    --Enfeebling duration augmented gear total
+    aug_mult = 1.25
+    --Estoquer/Lethargy Composure set bonus
+    --2pc = 1.1 / 3pc = 1.2 / 4pc = 1.35 / 5pc = 1.5
+    empy_mult = 1 --from sets.midcast.Sleep
+
+    if ((buffactive.Stymie and buffactive.Composure) or state.SleepMode.value == 'MaxDuration') then
+        if buffactive.Stymie then
+            base = base + self.job_points.rdm.stymie_effect
+        end
+        empy_mult = 1.35 --from sets.midcast.SleepMaxDuration
+    end
+
+    totalDuration = math.floor(base * gear_mult * aug_mult * empy_mult)
+
+    -- Create the custom timer
+    if spell.english == "Sleep II" then
+        send_command('@timers c "Sleep II ['..spell.target.name..'] ' ..(spell.target.index).. ' " ' ..totalDuration.. ' down spells/00259.png')
+    elseif spell.english == "Sleep" or spell.english == "Sleepga" then
+        send_command('@timers c "Sleep ['..spell.target.name..'] ' ..(spell.target.index).. ' " ' ..totalDuration.. ' down spells/00253.png')
+	elseif spell.english == "Gravity" then
+        send_command('@timers c "Gravity ' ..tostring(spell.target.name).. ' ' ..(spell.target.index).. ' " ' ..totalDuration.. ' down spells/00216.png')
+	elseif spell.english == "Gravity II" then
+        send_command('@timers c "Gravity II ' ..tostring(spell.target.name).. ' ' ..(spell.target.index).. ' " ' ..totalDuration.. ' down spells/00217.png')
+	elseif spell.english == "Bind" then
+        send_command('@timers c "Bind ' ..tostring(spell.target.name).. ' ' ..(spell.target.index).. ' " ' ..totalDuration.. ' down spells/00258.png')
+    end
+    --add_to_chat(1, 'Base: ' ..base.. ' Merits: ' ..self.merits.enfeebling_magic_duration.. ' Job Points: ' ..self.job_points.rdm.stymie_effect.. ' Set Bonus: ' ..empy_mult)
+
+end
+
 function job_update(cmdParams, eventArgs)
-    --if newStatus == 'Engaged' and player.equipment.main == 'Chatoyant Staff' then
-        --state.OffenseMode:set('Ranged')
-    --end
-	handle_equipping_gear(player.status)
-end
 
-function check_gear()
-    if no_swap_gear:contains(player.equipment.left_ring) then
-        disable("ring1")
-    else
-        enable("ring1")
-    end
-    if no_swap_gear:contains(player.equipment.right_ring) then
-        disable("ring2")
-    else
-        enable("ring2")
-    end
-    if no_swap_gear:contains(player.equipment.waist) then
-        disable("waist")
-    else
-        enable("waist")
-    end
 end
-
-windower.register_event('zone change',
-    function()
-        if no_swap_gear:contains(player.equipment.left_ring) then
-            enable("ring1")
-            equip(sets.idle)
-        end
-        if no_swap_gear:contains(player.equipment.right_ring) then
-            enable("ring2")
-            equip(sets.idle)
-        end
-        if no_swap_gear:contains(player.equipment.waist) then
-            enable("waist")
-            equip(sets.idle)
-        end
-    end
-)
 
 function gearinfo(cmdParams, eventArgs)
     if cmdParams[1] == 'gearinfo' then
@@ -1683,13 +1794,6 @@ function gearinfo(cmdParams, eventArgs)
                 DW = false
             end
         end
-        if type(cmdParams[4]) == 'string' then
-            if cmdParams[4] == 'true' then
-                moving = true
-            elseif cmdParams[4] == 'false' then
-                moving = false
-            end
-        end
         if not midaction() then
             job_update()
         end
@@ -1697,24 +1801,7 @@ function gearinfo(cmdParams, eventArgs)
 end
 function job_handle_equipping_gear(playerStatus, eventArgs)
     update_combat_form()
-	check_gear()
 	check_moving()
-	if state.WeaponSet.value == "SWORDS" then
-        equip({main="Naegling", sub="Demers. Degen +1",})
-	elseif state.WeaponSet.value == "Crocea" then
-        equip({main="Crocea Mors", sub="Naegling",})
-    elseif state.WeaponSet.value == "DAGGERS" then
-        equip({main="Tauret", sub="Gleti's Knife",})
-	elseif state.WeaponSet.value == "IDLE" then
-        equip({main="Daybreak", sub="Sacro Bulwark",})
-    elseif state.WeaponSet.value == "normal" then
-        equip({})
-    end
-	if state.shield.value == "shield" then
-        equip({sub="Sacro Bulwark",})
-    elseif state.shield.value == "normal" then
-        equip({})
-    end
 end
 function update_combat_form()
     if DW == true then
@@ -1722,11 +1809,6 @@ function update_combat_form()
     elseif DW == false then
         state.CombatForm:reset()
     end 
-end
-function equip_gear_by_status(status)
-	if status == 'Engaged' then
-		send_command('gs c cycle OffenseMode')
-	end
 end
 
 
@@ -1844,21 +1926,6 @@ if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
     end)
 end
 
-function midcast(spell)
-    if spell.english == 'Utsusemi: Ichi' and overwrite then
-        send_command('cancel Copy Image|Copy Image (2)')
-    end
-end
- 
-function aftercast(spell)
-    if not spell.interrupted then
-        if spell.name == 'Utsusemi: Ichi' then
-            overwrite = false
-        elseif spell.name == 'Utsusemi: Ni' then
-            overwrite = true
-        end
-    end
-end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()

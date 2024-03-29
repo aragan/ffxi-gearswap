@@ -724,7 +724,7 @@ sets.midcast.RA.Critical = set_combine(sets.midcast.RA, {
     -- Idle sets
     sets.idle = {
         head="Malignance Chapeau",
-        body="Malignance Tabard",
+        body="Adamantite Armor",
         hands="Malignance Gloves",
         legs="Malignance Tights",
         feet="Malignance Boots",
@@ -756,7 +756,7 @@ sets.midcast.RA.Critical = set_combine(sets.midcast.RA, {
         left_ear="Infused Earring",}
     sets.idle.HP =  {
             head={ name="Nyame Helm", augments={'Path: B',}},
-            body={ name="Nyame Mail", augments={'Path: B',}},
+            body="Adamantite Armor",
             hands={ name="Nyame Gauntlets", augments={'Path: B',}},
             legs={ name="Nyame Flanchard", augments={'Path: B',}},
             feet={ name="Nyame Sollerets", augments={'Path: B',}},
@@ -777,7 +777,7 @@ sets.midcast.RA.Critical = set_combine(sets.midcast.RA, {
     -- Defense sets
 sets.defense.PDT = {
     head="Nyame Helm",
-    body="Nyame Mail",
+    body="Adamantite Armor",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
@@ -820,7 +820,7 @@ sets.defense.Evasion =  {
 }
 sets.defense.HP =  {
     head={ name="Nyame Helm", augments={'Path: B',}},
-    body={ name="Nyame Mail", augments={'Path: B',}},
+    body="Adamantite Armor",
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
@@ -1230,7 +1230,12 @@ function job_precast(spell, action, spellMap, eventArgs)
             return
         end
     end
-
+    if spell.english == 'Fold' and buffactive['Bust'] == 2 then
+        if sets.precast.FoldDoubleBust then
+            equip(sets.precast.FoldDoubleBust)
+            eventArgs.handled = true
+        end
+    end
 
     if spellMap == 'Utsusemi' then
         if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
