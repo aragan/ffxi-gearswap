@@ -121,6 +121,7 @@ function job_setup()
     state.StormSurge = M(false, 'Stormsurge')
     state.Moving  = M(false, "moving")
     state.AutoEquipBurst = M(true)
+    state.BrachyuraEarring = M(true,false)
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -145,6 +146,7 @@ function job_setup()
     "Aurorastorm II", "Voidstorm II", "Firestorm II", "Sandstorm II", "Rainstorm II", "Windstorm II", "Hailstorm II", "Thunderstorm II"}
    
     update_active_strategems()
+    send_command('wait 2;input /lockstyleset 174')
 
     degrade_array = {
         ['Aspirs'] = {'Aspir','Aspir II'}
@@ -164,6 +166,7 @@ function user_setup()
     state.IdleMode:options('Normal', 'DT', 'Resist','BoostMB', 'vagary')
     state.HippoMode = M{['description']='Hippo Mode', 'normal', 'Hippo'}
 
+    send_command('wait 6;input /lockstyleset 174')
 
     -- Additional local binds
     --send_command('bind f4 @input /ja "Sublimation" <me>')
@@ -195,6 +198,7 @@ function user_setup()
     send_command('bind f4 gs c cycle Storms')
     send_command('bind f3 gs c cycleback Storms')
     send_command('bind f2 input //gs c Storms')
+    send_command('bind delete gs c toggle BrachyuraEarring')
 
     select_default_macro_book()
     set_lockstyle()
@@ -652,7 +656,7 @@ function init_gear_sets()
         right_ring="Archon Ring",
         back="Lugh's Cape",
     }
-        sets.midcast.Absorb = set_combine(sets.midcast['Dark Magic'], {
+    sets.midcast.Absorb = set_combine(sets.midcast['Dark Magic'], {
             ammo="Pemphredo Tathlum",
             head="Arbatel Bonnet +2",
             body="Arbatel Gown +3",
@@ -661,7 +665,7 @@ function init_gear_sets()
             waist="Acuity Belt +1",
             left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
             right_ring="Kishar Ring",
-        })
+    })
 
     sets.midcast.Kaustra = {
         ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
@@ -677,25 +681,19 @@ function init_gear_sets()
         left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
         right_ring="Freke Ring",
         back="Lugh's Cape",
-        }
-
+    }
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
         head="Pixie Hairpin +1",
+        feet={ name="Agwu's Pigaches", augments={'Path: A',}},
+        neck="Erra Pendant",
         ring1="Evanescence Ring",
         ring2="Archon Ring",
         waist="Fucho-no-obi",
-        })
+    })
+    
+    sets.midcast.Aspir = sets.midcast.Drain
 
-    sets.midcast.Aspir =  set_combine(sets.midcast['Dark Magic'], {
-        head="Pixie Hairpin +1",
-        ring1="Evanescence Ring",
-        ring2="Archon Ring",
-        waist="Fucho-no-obi",
-        })
-
-
-    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
-        })
+    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {})
 
     -- Elemental Magic
     sets.midcast['Elemental Magic'] = {
@@ -817,8 +815,11 @@ function init_gear_sets()
     sets.midcast.Impact = set_combine(sets.midcast['Elemental Magic'], {
         head=empty,
         body="Twilight Cloak",
-        ring2="Archon Ring",
+        right_ring="Archon Ring",
+        left_ring="Stikini Ring +1",
         waist="Shinjutsu-no-Obi +1",
+        back={ name="Aurist's Cape +1", augments={'Path: A',}},
+
         })
 
     sets.midcast.Helix = set_combine(sets.midcast['Elemental Magic'], {
@@ -1213,6 +1214,14 @@ function job_aftercast(spell, action, spellMap, eventArgs)
             send_command('@timers c "Sleep ['..spell.target.name..']" 60 down spells/00253.png')
         elseif spell.english == "Break" then
             send_command('@timers c "Break ['..spell.target.name..']" 30 down spells/00255.png')
+        elseif spell.english == 'Impact' then
+            send_command('timers create "Impact ' ..tostring(spell.target.name).. ' " 180 down spells/00502.png')
+        elseif spell.english == "Bind" then
+            send_command('timers create "Bind" 60 down spells/00258.png')
+        elseif spell.english == "Break" then
+            send_command('timers create "Break Petrification" 33 down spells/00255.png')
+        elseif spell.english == "Breakga" then
+            send_command('timers create "Breakga Petrification" 33 down spells/00365.png') 
         end
     end
 end
@@ -1228,6 +1237,12 @@ end
 function job_buff_change(buff, gain)
     if buff == "Sublimation: Activated" then
         handle_equipping_gear(player.status)
+    end
+    if buff == "Protect" then
+        if gain then
+            enable('ear1')
+            state.BrachyuraEarring:set(false)
+        end
     end
     if buff == "Tabula Rasa" then
         if gain then
@@ -1369,6 +1384,13 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if state.BrachyuraEarring .value == true then
+        equip({left_ear="Brachyura Earring"})
+        disable('ear1')
+    else 
+        enable('ear1')
+        state.BrachyuraEarring:set(false)
     end
 end
 
@@ -1731,7 +1753,7 @@ end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()
-        send_command('wait 2;input /lockstyleset 174')
+        send_command('wait 6;input /lockstyleset 174')
     end
 end
 
