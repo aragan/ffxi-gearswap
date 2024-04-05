@@ -837,10 +837,6 @@ sets.precast.WS['Red Lotus Blade'].None = {}
         right_ring="Petrov Ring",
         back="Reiki Cloak",
     }
-  
-    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
-
-    })
       
     sets.midcast.Cure = {    ammo="Staunch Tathlum +1",
     head={ name="Loess Barbuta +1", augments={'Path: A',}},
@@ -881,7 +877,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
         legs="Ratri Cuisses",
         feet="Ratri Sollerets",
         neck={ name="Unmoving Collar +1", augments={'Path: A',}},
-        waist="Carrier's Sash",
+        waist="Plat. Mog. Belt",
         left_ear="Tuisto Earring",
         right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
         right_ring="Moonlight Ring",
@@ -890,7 +886,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
 }
     sets.midcast['Dark Magic'] = {
         ammo="Pemphredo Tathlum",
-        head="Nyame Helm",
+        head="Ig. Burgeonet +3",
         body={ name="Fall. Cuirass +3", augments={'Enhances "Blood Weapon" effect',}},
         hands={ name="Fall. Fin. Gaunt. +3", augments={'Enhances "Diabolic Eye" effect',}},
         legs={ name="Fall. Flanchard +3", augments={'Enhances "Muted Soul" effect',}},
@@ -900,16 +896,32 @@ sets.precast.WS['Red Lotus Blade'].None = {}
     left_ear="Malignance Earring",
     right_ear="Dignitary's Earring",
     left_ring="Evanescence Ring",
-    right_ring="Archon Ring",
-    back="Argocham. Mantle",
-}
+    right_ring="Stikini Ring +1",
+    back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','"Store TP"+10','Phys. dmg. taken-10%',}},
+    }
+    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
+
+    })
+    sets.midcast['Endark'] = set_combine(sets.midcast['Dark Magic'], {
+        ammo="Pemphredo Tathlum",
+        head="Ig. Burgeonet +3",
+        body={ name="Fall. Cuirass +3", augments={'Enhances "Blood Weapon" effect',}},
+        hands={ name="Fall. Fin. Gaunt. +3", augments={'Enhances "Diabolic Eye" effect',}},
+        legs={ name="Fall. Flanchard +3", augments={'Enhances "Muted Soul" effect',}},
+        feet="Ratri Sollerets",
+        neck="Erra Pendant",
+    left_ring="Evanescence Ring",
+    right_ring="Stikini Ring +1",
+      })
       sets.midcast.Absorb = set_combine(sets.midcast['Dark Magic'], {
         -- neck="Sanctity Necklace",
         -- back="Niht Mantle",
-        -- hands="Flamma Manopolas +2",
+        hands="Pavor Gauntlets",
         neck="Erra Pendant",
         ring1="Evanescence Ring", -- 10
         ring2="Kishar Ring",
+        back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','"Store TP"+10','Phys. dmg. taken-10%',}},
+
     })
      -- Drain spells 
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {

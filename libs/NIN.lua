@@ -765,7 +765,7 @@ sets.midcast.Absorb = {
         waist="Orpheus's Sash",
         left_ring="Cornelia's Ring",
         right_ring="Dingir Ring",
-        right_ear_ear={ name="Lugra Earring +1", augments={'Path: A',}},
+        right_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         back="Sacro Mantle",
     })
@@ -864,9 +864,24 @@ sets.midcast.Absorb = {
     })
     sets.precast.WS['Blade: To'] = sets.precast.WS['Blade: Teki']
     sets.precast.WS['Blade: To'].PDL = sets.precast.WS['Blade: Teki'].PDL
-
+    
+    sets.precast.WS['Blade: Yu'] = set_combine(sets.precast.WS, {       
+        ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
+        head={ name="Mochi. Hatsuburi +3", augments={'Enhances "Yonin" and "Innin" effect',}},
+        body="Nyame Mail",
+        hands="Nyame Gauntlets",
+        legs="Nyame Flanchard",
+        feet="Nyame Sollerets",
+        neck="Baetyl Pendant",
+        waist="Orpheus's Sash",
+        left_ring="Cornelia's Ring",
+        right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
+        right_ear="Friomisi Earring",
+        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+        back="Sacro Mantle",
+    })
     sets.precast.WS['Blade: Yu'] = sets.precast.WS['Blade: Teki']
-    sets.precast.WS['Blade: Yu'].PDL = sets.precast.WS['Blade: Teki'].PDL
+    sets.precast.WS['Blade: Yu'].PDL = sets.precast.WS['Blade: Yu'].PDL
 
     sets.precast.WS['Blade: Ei'] = set_combine(sets.precast.WS, {
         ammo={ name="Seeth. Bomblet +1", augments={'Path: A',}},
