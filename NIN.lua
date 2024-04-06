@@ -90,7 +90,9 @@ function job_setup()
 
 
     swordList = S{'Naegling'}
-    GKList = S{'Naegling','Zanmato +1'}
+    GKList = S{'Hachimonji','Zanmato +1'}
+    daggerList = S{'Tauret'}
+    katanaList = S{'Heishi Shorinken','Kunimitsu'}
 
     wsList = S{'Blade: Hi', 'Blade: Kamu', 'Blade: Ten'}
     nukeList = S{'Katon: San', 'Doton: San', 'Suiton: San', 'Raiton: San', 'Hyoton: San', 'Huton: San'}
@@ -1731,7 +1733,12 @@ function check_buffs(check)
 end
 
 function job_status_change(newStatus, oldStatus, eventArgs)
+    if swordList:contains(player.equipment.main) then
+        send_command('input /lockstyleset 152')
+    elseif GKList:contains(player.equipment.main) then
+        send_command('input /lockstyleset 172')
 
+    end
 end
 
 mov = {counter=0}
