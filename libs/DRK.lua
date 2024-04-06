@@ -920,7 +920,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
         neck="Erra Pendant",
         ring1="Evanescence Ring", -- 10
         ring2="Kishar Ring",
-        back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','"Store TP"+10','Phys. dmg. taken-10%',}},
+        back="Chuparrosa Mantle",
 
     })
      -- Drain spells 
@@ -1929,13 +1929,11 @@ function job_status_change(newStatus, oldStatus, eventArgs)
         --    send_command('@wait 1.0;cancel hasso')
         --end
         -- handle weapon sets
-    --[[if swordList:contains(player.equipment.main) then
+    if swordList:contains(player.equipment.main) then
         send_command('input /lockstyleset 152')
     elseif gsList:contains(player.equipment.main) then
         send_command('input /lockstyleset 165')
-        handle_equipping_gear(player.status)
-
-    end]]
+    end
     if remaWeapons:contains(player.equipment.main) then
         state.CombatWeapon:set(player.equipment.main)
     end
@@ -1978,10 +1976,7 @@ function job_buff_change(buff, gain)
         end	
     elseif (buffactive['Last Resort'] and buffactive.hasso) then
         if player.status == 'Engaged' then
-
-            send_command('@wait 0.1;cancel hasso')
             send_command('@input /ja "Last Resort" <me>')
-
             if not midaction() then
                 status_change(player.status)
             end
