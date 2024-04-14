@@ -748,13 +748,13 @@ sets.precast.JA.Jump = {
         ammo="Coiste Bodhar",
         head="Flam. Zucchetto +2",
         body="Pelt. Plackart +3",
-        hands="Flamma Manopolas +2",
+        hands="Gleti's Gauntlets",
         legs={ name="Ptero. Brais +3", augments={'Enhances "Strafe" effect',}},
         feet="Flam. Gambieras +2",
         neck="Anu Torque",
         waist="Ioskeha Belt +1",
         left_ear="Sherida Earring",
-        right_ear="Balder Earring +1",
+        right_ear="Brutal Earring",
         left_ring="Niqmaddu Ring",
         right_ring="Petrov Ring",
         back="Tactical Mantle",
@@ -780,7 +780,7 @@ sets.precast.JA.Jump = {
         ammo="Coiste Bodhar",
         head="Flam. Zucchetto +2",
         body="Pelt. Plackart +3",
-        hands="Flam. Manopolas +2",
+        hands="Gleti's Gauntlets",
         legs={ name="Ptero. Brais +3", augments={'Enhances "Strafe" effect',}},
         feet="Flam. Gambieras +2",
         neck="Anu Torque",
@@ -1247,6 +1247,11 @@ function job_buff_change(buff, gain)
     if buff == "curse" then
         if gain then  
         send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if buff == "poison" then
+        if gain then  
+        send_command('input /item "remedy" <me>')
         end
     end
     if state.CombatForm.current ~= 'DW' and state.CombatForm.current ~= 'SW' then
