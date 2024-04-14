@@ -65,6 +65,60 @@ organizer_items = {
     "Qutrub Knife",
     "Wind Knife +1",
     "Reraise Earring",}
+
+--[[
+-- Scythe Light:
+Insurgency > Vorpal Scythe > Entropy > Guillotine > Entropy > Insurgency 
+Vorpal Scythe > Entropy > Guillotine > Entropy > Insurgency 
+Entropy > Guillotine > Entropy > Insurgency 
+Guillotine > Entropy > Insurgency
+
+-- Scythe Darkness: 
+Insurgency (M) > Vorpal Scythe > Vorpal Scythe > Insurgency (M) > Entropy (MM) > Cross Reaper
+Entropy (MM) > Guillotine > Entropy (MM) > Cross Reaper > Entropy (MM)
+Cross Reaper > Insurgency (M) > Entropy (MM) > Cross Reaper
+Insurgency (M) > Entropy (MM) > Cross Reaper
+Cross Reaper > Entropy (MM)
+Entropy (MM) > Cross Reaper
+
+-- Apoc Darkness
+Entropy (MM) > Guillotine > Entropy (MM) > Cross Reaper > Entropy (MM) > Catastrophe (R)
+Entropy (MM) > Guillotine > Entropy (MM) > Cross Reaper > Entropy (MM)
+Insurgency (M) > Entropy (MM) > Cross Reaper > Catastrophe (R)
+Insurgency (M) > Catastrophe (R) > Cross Reaper > Catastrophe (R)
+Cross Reaper > Insurgency (M) > Catastrophe (R) > Cross Reaper
+Catastrophe (R) > Cross Reaper > Catastrophe (R)
+Insurgency (M) > Catastrophe (R) > Cross Reaper
+Cross Reaper > Catastrophe (R) > Catastrophe (R)
+Cross Reaper > Entropy (MM) > Catastrophe (R)
+Entropy (MM) > Cross Reaper > Catastrophe (R)
+Catastrophe (R) > Catastrophe (R)
+Catastrophe (R) > Cross Reaper
+Cross Reaper > Catastrophe (R)
+
+-- Other Light
+Catastrophe (R) > Savage Blade (Q) > Insurgency (M)
+Entropy (MM) > Savage Blade (Q) > Insurgency (M)
+Savage Blade (Q) > Insurgency (M)
+Chant du Cygne (E) > Torcleaver (E)
+
+-- Other Dark
+Atonement (M) > Entropy (MM) > Cross Reaper
+Savage Blade (Q) > Cross Reaper > Entropy (MM)
+Chant du Cygne (E) > Catastrophe (R)
+Chant du Cygne (E) > Entropy (MM)
+Requiescat (MM) > Cross Reaper
+Requiescat (MM) > Torcleaver (E)
+
+-- GreatSword Light
+Resolution (MM) > Torcleaver (E) > Scourge (R) > Resolution (MM) > Torcleaver (E)
+Resolution (MM) > Torcleaver (E) > Scourge (R) > Resolution (MM)
+Resolution (MM) > Scourge (R) > Torcleaver (E)
+Scourge (R) > Resolution (MM) > Torcleaver (E)
+Torcleaver (E) > Torcleaver (E)
+Scourge (R) > Resolution (MM)
+--]]
+
 -- Setup vars that are user-independent.
 function job_setup()
     state.CapacityMode = M(false, 'Capacity Point Mantle')
@@ -875,7 +929,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
         body="Heath. Cuirass +2",
         hands="Ratri Gadlings",
         legs="Ratri Cuisses",
-        feet="Ratri Sollerets",
+        feet="Rat. Sollerets +1",
         neck={ name="Unmoving Collar +1", augments={'Path: A',}},
         waist="Plat. Mog. Belt",
         left_ear="Tuisto Earring",
@@ -908,7 +962,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
         body={ name="Fall. Cuirass +3", augments={'Enhances "Blood Weapon" effect',}},
         hands={ name="Fall. Fin. Gaunt. +3", augments={'Enhances "Diabolic Eye" effect',}},
         legs={ name="Fall. Flanchard +3", augments={'Enhances "Muted Soul" effect',}},
-        feet="Ratri Sollerets",
+        feet="Rat. Sollerets +1",
         neck="Erra Pendant",
     left_ring="Evanescence Ring",
     right_ring="Stikini Ring +1",
@@ -1149,7 +1203,7 @@ sets.defense['Dread Spikes'] = {
     body="Heath. Cuirass +2",
     hands="Ratri Gadlings",
     legs="Ratri Cuisses",
-    feet="Ratri Sollerets",
+    feet="Rat. Sollerets +1",
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
     left_ear="Tuisto Earring",
@@ -1166,7 +1220,7 @@ sets.defense.SEboost = {
     body="Ratri Plate",
     hands="Ratri Gadlings",
     legs="Ratri Cuisses",
-    feet="Ratri Sollerets",
+    feet="Rat. Sollerets +1",
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
     left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
@@ -2131,6 +2185,11 @@ function job_buff_change(buff, gain)
     if buff == "curse" then
         if gain then  
         send_command('input /item "Holy Water" <me>')
+        end
+    end
+    if buff == "poison" then
+        if gain then  
+        send_command('input /item "remedy" <me>')
         end
     end
     if S{'haste', 'march', 'embrava', 'geo-haste', 'indi-haste', 'last resort'}:contains(buff:lower()) then

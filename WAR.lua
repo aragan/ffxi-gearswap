@@ -77,11 +77,12 @@ end
  
 -- Setup vars that are user-independent.
 function job_setup()
-    send_command('wait 6;input /lockstyleset 152')
+    send_command('wait 2;input /lockstyleset 152')
     include('Mote-TreasureHunter')
     state.WeaponLock = M(false, 'Weapon Lock')
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.Moving  = M(false, "moving")
+    state.BrachyuraEarring = M(true,false)
 
     --state.Buff.Souleater = buffactive.souleater or false
     state.Buff.Berserk = buffactive.berserk or false
@@ -112,7 +113,7 @@ end
 function user_setup()
     -- Options: Override default values
     state.OffenseMode:options('Normal', 'Acc', 'STP', 'CRIT')
-    state.HybridMode:options('Normal', 'PDT', 'H2H', 'SubtleBlow', 'SubtleBlow75', 'Counter', 'ressistwater')
+    state.HybridMode:options('Normal', 'PDT', 'H2H', 'SubtleBlow', 'Counter', 'ressistwater')
     state.WeaponskillMode:options('Normal', 'SC', 'PDL')
     state.CastingMode:options('Normal', 'sird', 'ConserveMP')
     state.IdleMode:options('Normal', 'Refresh', 'Regen')
@@ -146,9 +147,10 @@ function user_setup()
     send_command('bind != gs c toggle CapacityMode')
     send_command('bind ^` input /ja "Hasso" <me>')
     send_command('bind !` input /ja "Seigan" <me>')
+    send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('bind ^/ gs disable all')
     send_command('bind ^- gs enable all')
-    send_command('wait 2;input /lockstyleset 152')
+    send_command('wait 6;input /lockstyleset 152')
     select_default_macro_book()
 end
  
@@ -641,11 +643,13 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         neck={ name="Warder's Charm +1", augments={'Path: A',}},
     })
     sets.precast.WS['Resolution'].PDL= set_combine(sets.precast.WS['Resolution'], {
+        head={ name="Sakpata's Helm", augments={'Path: A',}},
         body={ name="Sakpata's Plate", augments={'Path: A',}},
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         legs="Boii Cuisses +3",
         feet={ name="Sakpata's Leggings", augments={'Path: A',}},
-        right_ring="Sroda Ring", 
+        neck="Fotia Gorget",
+        waist="Fotia Belt",
     })
      
      sets.precast.WS['Raging Fists'] = set_combine(sets.precast.WS['Resolution'], sets.precast.WS) 
@@ -1254,27 +1258,13 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
     }
 
     sets.engaged.SubtleBlow = set_combine(sets.engaged, {        
-        body="Flamma Korazin +2",
+        body="Dagon Breast.",
         hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
         left_ear={ name="Schere Earring", augments={'Path: A',}},
         right_ear="Boii Earring +1",
         left_ring="Chirich Ring +1",
-        right_ring="Chirich Ring +1",
-    })
-
-    sets.engaged.SubtleBlow75 = set_combine(sets.engaged, {      
-        head={ name="Blistering Sallet +1", augments={'Path: A',}},  
-        body="Flamma Korazin +2",
-        hands="Kobo Kote",
-        legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
-        waist="Sarissapho. Belt",
-        left_ear={ name="Schere Earring", augments={'Path: A',}},
-        right_ear="Boii Earring +1",
-        left_ring="Chirich Ring +1",
         right_ring="Niqmaddu Ring",
-        back="Sokolski Mantle",
     })
 
     sets.engaged.H2H = {
@@ -1312,6 +1302,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
     sets.engaged.Acc.PDT = set_combine(sets.engaged.Acc, sets.Defensive)
     sets.engaged.STP.PDT = set_combine(sets.engaged.STP, sets.Defensive)
     sets.engaged.CRIT.PDT = set_combine(sets.engaged.CRIT, sets.Defensive)
+    sets.engaged.SubtleBlow.PDT = set_combine(sets.engaged.SubtleBlow, sets.Defensive)
 
     ------------------------------------------------------------------------------------------------
       ---------------------------------------- DW-HASTE ------------------------------------------
@@ -1345,6 +1336,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
      sets.engaged.DW.Acc.PDT = set_combine(sets.engaged.DW.Acc, sets.Defensive)
      sets.engaged.DW.STP.PDT = set_combine(sets.engaged.DW.STP, sets.Defensive)
      sets.engaged.DW.CRIT.PDT = set_combine(sets.engaged.DW.CRIT, sets.Defensive)
+     sets.engaged.DW.SubtleBlow.PDT = set_combine(sets.engaged.DW.SubtleBlow, sets.Defensive)
 
 
     ------------------------------------------------------------------------------------------------
@@ -1367,7 +1359,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
      right_ring="Blenmot's Ring +1",
      legs="Shabti Cuisses +1",
     }
-     sets.buff.Sleep = {neck="Vim Torque +1",left_ear="Infused Earring",}
+     sets.buff.sleep = {neck="Vim Torque +1"}
 
     
 end
@@ -1532,7 +1524,7 @@ function customize_melee_set(meleeSet)
         meleeSet = set_combine(meleeSet, sets.Reraise)
         send_command('input //gs equip sets.Reraise')
     end
-    if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
+    if state.buff.sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
         meleeSet = set_combine(meleeSet, sets.buff.Sleep)
     end
     check_weaponset()
@@ -1591,6 +1583,12 @@ function job_buff_change(buff, gain)
     if state.Buff[buff] ~= nil then
         handle_equipping_gear(player.status)
     end
+    if buff == "Protect" then
+        if gain then
+            enable('ear1')
+            state.BrachyuraEarring:set(false)
+        end
+    end
     if buff == "Mighty Strikes" then
         if gain then  			
             send_command('input /p "Mighty Strikes" [ON]')		
@@ -1614,6 +1612,10 @@ function job_buff_change(buff, gain)
     end    
     if buff == "sleep" and gain and player.hp > 200 and player.status == "Engaged" then
         equip({neck="Vim Torque +1"})
+        disable('neck')
+    elseif not gain then 
+        enable('neck')
+        handle_equipping_gear(player.status)
     end
     if buff == "Restraint" and not gain then
         if player.status == 'Engaged' then
@@ -1773,6 +1775,18 @@ function job_buff_change(buff, gain)
         send_command('input /item "Holy Water" <me>')
         end
     end
+    if buffactive["sleep"] then
+        if player.hp > 200 and player.status == "Engaged" then -- Equip Vim's Torque When You Are Asleep & Have 200+ HP --
+            equip({ neck="Vim Torque +1"})
+        end
+        
+    end
+```
+    if buff == "poison" then
+        if gain then  
+        send_command('input /item "remedy" <me>')
+        end
+    end
     if not midaction() then
         handle_equipping_gear(player.status)
     end
@@ -1914,6 +1928,13 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if state.BrachyuraEarring .value == true then
+        equip({left_ear="Brachyura Earring"})
+        disable('ear1')
+    else 
+        enable('ear1')
+        state.BrachyuraEarring:set(false)
     end
     check_weaponset()
     job_handle_equipping_gear(player.status)

@@ -118,7 +118,7 @@ function user_setup()
     state.CastingMode:options('Normal', 'SIRD')
     state.WeaponskillMode:options('Normal', 'PDL', 'SC', 'vagary')
     state.IdleMode:options('Normal', 'PDT', 'MDT', 'HP', 'EnemyCritRate')
-    state.PhysicalDefenseMode:options('PDT', 'TreasureHunter', 'Evasion', 'HP', 'Enmity')
+    state.PhysicalDefenseMode:options('PDT', 'Evasion', 'HP', 'Enmity')
     state.MagicalDefenseMode:options('MDT')
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Heishi', 'Tauret', 'Naegling', 'Hachimonji', 'Zanmato'}
 
@@ -1013,15 +1013,6 @@ sets.midcast.Absorb = {
     right_ring="Paguroidea Ring",
     back="Moonlight Cape",
     }
-
-    sets.defense.TreasureHunter =set_combine(sets.engaged, {
-        main={ name="Heishi Shorinken", augments={'Path: A',}},
-        sub="Kunimitsu",
-        ammo="Per. Lucky Egg",
-        head="Wh. Rarab Cap +1",
-        waist="Chaac Belt",
-        })
-
     sets.defense.Enmity = {
         ammo="Iron Gobbet",
         head="Malignance Chapeau",
