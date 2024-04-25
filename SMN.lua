@@ -88,7 +88,7 @@ function job_setup()
     state.Buff["Astral Conduit"] = buffactive["Astral Conduit"] or false
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
-    send_command('wait 6;input /lockstyleset 174')
+    send_command('wait 2;input /lockstyleset 174')
 
     spirits = S{"LightSpirit", "DarkSpirit", "FireSpirit", "EarthSpirit", "WaterSpirit", "AirSpirit", "IceSpirit", "ThunderSpirit"}
     avatars = S{"Carbuncle", "Fenrir", "Diabolos", "Ifrit", "Titan", "Leviathan", "Garuda", "Shiva", "Ramuh", "Odin", "Alexander", "Cait Sith", "Siren"}
@@ -172,7 +172,7 @@ function user_setup()
     state.PhysicalDefenseMode:options('PDT', 'Regen', 'Mdt')
     state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
     gear.perp_staff = {name=""}
-    send_command('wait 2;input /lockstyleset 174')
+    send_command('wait 6;input /lockstyleset 174')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind ^/ gs disable all')
@@ -233,6 +233,8 @@ function init_gear_sets()
 		right_ring="Kishar Ring",
         back={ name="Fi Follet Cape +1", augments={'Path: A',}},
 }
+sets.precast.FC.Impact = set_combine(sets.precast.FC, {head=empty, body="Twilight Cloak", waist="Shinjutsu-no-Obi +1"})
+
 sets.precast.FC.Cure = set_combine(sets.precast.FC, {
     legs="Doyen Pants",
     left_ear="Mendi. Earring",
@@ -428,7 +430,13 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
         left_ring="Stikini Ring +1",
         right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
         back="Argocham. Mantle",
-}
+    }
+    sets.midcast.Impact = set_combine(sets.midcast['Elemental Magic'], {
+        head=empty,
+        body="Twilight Cloak",
+        ring2="Archon Ring",
+        waist="Shinjutsu-no-Obi +1",
+        })
     sets.midcast.Dispelga = set_combine(sets.midcast['Enfeebling Magic'], {main="Daybreak", sub="Ammurapi Shield"})
 
     sets.midcast['Dark Magic'] = set_combine(sets.midcast['Enfeebling Magic'], {
@@ -528,11 +536,11 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
         main={ name="Grioavolr", augments={'Blood Pact Dmg.+9','Pet: Mag. Acc.+17',}},
     sub="Elan Strap +1",
     ammo="Sancus Sachet +1",
-    head={ name="Helios Band", augments={'Pet: Attack+28 Pet: Rng.Atk.+28','Pet: Crit.hit rate +2','Blood Pact Dmg.+6',}},
+    head={ name="Apogee Crown", augments={'Pet: Attack+20','Pet: "Mag.Atk.Bns."+20','Blood Pact Dmg.+7',}},
     body={ name="Glyphic Doublet +3", augments={'Reduces Sp. "Blood Pact" MP cost',}},
     hands={ name="Merlinic Dastanas", augments={'Pet: Attack+9 Pet: Rng.Atk.+9','Blood Pact Dmg.+10','Pet: CHR+1','Pet: "Mag.Atk.Bns."+2',}},
     legs={ name="Apogee Slacks +1", augments={'Pet: STR+20','Blood Pact Dmg.+14','Pet: "Dbl. Atk."+4',}},
-    feet={ name="Helios Boots", augments={'Pet: Attack+24 Pet: Rng.Atk.+24','Pet: Crit.hit rate +4','Blood Pact Dmg.+7',}},
+    feet="Apogee Pumps",
     neck={ name="Smn. Collar +2", augments={'Path: A',}},
     waist="Incarnation Sash",
     left_ear="Lugalbanda Earring",
@@ -896,13 +904,21 @@ function job_precast(spell, action, spellMap, eventArgs)
         eventArgs.useMidcastGear = true
     end
 end
-
+function job_post_precast(spell, action, spellMap, eventArgs)
+    -- Make sure abilities using head gear don't swap 
+    if spell.name == 'Impact' then
+        equip(sets.precast.FC.Impact)
+    end
+end
 function job_midcast(spell, action, spellMap, eventArgs)
     if state.Buff['Astral Conduit'] and pet_midaction() then
         eventArgs.useMidcastGear = true
     end
     if spell.type=="SummonerPact" then
        equip(sets.midcast.Summon)
+    end
+    if spell.name == 'Impact' then
+        equip(sets.midcast.Impact)
     end
 end
 

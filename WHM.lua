@@ -96,7 +96,7 @@ function user_setup()
     send_command('bind f7 input //Sublimator')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind @q gs c toggle AutoEquipBurst')
-    send_command('bind != gs c toggle CapacityMode')
+    send_command('bind !c gs c toggle CapacityMode')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('wait 6;input /lockstyleset 178')
@@ -1148,7 +1148,7 @@ function init_gear_sets()
         hands="Bunzi's Gloves",
         legs="Aya. Cosciales +2",
         feet="Battlecast Gaiters",
-        neck="Lissome Necklace",
+        neck="Combatant's Torque",
         waist="Cornelia's Belt",
         left_ear="Dedition Earring",
         right_ear="Telos Earring",
@@ -1163,7 +1163,7 @@ function init_gear_sets()
         hands="Bunzi's Gloves",
         legs="Aya. Cosciales +2",
         feet="Aya. Gambieras +2",
-        neck="Subtlety Spec.",
+        neck="Combatant's Torque",
         waist="Olseni Belt",
         left_ear="Crep. Earring",
         right_ear="Telos Earring",
@@ -1180,7 +1180,7 @@ function init_gear_sets()
         hands="Bunzi's Gloves",
         legs="Aya. Cosciales +2",
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Lissome Necklace",
+        neck="Combatant's Torque",
         waist="Cornelia's Belt",
         left_ear="Brutal Earring",
         right_ear="Telos Earring",
@@ -1222,7 +1222,7 @@ function init_gear_sets()
         hands="Bunzi's Gloves",
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        neck="Combatant's Torque",
         waist="Plat. Mog. Belt",
         back="Moonlight Cape",
     })
@@ -1233,7 +1233,7 @@ function init_gear_sets()
         hands="Bunzi's Gloves",
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        neck="Combatant's Torque",
         waist="Plat. Mog. Belt",
         back="Moonlight Cape",
     })
@@ -1245,7 +1245,7 @@ function init_gear_sets()
         hands="Bunzi's Gloves",
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        neck="Combatant's Torque",
         waist="Plat. Mog. Belt",
         back="Moonlight Cape",
     })
