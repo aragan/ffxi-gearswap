@@ -38,7 +38,7 @@ end
 function user_setup()
     state.OffenseMode:options('None','Normal','TP', 'Locked')
     state.CastingMode:options('Normal', 'OccultAcumen', 'FreeNuke', 'Proc')
-    state.IdleMode:options('Normal', 'PDT', 'MDT', 'DT', 'HB', 'MB')
+    state.IdleMode:options('Normal', 'PDT', 'MDT', 'DT', 'HB', 'MB', 'EnemyCritRate')
     state.PhysicalDefenseMode:options('PDT', 'MDT')
 	state.VorsealMode = M('Normal', 'Vorseal')
 	state.Enfeebling = M('None', 'Effect')
@@ -897,15 +897,19 @@ sets.midcast.Aspir = sets.midcast.Drain
         right_ring="Stikini Ring +1",
         back="Moonlight Cape",
     }
-
+    sets.idle.EnemyCritRate = set_combine(sets.idle.PDT, { 
+        ammo="Eluder's Sachet",
+        left_ring="Warden's Ring",
+        right_ring="Fortified Ring",
+        back="Reiki Cloak",
+    })
     sets.idle.Town = {
-        feet="Herald's Gaiters",left_ear="Infused Earring",
+        feet="Herald's Gaiters",
+        left_ear="Infused Earring",
         right_ring="Stikini Ring +1",}
 
     sets.Adoulin = {body="Councilor's Garb", feet="Herald's Gaiters"}
-
     sets.MoveSpeed = {feet="Herald's Gaiters"}
-    
     sets.TreasureHunter = {ammo="Per. Lucky Egg",
     head="White rarab cap +1", 
     waist="Chaac Belt"} 
