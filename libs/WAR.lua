@@ -1885,6 +1885,15 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
+
+windower.register_event('hpp change',
+function(new_hpp,old_hpp)
+    if new_hpp < 5 then
+        equip(sets.Reraise)
+    end
+end
+)
+
 function get_combat_form()
     --if war_sj then
         --state.CombatForm:set("War")

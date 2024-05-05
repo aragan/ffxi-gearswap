@@ -249,6 +249,7 @@ function init_gear_sets()
 
    
         organizer_items = {
+            "Kustawi +1",
             "Airmid's Gorget",
             "Moogle Amp.",
             "Mafic Cudgel",

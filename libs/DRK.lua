@@ -151,7 +151,7 @@ function job_setup()
     -- Offhand weapons used to activate DW mode
     swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
     sets.weaponList = {"Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
     get_combat_form()
@@ -211,7 +211,7 @@ function user_setup()
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !- gs c toggle RP')  
     send_command('bind delete gs c toggle BrachyuraEarring')
-	send_command('bind f12 gs c cycle IdleMode')
+	--send_command('bind f12 gs c cycle IdleMode')
 
     select_default_macro_book()
 end
@@ -231,6 +231,7 @@ function init_gear_sets()
 
 --Weaponsets
 sets.Normal = {}
+sets.Anguta = {main="Anguta", sub="Utu Grip"}
 sets.Apocalypse = {main="Apocalypse", sub="Utu Grip"}
 sets.AgwuClaymore = {main="Agwu's Claymore", sub="Utu Grip"}
 sets.Lycurgos = {main="Lycurgos", sub="Utu Grip",}
@@ -254,7 +255,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
     sets.precast.JA['Arcane Circle'] = {feet="Ignominy Sollerets +3"}
     sets.precast.JA['Weapon Bash'] = {hands="Ignominy Gauntlets +3"}
     sets.precast.JA['Souleater'] = {head="Ig. Burgeonet +3"}
-    sets.precast.JA['Dark Seal'] = {head="Fallen's Burgeonet"}
+    sets.precast.JA['Dark Seal'] = {head="Fall. Burgeonet +1"}
     sets.precast.JA['Diabolic Eye'] = {hands="Fall. Fin. Gaunt. +3"}
       
     
@@ -952,7 +953,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
     right_ear="Dignitary's Earring",
     left_ring="Evanescence Ring",
     right_ring="Stikini Ring +1",
-    back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','"Store TP"+10','Phys. dmg. taken-10%',}},
+    back={ name="Niht Mantle", augments={'Attack+10','Dark magic skill +10','"Drain" and "Aspir" potency +18',}},
     }
     sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
 
@@ -2405,7 +2406,7 @@ function get_combat_form()
         state.CombatForm:set("SW")
     elseif buffactive['Last Resort'] then
         if (buffactive.embrava or buffactive.haste) and buffactive.march then
-            add_to_chat(8, '-------------Delay Capped-------------')
+            --add_to_chat(8, '-------------Delay Capped-------------')
             state.CombatForm:set("Haste")
         else
             state.CombatForm:reset()
