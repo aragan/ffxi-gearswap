@@ -69,9 +69,10 @@ function job_setup()
     state.Buff['Trick Attack'] = buffactive['trick attack'] or false
     state.Buff['Feint'] = buffactive['feint'] or false
     state.WeaponLock = M(false, 'Weapon Lock')
+    state.BrachyuraEarring = M(true,false)
     state.Runes = M{['description']='Runes', "Ignis", "Gelus", "Flabra", "Tellus", "Sulpor", "Unda", "Lux", "Tenebrae"}
     state.UseRune = M(false, 'Use Rune')
-    send_command('wait 6;input /lockstyleset 164')
+    send_command('wait 2;input /lockstyleset 164')
     include('Mote-TreasureHunter')
 
     -- For th_action_check():
@@ -93,8 +94,8 @@ function user_setup()
     state.HybridMode:options('Normal', 'DT')
     state.RangedMode:options('Normal', 'Acc')
     state.WeaponskillMode:options('Normal', 'PDL', 'Mod')
-    state.IdleMode:options('Normal', 'PDT', 'HP', 'Evasion', 'MDT')
-    state.PhysicalDefenseMode:options('Evasion', 'PDT')
+    state.IdleMode:options('Normal', 'PDT', 'HP', 'Evasion', 'MDT', 'Regen', 'EnemyCritRate')
+    state.PhysicalDefenseMode:options('Evasion', 'PDT', 'HP')
     state.MagicalDefenseMode:options('MDT')
     state.TreasureMode:options('None','Tag','SATA','Fulltime')
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Twashtar', 'Tauret', 'Aeneas', 'Naegling'}
@@ -110,12 +111,13 @@ function user_setup()
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !- gs c cycle targetmode')
-    send_command('wait 2;input /lockstyleset 164')
+    send_command('wait 6;input /lockstyleset 164')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind f4 gs c cycle Runes')
     send_command('bind f3 gs c cycleback Runes')
     send_command('bind f2 input //gs c toggle UseRune')
+    send_command('bind delete gs c toggle BrachyuraEarring')
     select_default_macro_book()
     Panacea = T{
         'Bind',
@@ -227,7 +229,6 @@ function init_gear_sets()
 
     -- Fast cast sets for spells
     sets.precast.FC = {ammo="Sapience Orb",
-    body={ name="Taeon Tabard", augments={'Pet: Mag. Evasion+20','Pet: "Regen"+3','Pet: Damage taken -3%',}},
     hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
     feet="Jute Boots +1",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -530,7 +531,6 @@ sets.precast.WS['Judgment'].PDL = set_combine(sets.precast.WS['Black Halo'], {
 
     sets.midcast.FastRecast = {
         ammo="Sapience Orb",
-    body="Taeon Tabard",
     hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
     feet="Jute Boots +1",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -600,42 +600,6 @@ sets.precast.WS['Judgment'].PDL = set_combine(sets.precast.WS['Black Halo'], {
         back="Moonlight Cape",    }
 
 
-    -- Idle sets (default idle set not needed since the other three are defined, but leaving for testing purposes)
-
-    sets.idle = {range=empty,
-        ammo="Staunch Tathlum +1",
-        head="Gleti's Mask",
-        body="Adamantite Armor",
-        hands="Gleti's Gauntlets",
-        legs="Gleti's Breeches",
-        feet="Gleti's Boots",
-        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
-        waist="Carrier's Sash",
-        left_ear="Tuisto Earring",
-        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
-        right_ring="Defending Ring",
-        left_ring="Moonlight Ring",
-        back="Moonlight Cape",
-
-}
-sets.idle.PDT = sets.defense.PDT
-sets.idle.HP = sets.defense.HP
-sets.idle.MDT = sets.defense.MDT
-sets.idle.Evasion = sets.defense.Evasion
-
-    sets.idle.Town = {
-        feet="Jute Boots +1",
-        left_ear="Infused Earring",
-    }
-    sets.Adoulin = {body="Councilor's Garb",}
-
-    sets.idle.Weak = set_combine(sets.idle, {
-        neck="Sanctity Necklace",
-    left_ear="Infused Earring",
-    left_ring="Paguroidea Ring",
-  })
-
-
     -- Defense sets
 
     sets.defense.Evasion = {
@@ -699,6 +663,67 @@ sets.idle.Evasion = sets.defense.Evasion
     right_ring="Purity Ring",
     back="Engulfer Cape +1",}
 
+
+    -- Idle sets (default idle set not needed since the other three are defined, but leaving for testing purposes)
+
+    sets.idle = {range=empty,
+        ammo="Staunch Tathlum +1",
+        head="Gleti's Mask",
+        body="Adamantite Armor",
+        hands="Gleti's Gauntlets",
+        legs="Gleti's Breeches",
+        feet="Gleti's Boots",
+        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+        waist="Carrier's Sash",
+        left_ear="Tuisto Earring",
+        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        right_ring="Defending Ring",
+        left_ring="Moonlight Ring",
+        back="Moonlight Cape",
+
+}
+sets.idle.PDT = sets.defense.PDT
+sets.idle.HP = {
+    ammo="Staunch Tathlum +1",
+    head="Nyame Helm",
+    body="Adamantite Armor",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+    waist="Plat. Mog. Belt",
+    left_ear="Tuisto Earring",
+    right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    left_ring="Moonlight Ring",
+    right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+    back="Moonlight Cape",
+}
+sets.idle.MDT = sets.defense.MDT
+sets.idle.Evasion = sets.defense.Evasion
+sets.idle.EnemyCritRate = set_combine(sets.idle.PDT, { 
+    ammo="Eluder's Sachet",
+    left_ring="Warden's Ring",
+    right_ring="Fortified Ring",
+    back="Reiki Cloak",
+})
+sets.idle.Regen = set_combine(sets.idle, {
+    neck={ name="Bathy Choker +1", augments={'Path: A',}},
+    right_ear="Infused Earring",
+    left_ring="Chirich Ring +1",
+    right_ring="Chirich Ring +1",
+})
+    sets.idle.Town = {
+        feet="Jute Boots +1",
+        left_ear="Infused Earring",
+    }
+    sets.Adoulin = {body="Councilor's Garb",}
+
+    sets.idle.Weak = set_combine(sets.idle, {
+        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        right_ear="Infused Earring",
+        left_ring="Chirich Ring +1",
+        right_ring="Chirich Ring +1",
+    })
 
     --------------------------------------
     -- Melee sets
@@ -1125,6 +1150,12 @@ function job_buff_change(buff, gain)
             handle_equipping_gear(player.status)
         end
     end
+    if buff == "Protect" then
+        if gain then
+            enable('ear1')
+            state.BrachyuraEarring:set(false)
+        end
+    end
     if buff == "doom" then
         if gain then
             equip(sets.buff.Doom)
@@ -1454,14 +1485,18 @@ function job_state_change(stateField, newValue, oldValue)
         send_command('input //gs equip sets.Warp;@wait 10.0;input /item "Warp Ring" <me>;')
     end
     
-
-
     if state.WeaponLock.value == true then
         disable('main','sub')
     else
         enable('main','sub')
     end
-
+    if state.BrachyuraEarring .value == true then
+        equip({left_ear="Brachyura Earring"})
+        disable('ear1')
+    else 
+        enable('ear1')
+        state.BrachyuraEarring:set(false)
+    end
     check_weaponset()
 
 end
