@@ -16,7 +16,6 @@ function get_sets()
     mote_include_version = 2
     include('Mote-Include.lua')
     include('organizer-lib')
-    include('Mote-TreasureHunter')
     organizer_items = {
         "Airmid's Gorget",
         "Hachimonji",
@@ -63,6 +62,7 @@ end
 
 -- Setup vars that are user-independent.
 function job_setup()
+    include('Mote-TreasureHunter')
     state.Buff.Migawari = buffactive.migawari or false
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
@@ -279,7 +279,7 @@ function init_gear_sets()
     }
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {    neck="Magoraga Beads",
         body="Passion Jacket",
-        feet="Hattori Kyahan +1",
+        feet="Hattori Kyahan +2",
     })
      -- Waltz set (chr and vit)
      sets.precast.Waltz = {
@@ -377,7 +377,7 @@ sets.midcast.SelfNinjutsu.SIRD = {       sub="Tancho",
     back="Moonlight Cape",
 }
     sets.midcast.Utsusemi = set_combine(sets.midcast.Ninjutsu, {    
-        feet="Hattori Kyahan +1",
+        feet="Hattori Kyahan +2",
         back="Andartia's Mantle",
     })
     sets.midcast.Utsusemi.SIRD = set_combine(sets.midcast.Ninjutsu, {        sub="Tancho",
@@ -392,7 +392,7 @@ sets.midcast.SelfNinjutsu.SIRD = {       sub="Tancho",
         right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
         left_ring="Defending Ring",
         right_ring="Evanescence Ring",
-        feet="Hattori Kyahan +1",
+        feet="Hattori Kyahan +2",
         back="Andartia's Mantle",
     })
     sets.midcast.Migawari = set_combine(sets.midcast.Ninjutsu, {    neck="Incanter's Torque",
@@ -521,8 +521,8 @@ sets.midcast.Absorb = {
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
         left_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         right_ear="Hattori Earring +1", 
-        right_ring="Regal Ring",
-        left_ring="Gere Ring",
+        left_ring="Regal Ring",
+        right_ring="Gere Ring",
         back="Andartia's Mantle",
     }
     sets.precast.WS['Blade: Kamu'] = set_combine(sets.precast.WS, sets.Kamu)
@@ -551,8 +551,8 @@ sets.midcast.Absorb = {
         waist="Gerdr Belt",
         right_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         left_ear="Odr Earring",
-        right_ring="Regal Ring",
-        left_ring="Gere Ring",
+        left_ring="Regal Ring",
+        right_ring="Gere Ring",
         back="Andartia's Mantle",
     }
     sets.precast.WS['Blade: Jin'] = set_combine(sets.precast.WS, sets.Jin)
@@ -583,8 +583,8 @@ sets.midcast.Absorb = {
         waist="Gerdr Belt",
         right_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         left_ear="Odr Earring",
-        right_ring="Regal Ring",
-        left_ring="Gere Ring",
+        left_ring="Regal Ring",
+        right_ring="Gere Ring",
         back="Sacro Mantle",
     })
     sets.precast.WS['Blade: Hi'].SC = set_combine(sets.precast.WS['Blade: Hi'], {
@@ -614,8 +614,8 @@ sets.midcast.Absorb = {
         waist="Fotia Belt",
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         right_ear="Hattori Earring +1", 
-        right_ring="Regal Ring",
-        left_ring="Gere Ring",
+        left_ring="Regal Ring",
+        right_ring="Gere Ring",
         back="Andartia's Mantle",
     }
     
@@ -652,8 +652,8 @@ sets.midcast.Absorb = {
         waist="Gerdr Belt",
         right_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         left_ear="Odr Earring",
-        right_ring="Regal Ring",
-        left_ring="Gere Ring",
+        left_ring="Regal Ring",
+        right_ring="Gere Ring",
         back="Andartia's Mantle",
     }
     sets.precast.WS['Blade: Rin'] = set_combine(sets.precast.WS, sets.Rin)
@@ -676,8 +676,8 @@ sets.midcast.Absorb = {
         waist="Fotia Belt",
         right_ear="Brutal Earring",
         left_ear={ name="Lugra Earring +1", augments={'Path: A',}},
-        right_ring="Regal Ring",
-        left_ring="Gere Ring",
+        left_ring="Regal Ring",
+        right_ring="Gere Ring",
         back="Andartia's Mantle",
     }
     sets.precast.WS['Blade: Ku'] = set_combine(sets.precast.WS, sets.Ku)
@@ -973,8 +973,8 @@ sets.midcast.Absorb = {
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
         neck={ name="Unmoving Collar +1", augments={'Path: A',}},
         waist="Plat. Mog. Belt",
-        left_ear="Tuisto Earring",
-        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        right_ear="Tuisto Earring",
+        left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
         left_ring="Eihwaz Ring",
         right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
         back="Moonlight Cape",
@@ -1062,13 +1062,14 @@ sets.idle.MDT = {
 sets.idle.HP = {
     ammo="Staunch Tathlum +1",
     head={ name="Nyame Helm", augments={'Path: B',}},
+    body="Adamantite Armor",
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
-    left_ear="Tuisto Earring",
-    right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    right_ear="Tuisto Earring",
+    left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
     left_ring="Eihwaz Ring",
     right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
     back="Moonlight Cape",
@@ -1118,8 +1119,8 @@ sets.idle.Weak = sets.idle
         waist="Windbuffet Belt +1",
         left_ear="Telos Earring",
         right_ear="Dedition Earring",
-        left_ring="Gere Ring",
-        right_ring="Epona's Ring",
+        right_ring="Gere Ring",
+        left_ring="Epona's Ring",
         back="Andartia's Mantle",
     }
 
@@ -1143,8 +1144,8 @@ sets.idle.Weak = sets.idle
         waist="Windbuffet Belt +1",
         left_ear="Telos Earring",
         right_ear="Dedition Earring",
-        left_ring="Gere Ring",
-        right_ring="Epona's Ring",
+        right_ring="Gere Ring",
+        left_ring="Epona's Ring",
         back="Andartia's Mantle",
     }
     sets.engaged.STP = set_combine(sets.engaged, {
@@ -1185,11 +1186,11 @@ sets.idle.Weak = sets.idle
         waist="Sailfi Belt +1",
         left_ear="Balder Earring +1",
         right_ear="Cessance Earring",
-        left_ring="Gere Ring",
-        right_ring="Epona's Ring",
+        right_ring="Gere Ring",
+        left_ring="Epona's Ring",
         back="Andartia's Mantle", 
     })
-    sets.engaged.CRIT =  {
+    sets.engaged.CRIT = {
         ammo="Yetshila +1",
         head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
         body="Mummu Jacket +2",
@@ -1213,7 +1214,7 @@ sets.idle.Weak = sets.idle
     -- No Magic Haste (74% DW to cap)
 
 sets.engaged.DW = {
-    ammo="Coiste Bodhar",
+    ammo="Seki Shuriken",
     head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
@@ -1223,13 +1224,13 @@ sets.engaged.DW = {
     waist="Windbuffet Belt +1",
     left_ear="Telos Earring",
     right_ear="Dedition Earring",
-    left_ring="Gere Ring",
-    right_ring="Epona's Ring",
+    right_ring="Gere Ring",
+    left_ring="Epona's Ring",
     back="Andartia's Mantle",
 }
 
 sets.engaged.DW.Acc = set_combine(sets.engaged, {
-    ammo="Yamarang",
+    ammo="Seki Shuriken",
     neck="Moonbeam Nodowa",
     left_ear="Crep. Earring",
     ear2="Telos Earring",
@@ -1238,7 +1239,7 @@ sets.engaged.DW.Acc = set_combine(sets.engaged, {
     waist="Olseni Belt",
 })
 sets.engaged.DW.STP = set_combine(sets.engaged, {
-    ammo="Aurgelmir Orb +1",
+    ammo="Seki Shuriken",
     head="Malignance Chapeau",
     body="Malignance Tabard",
     hands="Malignance Gloves",
@@ -1522,7 +1523,7 @@ end
 -- eventArgs is the same one used in job_midcast, in case information needs to be persisted.
 function job_post_midcast(spell, action, spellMap, eventArgs)
     --if state.TreasureMode.value ~= 'None' and spell.action_type == 'Ranged Attack' then
-    --    equip(sets.TreasureHunter)
+    --    equip(sets.TreasusreHunter)
     --end
     if spellMap == 'ElementalNinjutsu' then
         if state.MagicBurst.value then
@@ -1587,9 +1588,6 @@ end
 function customize_melee_set(meleeSet)
     if state.CapacityMode.value then
         meleeSet = set_combine(meleeSet, sets.CapacityMantle)
-    end
-    if state.TreasureMode.value == 'Fulltime' then
-        meleeSet = set_combine(meleeSet, sets.TreasureHunter)
     end
     if state.HybridMode.value == 'Proc' then
         meleeSet = set_combine(meleeSet, sets.NoDW)
@@ -1747,9 +1745,6 @@ function job_buff_change(buff, gain)
     end
 end
 
-function check_buffs(check)
-     
-end
 
 function job_status_change(newStatus, oldStatus, eventArgs)
     if swordList:contains(player.equipment.main) then
@@ -1868,36 +1863,14 @@ function gearinfo(cmdParams, eventArgs)
 end
 
 function job_handle_equipping_gear(playerStatus, eventArgs)
-    check_gear()
     update_combat_form()
     determine_haste_group()
-    check_moving()
 end
 
 function job_update(cmdParams, eventArgs)
-    check_moving()
-    th_update(cmdParams, eventArgs)
+    --check_moving()
 end
-function check_moving()
-    if state.DefenseMode.value == 'None'  and state.Kiting.value == false then
-        if state.Auto_Kite.value == false and moving then
-            state.Auto_Kite:set(true)
-            send_command('gs c update')
 
-        elseif state.Auto_Kite.value == true and moving == false then
-            state.Auto_Kite:set(false)
-            send_command('gs c update')
-
-        end
-    end
-end
-function update_combat_form()
-    if DW == true then
-        state.CombatForm:set('DW')
-    elseif DW == false then
-        state.CombatForm:reset()
-    end
-end
 function check_gear()
     if no_swap_gear:contains(player.equipment.left_ring) then
         disable("ring1")
@@ -1925,9 +1898,33 @@ windower.register_event('zone change',
     end
 )
 
+function check_moving()
+    if state.DefenseMode.value == 'None'  and state.Kiting.value == false then
+        if state.Auto_Kite.value == false and moving then
+            state.Auto_Kite:set(true)
+            send_command('gs c update')
+
+        elseif state.Auto_Kite.value == true and moving == false then
+            state.Auto_Kite:set(false)
+            send_command('gs c update')
+
+        end
+    end
+end
+function update_combat_form()
+    if DW == true then
+        state.CombatForm:set('DW')
+    elseif DW == false then
+        state.CombatForm:reset()
+    end
+end
+
 -- State buff checks that will equip buff gear and mark the event as handled.
 function check_buff(buff_name, eventArgs)
-
+    if state.Buff[buff_name] then
+        equip(sets.buff[buff_name] or {})
+        eventArgs.handled = true
+    end
 end
 function sub_job_change(new,old)
     send_command('wait 6;input /lockstyleset 144')

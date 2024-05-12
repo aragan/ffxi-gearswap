@@ -151,7 +151,7 @@ function job_setup()
     -- Offhand weapons used to activate DW mode
     swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
     sets.weaponList = {"Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
     get_combat_form()
@@ -231,6 +231,7 @@ function init_gear_sets()
 
 --Weaponsets
 sets.Normal = {}
+sets.Caladbolg = {main="Caladbolg", sub="Utu Grip"}
 sets.Anguta = {main="Anguta", sub="Utu Grip"}
 sets.Apocalypse = {main="Apocalypse", sub="Utu Grip"}
 sets.AgwuClaymore = {main="Agwu's Claymore", sub="Utu Grip"}
