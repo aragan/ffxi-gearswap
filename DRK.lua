@@ -449,8 +449,8 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         neck={ name="Warder's Charm +1", augments={'Path: A',}},
     })
     sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS['Catastrophe'], {})
-    sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS['Catastrophe'], {})
-    sets.precast.WS['Savage Blade'].SC = set_combine(sets.precast.WS['Catastrophe'], {})
+    sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS['Catastrophe'].PDL, {})
+    sets.precast.WS['Savage Blade'].SC = set_combine(sets.precast.WS['Catastrophe'].SC, {})
 
 
     sets.precast.WS['Spiral Hell'] = set_combine(sets.precast.WS, {
@@ -653,9 +653,7 @@ sets.precast.WS['Infernal Scythe'].SC = set_combine(sets.precast.WS['Infernal Sc
     feet="Nyame Sollerets",
     neck={ name="Warder's Charm +1", augments={'Path: A',}},
 })
-sets.precast.WS['Infernal Scythe'].None = {
-
-}
+sets.precast.WS['Infernal Scythe'].None = {}
 sets.precast.WS['Shadow of Death'] = set_combine(sets.precast.WS['Infernal Scythe'], {neck="Sibyl Scarf",})
 sets.precast.WS['Shadow of Death'].Mid = set_combine(sets.precast.WS['Infernal Scythe'], {neck="Sibyl Scarf",})
 sets.precast.WS['Shadow of Death'].PDL = set_combine(sets.precast.WS['Infernal Scythe'].PDL, {neck="Sibyl Scarf",})
