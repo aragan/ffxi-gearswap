@@ -40,7 +40,7 @@ function user_setup()
 
     state.OffenseMode:options('None', 'Normal', 'Melee', 'Shield')
     state.CastingMode:options('Normal', 'MB')
-    state.IdleMode:options('Normal', 'PDT', 'Refresh')
+    state.IdleMode:options('Normal', 'PDT', 'Refresh', 'Sphere')
 
     gear.default.weaponskill_waist = "Windbuffet Belt +1"
 
@@ -138,9 +138,10 @@ function init_gear_sets()
         ring1="Prolix Ring",
         ring2="Kishar Ring",
         back="Lifestream Cape",
+        neck="Orunmila's Torque",        
         waist="Witful Belt",
         legs="Geomancy Pants +2",
-        feet="Merlinic Crackows"
+        feet={ name="Regal Pumps +1", augments={'Path: A',}},
     }
     sets.precast.FC.Impact = set_combine(sets.precast.FC, {head=empty, body="Twilight Cloak", waist="Shinjutsu-no-Obi +1"})
 
@@ -499,6 +500,7 @@ function init_gear_sets()
     
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
         head="Pixie Hairpin +1",
+        hands={ name="Merlinic Dastanas", augments={'"Mag.Atk.Bns."+1','"Drain" and "Aspir" potency +10','CHR+5','Mag. Acc.+4',}},
         feet={ name="Agwu's Pigaches", augments={'Path: A',}},
         neck="Erra Pendant",
         ring1="Evanescence Ring",
@@ -614,8 +616,9 @@ function init_gear_sets()
         left_ring="Stikini Ring +1",
         right_ring="Stikini Ring +1",
     })
-
-
+    sets.idle.Sphere = set_combine(sets.idle, {
+        body="Annoint. Kalasiris",
+    })
     -- .Pet sets are for when Luopan is present.
     sets.idle.Pet = set_combine(sets.idle, {
     main="Solstice",

@@ -62,8 +62,6 @@ organizer_items = {
     "Instant Reraise",
     "Black Curry Bun",
     "Rolan. Daifuku",
-    "Qutrub Knife",
-    "Wind Knife +1",
     "Reraise Earring",}
 
 --[[
@@ -122,7 +120,7 @@ Scourge (R) > Resolution (MM)
 -- Setup vars that are user-independent.
 function job_setup()
     state.CapacityMode = M(false, 'Capacity Point Mantle')
-    send_command('wait 2;input /lockstyleset 152')
+    send_command('wait 2;input /lockstyleset 165')
     send_command('bind !` gs c toggle MagicBurst')
     include('Mote-TreasureHunter')
     state.MagicBurst = M(false, 'Magic Burst')
@@ -142,15 +140,15 @@ function job_setup()
     wsList = S{}
     -- Greatswords you use. 
     gsList = S{'Ragnarok','Caladbolg','Nandaka','Foreshock Sword','Agwu\'s Claymore'}
-    scytheList = S{'Apocalypse'}
-    remaWeapons = S{'Apocalypse','Ragnarok','Nandaka'}
+    scytheList = S{'Apocalypse', 'Anguta'}
+    remaWeapons = S{'Caladbolg', 'Apocalypse','Ragnarok','Nandaka', 'Anguta'}
   
     shields = S{'Blurred Shield +1'}
     -- Mote has capitalization errors in the default Absorb mappings, so we use our own
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     -- Offhand weapons used to activate DW mode
     swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
-    sets.weaponList = {"Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
+    sets.weaponList = {"Caladbolg", "Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
@@ -205,7 +203,7 @@ function user_setup()
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
-    send_command('wait 6;input /lockstyleset 152')
+    send_command('wait 6;input /lockstyleset 165')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f7 gs c cycle shield')
     send_command('bind f6 gs c cycle WeaponSet')
@@ -283,7 +281,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
         legs={ name="Odyssean Cuisses", augments={'Attack+29','"Fast Cast"+5','CHR+10',}},
         feet={ name="Odyssean Greaves", augments={'"Mag.Atk.Bns."+23','Magic dmg. taken -5%','INT+9',}},
-        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+        neck="Orunmila's Torque",
         waist="Austerity Belt +1",
         left_ear="Loquac. Earring",
         right_ear="Malignance Earring",
@@ -1291,7 +1289,7 @@ sets.defense.SEboost = {
        right_ring="Fortified Ring",
        back="Reiki Cloak",
     })
-        sets.idle.Sphere = set_combine(sets.idle, {   })
+        sets.idle.Sphere = set_combine(sets.idle, {})
       
 
     --------------------------------------
@@ -2487,7 +2485,7 @@ end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()
-        send_command('wait 6;input /lockstyleset 152')
+        send_command('wait 6;input /lockstyleset 165')
     end
 end
 
