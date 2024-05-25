@@ -266,14 +266,14 @@ back="Rudianos's Mantle",
    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
    body="Rev. Surcoat +3",
    hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
-   legs={ name="Odyssean Cuisses", augments={'Attack+29','"Fast Cast"+5','CHR+10',}},
-   feet={ name="Odyssean Greaves", augments={'"Mag.Atk.Bns."+23','Magic dmg. taken -5%','INT+9',}},
-   neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+   legs="Enif Cosciales",
+   feet="Chev. Sabatons +3",
+   neck="Orunmila's Torque",
    waist="Plat. Mog. Belt",
-   left_ear="Tuisto Earring",
-   right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
-   left_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
-   right_ring="Moonlight Ring",
+   left_ear="Etiolation Earring",
+   right_ear="Loquac. Earring",
+   left_ring="Rahab Ring",
+   right_ring="Kishar Ring",
    back="Moonlight Cape",
 }
  sets.precast.FC.DT = set_combine(sets.precast.FC, {})
@@ -499,7 +499,7 @@ sets.precast.WS['Resolution'].PDL = set_combine(sets.precast.WS['Requiescat'].PD
    sets.midcast.FastRecast = sets.SIRD
    -- Divine Skill 590/594 142 Acc
    sets.midcast.Divine = {
-       head={ name="Jumalik Helm", augments={'MND+1','Magic burst dmg.+8%',}},
+       head="Jumalik Helm",
        body="Rev. Surcoat +3",
        hands="Eschite Gauntlets",
        neck="Incanter's Torque",
@@ -508,7 +508,7 @@ sets.precast.WS['Resolution'].PDL = set_combine(sets.precast.WS['Requiescat'].PD
        right_ring="Stikini Ring +1",
 }
    sets.midcast.Divine.DT = set_combine(sets.SIRD, {
-       head={ name="Jumalik Helm", augments={'MND+1','Magic burst dmg.+8%',}},
+       head="Jumalik Helm",
        body="Rev. Surcoat +3",
        hands="Eschite Gauntlets",
        neck="Incanter's Torque",
@@ -539,7 +539,7 @@ sets.midcast.Refresh = set_combine(sets.midcast['Enhancing Magic'], {waist="Gish
 sets.midcast.Refresh.DT = set_combine(sets.midcast['Enhancing Magic'], {waist="Gishdubar Sash",})
  sets.midcast.MAB = {
        ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
-       head={ name="Jumalik Helm", augments={'MND+1','Magic burst dmg.+8%',}},
+       head="Jumalik Helm",
        body="Nyame Mail",
        hands="Nyame Gauntlets",
        legs="Nyame Flanchard",
@@ -554,7 +554,7 @@ sets.midcast.Refresh.DT = set_combine(sets.midcast['Enhancing Magic'], {waist="G
    }
    sets.midcast.MAB.MB = {
        ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
-       head={ name="Jumalik Helm", augments={'MND+1','Magic burst dmg.+8%',}},
+       head="Jumalik Helm",
        body="Nyame Mail",
        hands="Nyame Gauntlets",
        legs="Nyame Flanchard",
@@ -569,7 +569,7 @@ sets.midcast.Refresh.DT = set_combine(sets.midcast['Enhancing Magic'], {waist="G
    }
    sets.magic_burst = {
        ammo="Pemphredo Tathlum",
-       head={ name="Jumalik Helm", augments={'MND+1','Magic burst dmg.+8%',}},
+       head="Jumalik Helm",
        body="Nyame Mail",
        hands="Nyame Gauntlets",
        legs="Nyame Flanchard",
@@ -1149,6 +1149,7 @@ sets.TreasureHunter = {
 }
    sets.idle.Refresh ={
        ammo="Homiliary",
+       body={ name="Jumalik Mail", augments={'HP+50','Attack+15','Enmity+9','"Refresh"+2',}},
        hands="Regal Gauntlets",
        left_ring="Stikini Ring +1",
        right_ring="Stikini Ring +1",

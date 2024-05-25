@@ -146,7 +146,7 @@ function job_setup()
     "Aurorastorm II", "Voidstorm II", "Firestorm II", "Sandstorm II", "Rainstorm II", "Windstorm II", "Hailstorm II", "Thunderstorm II"}
    
     update_active_strategems()
-    send_command('wait 2;input /lockstyleset 174')
+    send_command('wait 2;input /lockstyleset 173')
 
     degrade_array = {
         ['Aspirs'] = {'Aspir','Aspir II'}
@@ -163,10 +163,10 @@ end
 function user_setup()
     state.OffenseMode:options('None', 'Normal', 'Acc', 'DT')
     state.CastingMode:options('Normal', 'magicburst', 'Enmity', 'ConserveMP' , 'Sird', 'SubtleBlow', 'Proc')
-    state.IdleMode:options('Normal', 'DT', 'Resist','BoostMB', 'vagary')
+    state.IdleMode:options('Normal', 'DT', 'Resist','BoostMB', 'vagary', 'Sphere')
     state.HippoMode = M{['description']='Hippo Mode', 'normal', 'Hippo'}
 
-    send_command('wait 6;input /lockstyleset 174')
+    send_command('wait 6;input /lockstyleset 173')
 
     -- Additional local binds
     --send_command('bind f4 @input /ja "Sublimation" <me>')
@@ -253,7 +253,7 @@ function init_gear_sets()
     ------------------------------------------------------------------------------------------------
 
     -- Precast sets to enhance JAs
-    sets.precast.JA['Tabula Rasa'] = {legs="Pedagogy Pants"}
+    sets.precast.JA['Tabula Rasa'] = {legs="Peda. Pants +3"}
     sets.precast.JA['Enlightenment'] = {body="Peda. Gown +3"}
     sets.precast.JA['Sublimation'] = {
     ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
@@ -425,6 +425,7 @@ function init_gear_sets()
     sets.midcast.FastRecast = {}--sets.precast.FC
 
     sets.midcast.Cure = {
+        main={ name="Musa", augments={'Path: C',}},
         ammo="Pemphredo Tathlum",
         head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
         body={ name="Chironic Doublet", augments={'"Mag.Atk.Bns."+5','"Cure" potency +10%','MND+4','Mag. Acc.+1',}},
@@ -438,7 +439,6 @@ function init_gear_sets()
         right_ring="Naji's Loop",
         back="Solemnity Cape",
         }
-
     sets.midcast.CureWeather = set_combine(sets.midcast.Cure, {
         waist="Hachirin-no-Obi",
         })
@@ -452,7 +452,7 @@ function init_gear_sets()
         left_ear="Enervating Earring",
         left_ring={ name="Mephitas's Ring +1", augments={'Path: A',}},
         right_ring={ name="Cacoethic Ring +1", augments={'Path: A',}},
-        back="Solemnity Cape",        })
+        back="Solemnity Cape",})
 
     sets.midcast.Cure.ConserveMP = set_combine(sets.midcast.Cure, {
         head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
@@ -470,7 +470,7 @@ function init_gear_sets()
         ammo="Staunch Tathlum +1",
         head="Agwu's Cap",
         body="Rosette Jaseran +1",
-        hands={ name="Chironic Gloves", augments={'"Cure" potency +7%','MND+9','Mag. Acc.+5','"Mag.Atk.Bns."+5',}},
+        hands={ name="Chironic Gloves", augments={'Mag. Acc.+11','Spell interruption rate down -10%','MND+8',}},
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -517,7 +517,7 @@ function init_gear_sets()
         })
 
     sets.midcast['Enhancing Magic'] = {
-        main="Oranyan",
+        main={ name="Musa", augments={'Path: C',}},
         sub="Enki Strap",
         ammo="Pemphredo Tathlum",
         head="Telchine Cap",
@@ -535,7 +535,7 @@ function init_gear_sets()
         }
 
     sets.midcast.EnhancingDuration = set_combine(sets.midcast['Enhancing Magic'], {
-        main="Oranyan",
+        main={ name="Musa", augments={'Path: C',}},
         sub="Enki Strap",
         head="Telchine Cap",
         body="Telchine Chas.",
@@ -544,10 +544,10 @@ function init_gear_sets()
         feet="Telchine Pigaches",
         waist="Embla Sash",
         back={ name="Fi Follet Cape +1", augments={'Path: A',}},
-
         })
 
     sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
+        main={ name="Musa", augments={'Path: C',}},
         head="Arbatel Bonnet +2",
         body="Telchine Chas.",
         hands="Telchine Gloves",
@@ -558,6 +558,7 @@ function init_gear_sets()
         })
 
     sets.midcast.RegenDuration = set_combine(sets.midcast['Enhancing Magic'], {
+        main={ name="Musa", augments={'Path: C',}},
         head="Arbatel Bonnet +2",
         body="Telchine Chas.",
         hands="Telchine Gloves",
@@ -599,7 +600,7 @@ function init_gear_sets()
 
     sets.midcast.Storm = sets.midcast.EnhancingDuration
 
-    sets.midcast.Stormsurge = set_combine(sets.midcast.Storm, {feet={ name="Peda. Loafers", augments={'Enhances "Stormsurge" effect',}},})
+    sets.midcast.Stormsurge = set_combine(sets.midcast.Storm, {feet={ name="Peda. Loafers +1", augments={'Enhances "Stormsurge" effect',}},})
 
     sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {left_ear="Brachyura Earring",})
     sets.midcast.Protectra = sets.midcast.Protect
@@ -646,7 +647,7 @@ function init_gear_sets()
         head="Pixie Hairpin +1",
         body="Agwu's Robe",
         hands="Agwu's Gages",
-        legs="Agwu's Slops",
+        legs="Peda. Pants +3",
         feet="Agwu's Pigaches",
         neck="Baetyl Pendant",
         waist="Fucho-no-obi",
@@ -684,6 +685,8 @@ function init_gear_sets()
     }
     sets.midcast.Drain = set_combine(sets.midcast['Dark Magic'], {
         head="Pixie Hairpin +1",
+        hands={ name="Merlinic Dastanas", augments={'"Mag.Atk.Bns."+1','"Drain" and "Aspir" potency +10','CHR+5','Mag. Acc.+4',}},
+        legs="Peda. Pants +3",
         feet={ name="Agwu's Pigaches", augments={'Path: A',}},
         neck="Erra Pendant",
         ring1="Evanescence Ring",
@@ -910,7 +913,7 @@ function init_gear_sets()
     })
 
     sets.idle.vagary =  {
-    main="Oranyan", 
+    main={ name="Musa", augments={'Path: C',}},
     ammo="Sapience Orb",
     head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
     body="Pinga Tunic +1",
@@ -925,7 +928,9 @@ function init_gear_sets()
     right_ring="Prolix Ring",
     back={ name="Fi Follet Cape +1", augments={'Path: A',}},
 }
-
+sets.idle.Sphere = set_combine(sets.idle, {
+    body="Annoint. Kalasiris",
+})
     sets.idle.Town = set_combine(sets.idle, {
         main="Mpaca's Staff",
         body="Shamash Robe",
@@ -1006,21 +1011,21 @@ sets.MoveSpeed = {feet="Herald's Gaiters"}
         right_ring="Stikini Ring +1",
         back="Lugh's Cape",
     }
-        sets.engaged.Acc = {
-            ammo="Amar Cluster",
-            head={ name="Blistering Sallet +1", augments={'Path: A',}},
-            body="Nyame Mail",
-            hands="Nyame Gauntlets",
-            legs="Nyame Flanchard",
-            feet="Battlecast Gaiters",
-            neck="Lissome Necklace",
-            waist="Cornelia's Belt",
-            left_ear="Crep. Earring",
-            right_ear="Telos Earring",
-            left_ring="Chirich Ring +1",
-            right_ring="Chirich Ring +1",
-            back={ name="Aurist's Cape +1", augments={'Path: A',}},
-            }
+    sets.engaged.Acc = {
+        ammo="Amar Cluster",
+        head={ name="Blistering Sallet +1", augments={'Path: A',}},
+        body="Nyame Mail",
+        hands={ name="Gazu Bracelets +1", augments={'Path: A',}},
+        legs="Nyame Flanchard",
+        feet="Battlecast Gaiters",
+        neck="Lissome Necklace",
+        waist="Olseni Belt",
+        left_ear="Crep. Earring",
+        right_ear="Telos Earring",
+        left_ring="Chirich Ring +1",
+        right_ring="Chirich Ring +1",
+        back={ name="Aurist's Cape +1", augments={'Path: A',}},
+    }
     sets.engaged.DT = {
     ammo="Staunch Tathlum +1",
     head="Nyame Helm",
@@ -1753,7 +1758,7 @@ end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()
-        send_command('wait 6;input /lockstyleset 174')
+        send_command('wait 6;input /lockstyleset 173')
     end
 end
 
@@ -1806,5 +1811,5 @@ function select_default_macro_book()
 end
 
 function set_lockstyle()
-    send_command('wait 2;input /lockstyleset 174')
+    send_command('wait 2;input /lockstyleset 173')
 end
