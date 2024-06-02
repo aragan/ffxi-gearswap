@@ -692,7 +692,7 @@ function init_gear_sets()
 		waist={ name="Sailfi Belt +1", augments={'Path: A',}},
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 		right_ear="Thrud Earring",
-		left_ring="Regal Ring",
+		left_ring="Sroda Ring",
 		right_ring="Cornelia's Ring",
 		back="Annealed Mantle",
 	})
@@ -936,10 +936,10 @@ function init_gear_sets()
 
         -- RESTING
     sets.resting = {	
-		head="Gleti's Mask",
-		body="Meg. Cuirie +2",
+		head="Crepuscular Helm",
+		body="Sacro Breastplate",
 		hands="Meg. Gloves +2",
-		legs="Gleti's Breeches",
+		legs="Meg. Chausses +2",
 		feet="Gleti's Boots",
 		neck="Empath Necklace",
 		waist="Isa Belt",

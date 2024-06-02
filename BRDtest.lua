@@ -860,7 +860,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
     -- Basic set for if no TP weapon is defined.
     sets.engaged = {range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
-        body="Ashera Harness",
+        body="Volte Harness",
         hands="Bunzi's Gloves",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet="Battlecast Gaiters",
@@ -877,7 +877,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         main="Naegling",
         sub="Genmei Shield",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
-        body="Ashera Harness",
+        body="Volte Harness",
         hands="Bunzi's Gloves",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
@@ -900,7 +900,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         back="Bleating Mantle",    })
     sets.engaged.Acc = set_combine(sets.engaged, {        range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
-        body="Ashera Harness",
+        body="Volte Harness",
         hands="Aya. Manopolas +2",
         legs="Aya. Cosciales +2",
         feet="Aya. Gambieras +2",
@@ -914,7 +914,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
     })
     sets.engaged.PD = set_combine(sets.engaged, {range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
-        body="Ashera Harness",
+        body="Volte Harness",
         hands="Bunzi's Gloves",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet="Battlecast Gaiters",
@@ -935,7 +935,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
     sets.engaged.DW = set_combine(sets.engaged ,{
         range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
-        body="Ashera Harness",
+        body="Volte Harness",
         hands="Bunzi's Gloves",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet="Battlecast Gaiters",
@@ -950,7 +950,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
 
     sets.engaged.DW.Acc = set_combine(sets.engaged.Acc ,{
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
-        body="Ashera Harness",
+        body="Volte Harness",
         hands="Aya. Manopolas +2",
         legs="Aya. Cosciales +2",
         feet="Aya. Gambieras +2",
@@ -1128,6 +1128,7 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
     if spell.type == 'BardSong' then
         if state.ExtraSongsMode.value == 'FullLength' then
             equip({range="Gjallarhorn"})
+            state.ExtraSongsMode:reset()
         elseif state.ExtraSongsMode.value == 'Marsyas' then
             equip({range="Marsyas"})
         end

@@ -38,7 +38,7 @@ end
 function user_setup()
     state.OffenseMode:options('None','Normal','TP', 'CRIT', 'Locked')
     state.HybridMode:options('Normal', 'DT')
-    state.CastingMode:options('Normal', 'Spaekona', 'Proc')
+    state.CastingMode:options('Normal', 'SIRD', 'Spaekona', 'Proc')
     state.IdleMode:options('Normal', 'PDT', 'MDT', 'DT', 'HB', 'MB', 'Evasion', 'EnemyCritRate', 'Sphere')
     state.PhysicalDefenseMode:options('PDT', 'MDT')
 	state.VorsealMode = M('Normal', 'Vorseal')
@@ -360,8 +360,28 @@ function init_gear_sets()
         })
     
     ---- Midcast Sets ----
+
     sets.midcast.FastRecast = {} 
- 
+    sets.SIRD = {
+        ammo="Staunch Tathlum +1",
+        head={ name="Agwu's Cap", augments={'Path: A',}},
+        body={ name="Ros. Jaseran +1", augments={'Path: A',}},
+        hands={ name="Amalric Gages +1", augments={'INT+12','Mag. Acc.+20','"Mag.Atk.Bns."+20',}},
+        feet="Wicce Sabots +2",
+        waist="Rumination Sash",
+        right_ring="Freke Ring",
+    } 
+    sets.midcast.SIRD = {
+        ammo="Staunch Tathlum +1",
+        head={ name="Agwu's Cap", augments={'Path: A',}},
+        body={ name="Ros. Jaseran +1", augments={'Path: A',}},
+        hands={ name="Amalric Gages +1", augments={'INT+12','Mag. Acc.+20','"Mag.Atk.Bns."+20',}},
+        feet="Wicce Sabots +2",
+        waist="Rumination Sash",
+        right_ring="Freke Ring",
+    } 
+
+
     sets.midcast['Healing Magic'] = {
         ammo="Pemphredo Tathlum",
         head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
@@ -419,18 +439,20 @@ function init_gear_sets()
     sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {})
 	
     sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {})
-	
+    sets.midcast.Aquaveil.SIRD = set_combine(sets.midcast['Enhancing Magic'],sets.SIRD) 
+
     sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {
-        neck="Nodens Gorget",
-		})
- 
+        neck="Nodens Gorget",})
+    sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'],sets.SIRD, {
+        neck="Nodens Gorget",})
+
     sets.midcast['Enfeebling Magic'] = {
         ammo="Pemphredo Tathlum",
         head=empty,
         body="Cohort Cloak +1",
         hands="Regal Cuffs",
         legs={ name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
-        feet="Jhakri Pigaches +2",
+        feet="Spae. Sabots +3",
         neck={ name="Src. Stole +2", augments={'Path: A',}},
         waist="Rumination Sash",
         ear1="Malignance Earring",
@@ -439,7 +461,15 @@ function init_gear_sets()
         left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
         back={ name="Aurist's Cape +1", augments={'Path: A',}},
     }   
-
+    sets.midcast['Enfeebling Magic'].SIRD = set_combine(sets.midcast['Enfeebling Magic'],{
+        ammo="Staunch Tathlum +1",
+        head={ name="Agwu's Cap", augments={'Path: A',}},
+        body={ name="Ros. Jaseran +1", augments={'Path: A',}},
+        hands={ name="Amalric Gages +1", augments={'INT+12','Mag. Acc.+20','"Mag.Atk.Bns."+20',}},
+        feet="Wicce Sabots +2",
+        waist="Rumination Sash",
+        right_ring="Freke Ring",
+    })
     sets.midcast['Enfeebling Magic'].Effect = set_combine(sets.midcast['Enfeebling Magic'],{
         main="Contemplator +1",
         sub="Enki Strap",
@@ -448,7 +478,7 @@ function init_gear_sets()
         body="Cohort Cloak +1",
         hands="Regal Cuffs",
         legs={ name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
-        feet="Jhakri Pigaches +2",
+        feet="Spae. Sabots +3",
         neck={ name="Src. Stole +2", augments={'Path: A',}},
         waist="Rumination Sash",
         ear1="Malignance Earring",
@@ -457,12 +487,22 @@ function init_gear_sets()
         left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
         back={ name="Aurist's Cape +1", augments={'Path: A',}},
     })
-	
+    sets.midcast['Enfeebling Magic'].Effect.SIRD = set_combine(sets.midcast['Enfeebling Magic'].Effect,{
+        main="Contemplator +1",
+        sub="Enki Strap",
+        ammo="Staunch Tathlum +1",
+        head={ name="Agwu's Cap", augments={'Path: A',}},
+        body={ name="Ros. Jaseran +1", augments={'Path: A',}},
+        hands={ name="Amalric Gages +1", augments={'INT+12','Mag. Acc.+20','"Mag.Atk.Bns."+20',}},
+        feet="Wicce Sabots +2",
+        waist="Rumination Sash",
+        right_ring="Freke Ring",
+    })
 	sets.midcast.ElementalEnfeeble = set_combine(sets.midcast['Enfeebling Magic'],{
         ammo="Pemphredo Tathlum",
-        head=empty,
-        body="Cohort Cloak +1",
-        hands="Amalric Gages +1",
+        head="Wicce Petasos +2",
+        body="Spaekona's Coat +3",
+        hands="Spae. Gloves +3",
         legs="Arch. Tonban +3",
         feet="Arch. Sabots +3",
         neck={ name="Src. Stole +2", augments={'Path: A',}},
@@ -489,6 +529,21 @@ function init_gear_sets()
 		right_ring={ name="Mephitas's Ring +1", augments={'Path: A',}},
 		back="Taranus's Cape",
 	}
+    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
+        ammo="Pemphredo Tathlum",
+        head="Wicce Petasos +2",
+        body="Wicce Coat +3",
+        hands="Spae. Gloves +3",
+        legs="Wicce Chausses +3",
+        feet="Spae. Sabots +3",
+        neck={ name="Src. Stole +2", augments={'Path: A',}},
+        waist={ name="Acuity Belt +1", augments={'Path: A',}},
+        left_ear="Regal Earring",
+        right_ear="Malignance Earring",
+        left_ring="Stikini Ring +1",
+        right_ring="Stikini Ring +1",
+		back="Taranus's Cape",
+    })
     sets.midcast.Absorb = {
         ammo="Pemphredo Tathlum",
         head={ name="Agwu's Cap", augments={'Path: A',}},
@@ -592,9 +647,9 @@ function init_gear_sets()
     sets.midcast.Impact = set_combine(sets.midcast['Elemental Magic'], {
 		head=empty,
         body="Twilight Cloak",
-        hands="Amalric Gages +1",
-        legs="Arch. Tonban +3",
-        feet="Arch. Sabots +3",
+        hands="Spae. Gloves +3",
+        legs="Wicce Chausses +3",
+        feet="Spae. Sabots +3",
         neck={ name="Src. Stole +2", augments={'Path: A',}},
 		waist={ name="Acuity Belt +1", augments={'Path: A',}},
         ear1="Malignance Earring",
@@ -759,7 +814,7 @@ sets.midcast.Aspir = sets.midcast.Drain
     -- Idle mode that keeps PDT gear on, but doesn't prevent normal gear swaps for precast/etc.
     sets.idle.PDT = {
     ammo="Staunch Tathlum +1",
-    head="Nyame Helm",
+    head="Wicce Petasos +2",
     body="Shamash Robe",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
@@ -774,7 +829,7 @@ sets.midcast.Aspir = sets.midcast.Drain
 	}
     sets.idle.MDT = {
         ammo="Staunch Tathlum +1",
-        head="Nyame Helm",
+        head="Wicce Petasos +2",
         body="Nyame Mail",
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
@@ -901,7 +956,7 @@ sets.midcast.Aspir = sets.midcast.Drain
         main="Malignance Pole",
         sub="Alber Strap",
         ammo="Staunch Tathlum +1",
-        head={ name="Nyame Helm", augments={'Path: B',}},
+        head="Wicce Petasos +2",
         body="Adamantite Armor",
         hands={ name="Nyame Gauntlets", augments={'Path: B',}},
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
@@ -919,7 +974,7 @@ sets.midcast.Aspir = sets.midcast.Drain
 	main="Malignance Pole",
     sub="Alber Strap",
     ammo="Staunch Tathlum +1",
-    head="Nyame Helm",
+    head="Wicce Petasos +2",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
@@ -1017,7 +1072,7 @@ sets.midcast.Aspir = sets.midcast.Drain
         right_ear="Telos Earring",
         left_ring="Chirich Ring +1",
         right_ring="Chirich Ring +1",
-        back={ name="Aurist's Cape +1", augments={'Path: A',}},
+        back="Relucent Cape",
     }
     sets.engaged.CRIT = set_combine(sets.engaged.TP, {
         head={ name="Blistering Sallet +1", augments={'Path: A',}},

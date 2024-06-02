@@ -382,7 +382,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     left_ring="Defending Ring",
     right_ring="Evanescence Ring",
     back="Ogma's Cape",}
-
+    
     sets.SIRD = {    ammo="Staunch Tathlum +1",
     head="Erilaz Galea +2",
     body="Nyame Mail",
@@ -417,15 +417,15 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         head="Fu. Bandeau +3",
         body={ name="Herculean Vest", augments={'Phys. dmg. taken -1%','Accuracy+11 Attack+11','Phalanx +2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
         hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
-        feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
     })
-    sets.midcast['Phalanx'].SIRD = set_combine(sets.midcast['Phalanx'],sets.midcast.SIRD,)
-    sets.midcast['Regen'] = set_combine(sets.midcast['Enhancing Magic'], {
+    sets.midcast['Phalanx'].SIRD = sets.midcast.SIRD
+    sets.midcast.Regen = set_combine(sets.midcast['Enhancing Magic'], {
         head="Rune. Bandeau +3",
+        legs="Futhark Trousers +3",
         neck="Sacro Gorget",
         right_ear="Erilaz Earring +2",
     })
-    sets.midcast['Regen'].SIRD = set_combine(sets.midcast.SIRD, {
+    sets.midcast.Regen.SIRD = set_combine(sets.midcast.SIRD, {
         head="Rune. Bandeau +3",
         right_ear="Erilaz Earring +2",
     })
@@ -694,7 +694,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     sets.engaged.DD = {     
         ammo="Coiste Bodhar",
     head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
-    body="Ashera Harness",
+    body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
     hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
     legs={ name="Samnuha Tights", augments={'STR+10','DEX+10','"Dbl.Atk."+3','"Triple Atk."+3',}},
     feet={ name="Herculean Boots", augments={'Attack+5','"Triple Atk."+4','AGI+4','Accuracy+1',}},
@@ -722,7 +722,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 })
     sets.engaged.PDT = {  ammo="Coiste Bodhar",
     head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
-    body="Ashera Harness",
+    body="Ayanmo Corazza +2",
     hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
     legs={ name="Samnuha Tights", augments={'STR+10','DEX+10','"Dbl.Atk."+3','"Triple Atk."+3',}},
     feet={ name="Herculean Boots", augments={'Attack+5','"Triple Atk."+4','AGI+4','Accuracy+1',}},

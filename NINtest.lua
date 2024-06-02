@@ -18,8 +18,6 @@ function get_sets()
     include('organizer-lib')
     organizer_items = {
         "Airmid's Gorget",
-        "Hachimonji",
-        "Mafic Cudgel",
         "Toolbag (Shihe)",
         "Chonofuda",
         "Shikanofuda",
@@ -48,7 +46,6 @@ function get_sets()
         "Warp Cudgel",
         "Holy Water",
         "Remedy",
-        "Wh. Rarab Cap +1",
         "Emporox's Ring",
         "Red Curry Bun",
         "Instant Reraise",
@@ -275,7 +272,7 @@ function init_gear_sets()
         right_ear="Loquac. Earring",
         left_ring="Rahab Ring",
         right_ring="Kishar Ring",
-        
+        neck="Orunmila's Torque",        
     }
     sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {    neck="Magoraga Beads",
         body="Passion Jacket",
@@ -505,6 +502,7 @@ sets.midcast.Absorb = {
     sets.precast.WS.PDL = set_combine(sets.precast.WS, {
         ammo="Crepuscular Pebble",
         legs={ name="Mpaca's Hose", augments={'Path: A',}},
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         right_ear="Hattori Earring +1", 
         right_ring="Sroda Ring", 
     })
@@ -517,7 +515,7 @@ sets.midcast.Absorb = {
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Fotia Gorget",
+    neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
         left_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         right_ear="Hattori Earring +1", 
@@ -566,7 +564,8 @@ sets.midcast.Absorb = {
     })
     sets.precast.WS['Blade: Jin'].PDL = set_combine(sets.precast.WS['Blade: Jin'], {
         ammo="Crepuscular Pebble",
-        legs={ name="Mpaca's Hose", augments={'Path: A',}},       
+        legs={ name="Mpaca's Hose", augments={'Path: A',}},   
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},    
         right_ear="Hattori Earring +1", 
         right_ring="Sroda Ring", 
     })
@@ -579,7 +578,7 @@ sets.midcast.Absorb = {
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Fotia Gorget",
+    neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         waist="Gerdr Belt",
         right_ear={ name="Lugra Earring +1", augments={'Path: A',}},
         left_ear="Odr Earring",
@@ -626,6 +625,7 @@ sets.midcast.Absorb = {
         hands="Malignance Gloves",
         legs={ name="Mpaca's Hose", augments={'Path: A',}},   
         feet="Malignance Boots",    
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         left_ear={ name="Lugra Earring +1", augments={'Path: A',}},
 
     })
@@ -662,6 +662,7 @@ sets.midcast.Absorb = {
         ammo="Crepuscular Pebble",
         legs={ name="Mpaca's Hose", augments={'Path: A',}},        
         right_ear="Hattori Earring +1", 
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
     })
     
     -- BLADE: KU 
@@ -686,6 +687,7 @@ sets.midcast.Absorb = {
         ammo="Crepuscular Pebble",
         legs={ name="Mpaca's Hose", augments={'Path: A',}},       
         right_ear="Hattori Earring +1", 
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
     })
     
     sets.Ten = {
@@ -717,6 +719,7 @@ sets.midcast.Absorb = {
         ammo="Crepuscular Pebble",
         legs={ name="Mpaca's Hose", augments={'Path: A',}},
         right_ear="Hattori Earring +1", 
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
     })
     sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, { 
         ammo={ name="Seeth. Bomblet +1", augments={'Path: A',}},
@@ -738,6 +741,7 @@ sets.midcast.Absorb = {
         legs={ name="Mpaca's Hose", augments={'Path: A',}},
         right_ear="Hattori Earring +1", 
         right_ring="Sroda Ring", 
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
     })
     sets.precast.WS['Savage Blade'].SC = set_combine(sets.precast.WS['Savage Blade'], { 
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -770,6 +774,7 @@ sets.midcast.Absorb = {
     sets.precast.WS.Evisceration.PDL = set_combine(sets.precast.WS.Evisceration, {
         right_ear="Hattori Earring +1", 
         right_ring="Sroda Ring", 
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
     })
 
     sets.precast.WS["True Strike"] = set_combine(sets.precast.WS.Evisceration, {})
@@ -1115,7 +1120,7 @@ sets.idle.Weak = sets.idle
         hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
         legs={ name="Samnuha Tights", augments={'STR+10','DEX+10','"Dbl.Atk."+3','"Triple Atk."+3',}},
         feet={ name="Herculean Boots", augments={'Attack+5','"Triple Atk."+4','AGI+4','Accuracy+1',}},
-        neck="Moonbeam Nodowa",
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         waist="Windbuffet Belt +1",
         left_ear="Telos Earring",
         right_ear="Dedition Earring",
@@ -1126,7 +1131,7 @@ sets.idle.Weak = sets.idle
 
     sets.engaged.Acc = set_combine(sets.engaged, {
         ammo="Yamarang",
-        neck="Moonbeam Nodowa",
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         left_ear="Crep. Earring",
         ear2="Telos Earring",
         left_ring="Chirich Ring +1",
@@ -1140,7 +1145,7 @@ sets.idle.Weak = sets.idle
         hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
         legs={ name="Samnuha Tights", augments={'STR+10','DEX+10','"Dbl.Atk."+3','"Triple Atk."+3',}},
         feet={ name="Herculean Boots", augments={'Attack+5','"Triple Atk."+4','AGI+4','Accuracy+1',}},
-        neck="Moonbeam Nodowa",
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         waist="Windbuffet Belt +1",
         left_ear="Telos Earring",
         right_ear="Dedition Earring",
@@ -1167,7 +1172,7 @@ sets.idle.Weak = sets.idle
         hands={ name="Tatena. Gote +1", augments={'Path: A',}},
         legs={ name="Ryuo Hakama", augments={'Accuracy+20','"Store TP"+4','Phys. dmg. taken -3',}},
         feet={ name="Ryuo Sune-Ate +1", augments={'HP+65','"Store TP"+5','"Subtle Blow"+8',}},
-        neck="Moonbeam Nodowa",
+        neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
         waist="Sailfi Belt +1",
         left_ear="Telos Earring",
         right_ear="Dedition Earring",
@@ -1192,7 +1197,7 @@ sets.idle.Weak = sets.idle
     })
     sets.engaged.CRIT = {
         ammo="Yetshila +1",
-        head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
+        head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Mummu Jacket +2",
         hands="Mummu Wrists +2",
         legs="Mummu Kecks +2",
@@ -1214,14 +1219,14 @@ sets.idle.Weak = sets.idle
     -- No Magic Haste (74% DW to cap)
 
 sets.engaged.DW = {
-    ammo="Seki Shuriken",
-    head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
-    body={ name="Adhemar Jacket +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
+    ammo={ name="Coiste Bodhar", augments={'Path: A',}},
+    head="Ryuo Somen +1", --9
+    body={ name="Tatena. Harama. +1", augments={'Path: A',}},
     hands={ name="Adhemar Wrist. +1", augments={'Accuracy+20','Attack+20','"Subtle Blow"+8',}},
     legs={ name="Samnuha Tights", augments={'STR+10','DEX+10','"Dbl.Atk."+3','"Triple Atk."+3',}},
-    feet={ name="Herculean Boots", augments={'Attack+5','"Triple Atk."+4','AGI+4','Accuracy+1',}},
-    neck="Moonbeam Nodowa",
-    waist="Windbuffet Belt +1",
+    feet="Malignance Boots",
+    neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
+    waist="Sailfi Belt +1",
     left_ear="Telos Earring",
     right_ear="Dedition Earring",
     right_ring="Gere Ring",
@@ -1230,8 +1235,8 @@ sets.engaged.DW = {
 }
 
 sets.engaged.DW.Acc = set_combine(sets.engaged, {
-    ammo="Seki Shuriken",
-    neck="Moonbeam Nodowa",
+    ammo={ name="Coiste Bodhar", augments={'Path: A',}},
+    neck={ name="Ninja Nodowa +2", augments={'Path: A',}},
     left_ear="Crep. Earring",
     ear2="Telos Earring",
     left_ring="Chirich Ring +1",
@@ -1239,7 +1244,7 @@ sets.engaged.DW.Acc = set_combine(sets.engaged, {
     waist="Olseni Belt",
 })
 sets.engaged.DW.STP = set_combine(sets.engaged, {
-    ammo="Seki Shuriken",
+    ammo={ name="Coiste Bodhar", augments={'Path: A',}},
     head="Malignance Chapeau",
     body="Malignance Tabard",
     hands="Malignance Gloves",
@@ -1253,7 +1258,7 @@ sets.engaged.DW.STP = set_combine(sets.engaged, {
 
 sets.engaged.DW.CRIT =  {
     ammo="Yetshila +1",
-    head={ name="Adhemar Bonnet +1", augments={'DEX+12','AGI+12','Accuracy+20',}},
+    head={ name="Blistering Sallet +1", augments={'Path: A',}},
     body="Mummu Jacket +2",
     hands="Mummu Wrists +2",
     legs="Mummu Kecks +2",
@@ -1357,7 +1362,7 @@ sets.engaged.Hybrid = {
     hands="Malignance Gloves", --5/5
     legs="Malignance Tights", --7/7
     feet="Malignance Boots", --4/4
-    ring2="Defending Ring", --10/10
+    --ring2="Defending Ring", --10/10
 }
 
 sets.engaged.DT = set_combine(sets.engaged, sets.engaged.Hybrid)
@@ -1592,9 +1597,7 @@ function customize_melee_set(meleeSet)
     if state.HybridMode.value == 'Proc' then
         meleeSet = set_combine(meleeSet, sets.NoDW)
     end
-    --[[if swordList:contains(player.equipment.main) then
-        send_command('input /lockstyleset 152')
-    end]]
+
     meleeSet = set_combine(meleeSet, select_ammo())
 
     check_weaponset()
@@ -1747,22 +1750,7 @@ end
 
 
 function job_status_change(newStatus, oldStatus, eventArgs)
-    if swordList:contains(player.equipment.main) then
-        send_command('input /lockstyleset 138')
-    elseif GKList:contains(player.equipment.main) then
-        send_command('input /lockstyleset 172')
-    elseif katanaList:contains(player.equipment.main) then
-        send_command('input /lockstyleset 144')
-    elseif daggerList:contains(player.equipment.main) then
-        send_command('input /lockstyleset 157')
-    end
-    --[[if newStatus == "Idle" then
-        if gsList:contains(player.equipment.main) then
-            windower.chat.input('/lockstyleset 165')
-        else
-            windower.chat.input('/lockstyleset 152')
-        end
-    end]]
+
 end
 
 mov = {counter=0}
