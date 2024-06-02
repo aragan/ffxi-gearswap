@@ -62,8 +62,6 @@ organizer_items = {
     "Instant Reraise",
     "Black Curry Bun",
     "Rolan. Daifuku",
-    "Qutrub Knife",
-    "Wind Knife +1",
     "Reraise Earring",}
 
 --[[
@@ -122,7 +120,7 @@ Scourge (R) > Resolution (MM)
 -- Setup vars that are user-independent.
 function job_setup()
     state.CapacityMode = M(false, 'Capacity Point Mantle')
-    send_command('wait 2;input /lockstyleset 152')
+    send_command('wait 2;input /lockstyleset 165')
     send_command('bind !` gs c toggle MagicBurst')
     include('Mote-TreasureHunter')
     state.MagicBurst = M(false, 'Magic Burst')
@@ -142,15 +140,15 @@ function job_setup()
     wsList = S{}
     -- Greatswords you use. 
     gsList = S{'Ragnarok','Caladbolg','Nandaka','Foreshock Sword','Agwu\'s Claymore'}
-    scytheList = S{'Apocalypse'}
-    remaWeapons = S{'Apocalypse','Ragnarok','Nandaka'}
+    scytheList = S{'Apocalypse', 'Anguta'}
+    remaWeapons = S{'Caladbolg', 'Apocalypse','Ragnarok','Nandaka', 'Anguta'}
   
     shields = S{'Blurred Shield +1'}
     -- Mote has capitalization errors in the default Absorb mappings, so we use our own
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     -- Offhand weapons used to activate DW mode
     swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
-    sets.weaponList = {"Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
+    sets.weaponList = {"Caladbolg", "Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
@@ -205,7 +203,7 @@ function user_setup()
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
-    send_command('wait 6;input /lockstyleset 152')
+    send_command('wait 6;input /lockstyleset 165')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f7 gs c cycle shield')
     send_command('bind f6 gs c cycle WeaponSet')
@@ -250,13 +248,13 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
       
     -- Precast sets to enhance JAs
     sets.precast.JA['Last Resort'] = {back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}}, 
-    feet={ name="Fallen's Sollerets", augments={'Enhances "Desperate Blows" effect',}},}
+    feet={ name="Fall. Sollerets +3", augments={'Enhances "Desperate Blows" effect',}},}
     sets.precast.JA['Nether Void'] = {Legs="Heath. Flanchard +2"}
     sets.precast.JA['Blood Weapon'] = {body="Fall. Cuirass +3"}
     sets.precast.JA['Arcane Circle'] = {feet="Ignominy Sollerets +3"}
     sets.precast.JA['Weapon Bash'] = {hands="Ignominy Gauntlets +3"}
     sets.precast.JA['Souleater'] = {head="Ig. Burgeonet +3"}
-    sets.precast.JA['Dark Seal'] = {head="Fall. Burgeonet +1"}
+    sets.precast.JA['Dark Seal'] = {head="Fall. Burgeonet +3"}
     sets.precast.JA['Diabolic Eye'] = {hands="Fall. Fin. Gaunt. +3"}
       
     
@@ -283,7 +281,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
         legs={ name="Odyssean Cuisses", augments={'Attack+29','"Fast Cast"+5','CHR+10',}},
         feet={ name="Odyssean Greaves", augments={'"Mag.Atk.Bns."+23','Magic dmg. taken -5%','INT+9',}},
-        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+        neck="Orunmila's Torque",
         waist="Austerity Belt +1",
         left_ear="Loquac. Earring",
         right_ear="Malignance Earring",
@@ -955,7 +953,19 @@ sets.precast.WS['Red Lotus Blade'].None = {}
     back={ name="Niht Mantle", augments={'Attack+10','Dark magic skill +10','"Drain" and "Aspir" potency +18',}},
     }
     sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
-
+        ammo="Pemphredo Tathlum",
+        head="Fall. Burgeonet +3",
+        body={ name="Fall. Cuirass +3", augments={'Enhances "Blood Weapon" effect',}},
+        hands={ name="Fall. Fin. Gaunt. +3", augments={'Enhances "Diabolic Eye" effect',}},
+        legs={ name="Fall. Flanchard +3", augments={'Enhances "Muted Soul" effect',}},
+        feet="Rat. Sollerets +1",
+        neck="Erra Pendant",
+        waist="Eschan Stone",
+        left_ear="Malignance Earring",
+        right_ear="Digni. Earring",
+        left_ring="Kishar Ring",
+        right_ring="Stikini Ring +1",
+        back={ name="Niht Mantle", augments={'Attack+10','Dark magic skill +10','"Drain" and "Aspir" potency +18',}},
     })
     sets.midcast['Endark'] = set_combine(sets.midcast['Dark Magic'], {
         ammo="Pemphredo Tathlum",
@@ -1048,7 +1058,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
   
    sets.midcast['Enfeebling Magic'] = set_combine(sets.midcast['Dark Magic'], {
     ammo="Pemphredo Tathlum",
-    head="Befouled Crown",
+    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
     body="Ignominy Cuirass +3",
     hands={ name="Fall. Fin. Gaunt. +3", augments={'Enhances "Diabolic Eye" effect',}},
     legs={ name="Fall. Flanchard +3", augments={'Enhances "Muted Soul" effect',}},
@@ -1291,7 +1301,7 @@ sets.defense.SEboost = {
        right_ring="Fortified Ring",
        back="Reiki Cloak",
     })
-        sets.idle.Sphere = set_combine(sets.idle, {   })
+        sets.idle.Sphere = set_combine(sets.idle, {})
       
 
     --------------------------------------
@@ -2487,7 +2497,7 @@ end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()
-        send_command('wait 6;input /lockstyleset 152')
+        send_command('wait 6;input /lockstyleset 165')
     end
 end
 

@@ -600,7 +600,7 @@ function init_gear_sets()
 
     sets.midcast.Storm = sets.midcast.EnhancingDuration
 
-    sets.midcast.Stormsurge = set_combine(sets.midcast.Storm, {feet={ name="Peda. Loafers +1", augments={'Enhances "Stormsurge" effect',}},})
+    sets.midcast.Stormsurge = set_combine(sets.midcast.Storm, {feet={ name="Peda. Loafers +3", augments={'Enhances "Stormsurge" effect',}},})
 
     sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {left_ear="Brachyura Earring",})
     sets.midcast.Protectra = sets.midcast.Protect
