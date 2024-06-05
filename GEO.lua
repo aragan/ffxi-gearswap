@@ -21,6 +21,7 @@ function job_setup()
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-ACC', 'Absorb-TP'}
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.BrachyuraEarring = M(true,false)
+    state.AutoEquipBurst = M(true)
     send_command('wait 2;input /lockstyleset 178')
 
 end
@@ -586,7 +587,7 @@ function init_gear_sets()
         range={ name="Dunna", augments={'MP+20','Mag. Acc.+10','"Fast Cast"+3',}},
         head="Befouled Crown",
         body="Shamash Robe",
-        hands="Geo. Mitaines +3",
+        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
         legs="Assid. Pants +1",
         feet="Nyame Sollerets",
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -600,9 +601,9 @@ function init_gear_sets()
         main="Daybreak",
         sub="Genmei Shield",
         range={ name="Dunna", augments={'MP+20','Mag. Acc.+10','"Fast Cast"+3',}},
-        head="Befouled Crown",
+        head="Azimuth Hood +2",
         body="Shamash Robe",
-        hands="Geo. Mitaines +3",
+        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
         legs="Assid. Pants +1",
         feet="Nyame Sollerets",
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -618,7 +619,7 @@ function init_gear_sets()
         range={ name="Dunna", augments={'MP+20','Mag. Acc.+10','"Fast Cast"+3',}},
         head="Befouled Crown",
         body="Shamash Robe",
-        hands="Geo. Mitaines +3",
+        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
         legs="Assid. Pants +1",
         feet="Geo. Sandals +2",
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
