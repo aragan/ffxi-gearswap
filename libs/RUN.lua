@@ -419,7 +419,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
         feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
     })
-    sets.midcast['Phalanx'].SIRD = set_combine(sets.midcast['Phalanx'],sets.midcast.SIRD,)
+    sets.midcast['Phalanx'].SIRD = set_combine(sets.midcast['Phalanx'],sets.midcast.SIRD)
     sets.midcast['Regen'] = set_combine(sets.midcast['Enhancing Magic'], {
         head="Rune. Bandeau +3",
         neck="Sacro Gorget",

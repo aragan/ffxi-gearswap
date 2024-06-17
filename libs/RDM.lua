@@ -99,7 +99,7 @@ function user_setup()
     state.IdleMode:options('Normal', 'PDT', 'MDT','Regen', 'HP', 'EnemyCritRate', 'Evasion', 'Enmity', 'Sphere')
 	state.PhysicalDefenseMode:options('PDT')
     state.MagicalDefenseMode:options('MDT')
-	state.CastingMode:options('Normal', 'Burst', 'Duration', 'SIRD')
+	state.CastingMode:options( 'Duration','Normal', 'Burst', 'SIRD')
 
 	state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'SWORDS', 'Crocea', 'DAGGERS', 'Club'}
 	state.Shield = M{['description']='Weapon Set', 'Normal', 'Shield'}
@@ -132,7 +132,8 @@ function user_setup()
     send_command('bind @a gs c toggle NM')
     send_command('bind @s gs c cycle SleepMode')
     send_command('bind delete gs c toggle BrachyuraEarring')
-
+    send_command('bind ^/ gs disable all')
+    send_command('bind ^; gs enable all')
 	send_command('wait 6;input /lockstyleset 152')
     state.Auto_Kite = M(false, 'Auto_Kite')
 
@@ -160,10 +161,10 @@ end
  
 -- Called when this job file is unloaded (eg: job change)
 function user_unload()
-    --[[send_command('unbind f12')
+    send_command('unbind f12')
     send_command('unbind f11')
 	send_command('unbind f10')
-	send_command('unbind f8')]]
+	--send_command('unbind f8')
 
 end
 
@@ -175,8 +176,8 @@ function init_gear_sets()
 
 	sets.Normal = {}
 	sets.SWORDS = {main="Naegling", sub="Demers. Degen +1"}
-	sets.Crocea = {main="Crocea Mors", sub="Demers. Degen +1"}
-	sets.Club = {main="Daybreak", sub="Sacro Bulwark"}
+	sets.Crocea = {main="Crocea Mors", sub="Daybreak"}
+	sets.Club = {main="Maxentius", sub="Thibron"}
 	sets.DAGGERS = {main="Tauret", sub="Gleti's Knife",}
 
 	sets.Shield = {sub="Sacro Bulwark"}
@@ -789,8 +790,9 @@ sets.TreasureHunter = {
         hands="Amalric Gages +1",
 		legs="Jhakri Slops +2",
 		feet={ name="Vitiation Boots +3", augments={'Immunobreak Chance',}},
+		neck="Sibyl Scarf",
         waist="Sacro Cord",
-		left_ear="Regal Earring",
+		left_ear="Malignance Earring",
 		right_ear="Regal Earring",
 		left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
 		right_ring="Freke Ring",
@@ -800,11 +802,11 @@ sets.TreasureHunter = {
 		head="C. Palug Crown",
 		body="Lethargy Sayon +3",
         hands="Amalric Gages +1",
-		legs="Ea Slops",
+		legs="Jhakri Slops +2",
 		feet={ name="Vitiation Boots +3", augments={'Immunobreak Chance',}},
 		neck="Sibyl Scarf",
 		waist={ name="Acuity Belt +1", augments={'Path: A',}},
-		left_ear="Regal Earring",
+		left_ear="Malignance Earring",
 		right_ear="Regal Earring",
 		left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
 		right_ring="Freke Ring",
@@ -996,10 +998,9 @@ sets.TreasureHunter = {
 	}
 
 	sets.idle.HP={
-		main="Naegling",
 		ammo="Staunch Tathlum +1",
 		head="Nyame Helm",
-		body="Nyame Mail",
+        body="Adamantite Armor",
 		hands="Nyame Gauntlets",
 		legs="Nyame Flanchard",
 		feet="Nyame Sollerets",
@@ -2017,9 +2018,6 @@ function display_current_job_state(eventArgs)
     local msg = ''
     if state.MagicBurst.value then
         msg = ' Burst: On |'
-    end
-    if state.DeathMode.value then
-        msg = msg .. ' Death: On |'
     end
     if state.Kiting.value then
         msg = msg .. ' Kiting: On |'
