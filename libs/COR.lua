@@ -23,7 +23,8 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-    
+    include('Display.lua')
+
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -109,7 +110,7 @@ function job_setup()
     elemental_ws = S{"Aeolian Edge", "Leaden Salute", "Wildfire"}
     no_shoot_ammo = S{"Animikii Bullet", "Hauksbok Bullet"}
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
-    state.QDMode = M{['description']='Quick Draw Mode', 'STP', 'Enhance', 'Potency', 'TH'}
+    state.QDMode = M{['description']='Quick Draw Mode', 'STP', 'Enhance', 'TH'}
 
 end
 
@@ -126,7 +127,7 @@ function user_setup()
     state.RangedMode:options('Normal', 'Acc', 'STP', 'NOENMITY', 'Critical')
     state.HybridMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'PDL', 'SC')
-    state.CastingMode:options('Normal', 'Resistant')
+    --state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'PDT', 'Evasion', 'HP', 'Regen', 'EnemyCritRate')
     state.PhysicalDefenseMode:options('PDT', 'Evasion', 'HP')
     state.MagicalDefenseMode:options('MDT')
@@ -164,7 +165,7 @@ function user_setup()
     send_command('bind ^` input /ja "Double-up" <me>')
     send_command('bind !` input /ja "Bolter\'s Roll" <me>')
     send_command('bind !w gs c toggle WeaponLock')
-    send_command('bind @q gs c cycle QDMode')
+    send_command('bind f4 gs c cycle QDMode')
     send_command('bind ^numlock input /ja "Triple Shot" <me>')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^= gs c cycle treasuremode')
@@ -187,6 +188,8 @@ function user_setup()
     determine_haste_group()
     update_combat_form()
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","RangedMode","WeaponSet","Weapongun","QDMode","TreasureMode"}) 
+    end
 end
 
 
@@ -1561,9 +1564,18 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
-
+    if update_job_states then update_job_states() 
+    end
     check_weaponset()
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
 -------------------------------------------------------------------------------------------------------------------

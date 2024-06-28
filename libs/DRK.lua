@@ -7,7 +7,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-  
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -124,6 +124,7 @@ function job_setup()
     send_command('wait 2;input /lockstyleset 165')
     send_command('bind !` gs c toggle MagicBurst')
     include('Mote-TreasureHunter')
+    state.TreasureMode:set('None')
     state.MagicBurst = M(false, 'Magic Burst')
     state.WeaponLock = M(false, 'Weapon Lock')
     state.Buff.Souleater = buffactive.souleater or false
@@ -213,6 +214,8 @@ function user_setup()
 	--send_command('bind f12 gs c cycle IdleMode')
 
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","shield","TreasureMode"}) 
+    end
 end
   
 function user_unload()
@@ -1907,8 +1910,19 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
+
     check_weaponset()
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
 function job_post_aftercast(spell, action, spellMap, eventArgs)
     --if spell.type == 'WeaponSkill' then
         --if state.Buff.Souleater and state.SouleaterMode.value then
@@ -1968,6 +1982,9 @@ end
   
 -- Modify the default melee set after it was constructed.
 function customize_melee_set(meleeSet)
+    if state.TreasureMode.value == 'Fulltime' then
+        meleeSet = set_combine(meleeSet, sets.TreasureHunter)
+    end
     if state.CapacityMode.value then
         meleeSet = set_combine(meleeSet, sets.CapacityMantle)
     end
@@ -2370,13 +2387,13 @@ function update_melee_groups()
 end
 -- State buff checks that will equip buff gear and mark the event as handled.
 function check_buff(buff_name, eventArgs)
-    --[[if state.Buff[buff_name] then
+    if state.Buff[buff_name] then
         equip(sets.buff[buff_name] or {})
         if state.TreasureMode.value == 'SATA' or state.TreasureMode.value == 'Fulltime' then
             equip(sets.TreasureHunter)
         end
         eventArgs.handled = true
-    end]]
+    end
 end
 -- Check for various actions that we've specified in user code as being used with TH gear.
 -- This will only ever be called if TreasureMode is not 'None'.

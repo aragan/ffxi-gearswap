@@ -13,7 +13,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-
+    include('Xen-Display.lua') --load this before anything else
 	-- Load and initialize the include file.
 	include('Mote-Include.lua')
     include('organizer-lib')
@@ -74,7 +74,8 @@ function job_setup()
     state.MagicBurst = M(false, 'Magic Burst')
     state.SrodaBelt = M(false, 'SrodaBelt')
     state.BrachyuraEarring = M(true,false)
-
+    
+    send_command('lua l PLD-HUD')
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
     send_command('wait 2;input /lockstyleset 150')
@@ -123,7 +124,7 @@ function user_setup()
     state.OffenseMode:options('Normal', 'Hybrid', 'TP', 'Acc', 'STP', 'CRIT')
 	--state.DefenseMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'PDL', 'None')
-    state.CastingMode:options('Normal', 'DT', 'MB') 
+    state.CastingMode:options( 'MB', 'Normal', 'DT', 'MB') 
     state.IdleMode:options('Normal', 'EnemyCritRate', 'PD', 'PDH', 'MEVA', 'ReverenceGauntlets', 'Refresh', 'Resist', 'EnemyTPaccumulation')
     --state.RestingModes:options('Normal')
     state.PhysicalDefenseMode:options('PDT', 'PD', 'PDH', 'Convert', 'Block', 'HPBOOST', 'Enmity' ,'Enmitymax')
@@ -157,7 +158,10 @@ function user_setup()
      --Alt+/ enable all
     send_command('bind !/ gs enable all')
     state.Runes = M{['description']='Runes', 'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda', 'Lux', 'Tenebrae'}
+    state.Auto_Kite = M(false, 'Auto_Kite')
 
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst","Auto_Kite"},{"IdleMode","OffenseMode","HybridMode","RangedMode","WeaponskillMode","PhysicalDefenseMode","CastingMode","TreasureMode"}) 
+    end
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -173,7 +177,6 @@ function user_setup()
         [11] = 1.490909,
         [12] = 1.70,
     }
-    state.Auto_Kite = M(false, 'Auto_Kite')
     state.AutoEquipBurst = M(true)
     state.Moving  = M(false, "moving")
 
@@ -2099,7 +2102,7 @@ function check_buffs(check)
 end
 function job_handle_equipping_gear(playerStatus, eventArgs)   
     determine_haste_group()
-    check_moving()
+    --check_moving()
     update_combat_form()
     if state.ShieldMode.value == "Duban" then
 	   equip({sub="Duban"})
@@ -2123,7 +2126,7 @@ function job_handle_equipping_gear(playerStatus, eventArgs)
 end
 
 function job_update(cmdParams, eventArgs)
-    check_moving()
+    --check_moving()
     --handle_equipping_gear(player.status)
 end
 -------------------------------------------------------------------------------------------------------------------
@@ -2165,6 +2168,7 @@ function customize_idle_set(idleSet)
     elseif state.TartarusMode.value == "normal" then
        equip({})
     end
+
   return idleSet
 end
 -- Modify the default melee set after it was constructed.
@@ -2201,9 +2205,7 @@ end
 moving = false
 windower.raw_register_event('prerender',function()
     mov.counter = mov.counter + 1;
-	if state.DefenseMode.value ~= 'None' then
-		moving = false
-    elseif mov.counter>15 then
+    if mov.counter>15 then
         local pl = windower.ffxi.get_mob_by_index(player.index)
         if pl and pl.x and mov.x then
             dist = math.sqrt( (pl.x-mov.x)^2 + (pl.y-mov.y)^2 + (pl.z-mov.z)^2 )
@@ -2275,7 +2277,18 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
+
 function update_combat_form()
   -- Check for H2H or single-wielding
   if DW == true then
@@ -2331,15 +2344,7 @@ function check_moving()
         add_to_chat(120, 'Not Moving')
     end]]
  
-    if state.DefenseMode.value == 'None' and state.Kiting.value == false then
-        if not state.Auto_Kite.value and moving then
-            state.Auto_Kite:set(true)
 
-        elseif state.Auto_Kite.value == true and moving == false then
-            state.Auto_Kite:set(false)
-
-        end
-    end
 end
 
 
@@ -2526,13 +2531,13 @@ function gearinfo(cmdParams, eventArgs)
     end
 end
 
---[[windower.register_event('hpp change',
+windower.register_event('hpp change',
 function(new_hpp,old_hpp)
     if new_hpp < 5 then
         equip(sets.Reraise)
     end
 end
-)]]
+)
 
 ------------------------------------------------------------------
 -- Reset events
