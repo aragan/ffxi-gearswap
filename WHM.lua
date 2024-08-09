@@ -8,7 +8,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-    
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -112,7 +112,8 @@ function user_setup()
     send_command('bind f4 gs c cycle BarStatus')
     send_command('bind !f4 gs c BarStatus')
     send_command('bind delete gs c toggle BrachyuraEarring')
-
+    send_command('bind ^/ gs disable all')
+    send_command('bind !/ gs enable all')
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -129,6 +130,8 @@ function user_setup()
         [12] = 1.70,
     }
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","SrodaNecklace","BarElement","BarStatus","HippoMode"}) 
+    end
 end
 
 -- Define sets and vars used by this job file.
@@ -151,7 +154,7 @@ function init_gear_sets()
     hands={ name="Fanatic Gloves", augments={'MP+50','Healing magic skill +8','"Conserve MP"+5','"Fast Cast"+5',}},
     legs="Aya. Cosciales +2",
     feet={ name="Regal Pumps +1", augments={'Path: A',}},
-    neck="Orunmila's Torque",
+    neck={ name="Clr. Torque +2", augments={'Path: A',}},
     waist="Witful Belt",
     left_ear="Loquac. Earring",
     right_ear="Malignance Earring",
@@ -224,7 +227,7 @@ function init_gear_sets()
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet="Nyame Sollerets",
-        neck="Baetyl Pendant",
+        neck={ name="Clr. Torque +2", augments={'Path: A',}},
         waist="Orpheus's Sash",
         left_ear="Regal Earring",
         right_ear="Malignance Earring",
@@ -277,7 +280,7 @@ function init_gear_sets()
         hands="Nyame Gauntlets",
         legs="Nyame Flanchard",
         feet="Nyame Sollerets",
-        neck="Fotia Gorget",
+        neck={ name="Clr. Torque +2", augments={'Path: A',}},
         waist="Prosilio Belt +1",
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         right_ear="Regal Earring",
@@ -446,7 +449,7 @@ function init_gear_sets()
     hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
     legs="Ebers Pant. +2",
     feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
-    neck="Cleric's Torque",
+    neck={ name="Clr. Torque +2", augments={'Path: A',}},
     waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
     left_ear="Mendi. Earring",
     right_ear="Glorious Earring",
@@ -492,11 +495,11 @@ function init_gear_sets()
     main={ name="Queller Rod", augments={'Healing magic skill +15','"Cure" potency +10%','"Cure" spellcasting time -7%',}},
     sub="Sors Shield",
     head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
-    body="Pinga Tunic",
+    body="Pinga Tunic +1",
     hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
-    legs="Pinga Pants",
+    legs="Pinga Pants +1",
     feet="Bunzi's Sabots",
-    neck="Clotharius Torque",
+    neck={ name="Clr. Torque +2", augments={'Path: A',}},
     waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
     left_ear="Glorious Earring",
     right_ear="Ebers Earring",
@@ -512,7 +515,7 @@ function init_gear_sets()
     hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
     legs="Ebers Pant. +2",
     feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
-    neck="Cleric's Torque",
+    neck={ name="Clr. Torque +2", augments={'Path: A',}},
     waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
     left_ear="Mendi. Earring",
     right_ear="Glorious Earring",
@@ -558,11 +561,11 @@ function init_gear_sets()
         main={ name="Queller Rod", augments={'Healing magic skill +15','"Cure" potency +10%','"Cure" spellcasting time -7%',}},
         sub="Sors Shield",
         head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
-        body="Pinga Tunic",
+        body="Pinga Tunic +1",
         hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
-        legs="Pinga Pants",
+        legs="Pinga Pants +1",
         feet="Bunzi's Sabots",
-        neck="Clotharius Torque",
+        neck={ name="Clr. Torque +2", augments={'Path: A',}},
         waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
         left_ear="Glorious Earring",
         right_ear="Ebers Earring",
@@ -578,7 +581,7 @@ function init_gear_sets()
     hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
     legs="Ebers Pant. +2",
     feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
-    neck="Cleric's Torque",
+    neck={ name="Clr. Torque +2", augments={'Path: A',}},
     waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
     left_ear="Mendi. Earring",
     right_ear="Glorious Earring",
@@ -626,11 +629,11 @@ function init_gear_sets()
         main={ name="Queller Rod", augments={'Healing magic skill +15','"Cure" potency +10%','"Cure" spellcasting time -7%',}},
         sub="Sors Shield",
         head={ name="Vanya Hood", augments={'MP+50','"Fast Cast"+10','Haste+2%',}},
-        body="Pinga Tunic",
+        body="Pinga Tunic +1",
         hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
-        legs="Pinga Pants",
+        legs="Pinga Pants +1",
         feet="Bunzi's Sabots",
-        neck="Clotharius Torque",
+        neck={ name="Clr. Torque +2", augments={'Path: A',}},
         waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
         left_ear="Glorious Earring",
         right_ear="Ebers Earring",
@@ -683,7 +686,7 @@ function init_gear_sets()
         hands="Ebers Mitts +2",
         legs="Ebers Pant. +2",
         feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
-        neck="Cleric's Torque",
+        neck={ name="Clr. Torque +2", augments={'Path: A',}},
         left_ring="Haoma's Ring",
         right_ring="Haoma's Ring",
         back="Alaunus's Cape",    }
@@ -975,7 +978,7 @@ function init_gear_sets()
         ammo="Homiliary",
         head="Befouled Crown",
         body="Shamash Robe",
-        hands="Inyan. Dastanas +2",
+        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
         legs="Assid. Pants +1",
         feet="Inyan. Crackows +2",
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -1006,7 +1009,7 @@ function init_gear_sets()
     ammo="Homiliary",
     head="Befouled Crown",
     body="Shamash Robe",
-    hands="Inyan. Dastanas +2",
+    hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
     legs="Assid. Pants +1",
     feet="Nyame Sollerets",
     neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -1023,7 +1026,6 @@ function init_gear_sets()
     })
     sets.idle.Town = {
     feet="Herald's Gaiters",
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
     left_ear="Infused Earring",
     }
     
@@ -1031,7 +1033,7 @@ function init_gear_sets()
     ammo="Homiliary",
     head="Befouled Crown",
     body="Shamash Robe",
-    hands="Inyan. Dastanas +2",
+    hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
     legs="Assid. Pants +1",
     feet="Nyame Sollerets",
     neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -1515,9 +1517,17 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
     handle_equipping_gear(player.status)
 end
 
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.

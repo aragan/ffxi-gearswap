@@ -12,7 +12,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-     
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -41,7 +41,8 @@ function user_setup()
     state.CastingMode:options('Normal', 'SIRD', 'Spaekona', 'Proc')
     state.IdleMode:options('Normal', 'PDT', 'MDT', 'DT', 'HB', 'MB', 'Evasion', 'EnemyCritRate', 'Sphere')
     state.PhysicalDefenseMode:options('PDT', 'MDT')
-	state.VorsealMode = M('Normal', 'Vorseal')
+    state.MagicalDefenseMode:options('MDT')
+	--state.VorsealMode = M('Normal', 'Vorseal')
 	state.Enfeebling = M('None', 'Effect')
 	--Vorseal mode is handled simply when zoning into an escha zone--
     state.Moving  = M(false, "moving")
@@ -85,7 +86,7 @@ function user_setup()
     send_command('bind @q gs c toggle AutoEquipBurst')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind ^/ gs disable all')
-    send_command('bind ^; gs enable all')
+    send_command('bind !/ gs enable all')
     --send_command('bind !- gs c toggle RP')  
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind f7 gs c cycle StaffMode')
@@ -93,6 +94,8 @@ function user_setup()
     send_command('bind f4 gs c toggle DeathMode')
 
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","StaffMode","DeathMode","Enfeebling","HippoMode"}) 
+    end
 end
  
 -- Called when this job file is unloaded (eg: job change)
@@ -437,13 +440,14 @@ function init_gear_sets()
     sets.midcast.Haste = set_combine(sets.midcast['Enhancing Magic'], {})
 	
     sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {})
-	
+    sets.midcast.Phalanx.SIRD = set_combine(sets.midcast['Enhancing Magic'],sets.SIRD) 
+
     sets.midcast.Aquaveil = set_combine(sets.midcast['Enhancing Magic'], {})
     sets.midcast.Aquaveil.SIRD = set_combine(sets.midcast['Enhancing Magic'],sets.SIRD) 
 
     sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'], {
         neck="Nodens Gorget",})
-    sets.midcast.Stoneskin = set_combine(sets.midcast['Enhancing Magic'],sets.SIRD, {
+    sets.midcast.Stoneskin.SIRD = set_combine(sets.midcast['Enhancing Magic'],sets.SIRD, {
         neck="Nodens Gorget",})
 
     sets.midcast['Enfeebling Magic'] = {
@@ -562,11 +566,11 @@ function init_gear_sets()
      
     sets.midcast['Elemental Magic'] = {
         ammo="Pemphredo Tathlum",
-        head="Agwu's Cap",
+        head="Wicce Petasos +2",
         body="Wicce Coat +3",
         hands="Amalric Gages +1",
         legs="Wicce Chausses +3",
-        feet="Agwu's Pigaches",
+        feet="Wicce Sabots +2",
         neck={ name="Src. Stole +2", augments={'Path: A',}},
         waist={ name="Acuity Belt +1", augments={'Path: A',}},
         left_ear="Regal Earring",
@@ -795,7 +799,7 @@ sets.midcast.Aspir = sets.midcast.Drain
         ammo="Staunch Tathlum +1",
         head="Befouled Crown",
         body="Shamash Robe",
-        hands="Inyan. Dastanas +2",
+        hands="Wicce Gloves +2",
         legs="Assid. Pants +1",
         feet="Nyame Sollerets",
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -816,9 +820,9 @@ sets.midcast.Aspir = sets.midcast.Drain
     ammo="Staunch Tathlum +1",
     head="Wicce Petasos +2",
     body="Shamash Robe",
-    hands="Nyame Gauntlets",
+    hands="Wicce Gloves +2",
     legs="Nyame Flanchard",
-    feet="Nyame Sollerets",
+    feet="Wicce Sabots +2",
     neck={ name="Loricate Torque +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
     left_ear="Eabani Earring",
@@ -937,8 +941,7 @@ sets.midcast.Aspir = sets.midcast.Drain
 
     sets.idle.Town = {
         feet="Herald's Gaiters",
-        left_ear="Infused Earring",
-        right_ring="Stikini Ring +1",}
+        left_ear="Infused Earring",}
 
     sets.Adoulin = {body="Councilor's Garb", feet="Herald's Gaiters"}
     sets.MoveSpeed = {feet="Herald's Gaiters"}
@@ -958,7 +961,7 @@ sets.midcast.Aspir = sets.midcast.Drain
         ammo="Staunch Tathlum +1",
         head="Wicce Petasos +2",
         body="Adamantite Armor",
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        hands="Wicce Gloves +2",
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
         neck={ name="Unmoving Collar +1", augments={'Path: A',}},
@@ -1563,9 +1566,17 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+
+    if update_job_states then update_job_states() 
+    end
 end
 
- 
+ windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
  
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.

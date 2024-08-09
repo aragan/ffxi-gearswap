@@ -21,7 +21,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-    
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
 end
@@ -95,7 +95,7 @@ function user_setup()
     state.RangedMode:options('Normal', 'Acc')
     state.WeaponskillMode:options('Normal', 'PDL', 'Mod')
     state.IdleMode:options('Normal', 'PDT', 'HP', 'Evasion', 'MDT', 'Regen', 'EnemyCritRate')
-    state.PhysicalDefenseMode:options('Evasion', 'PDT', 'HP')
+    state.PhysicalDefenseMode:options( 'PDT', 'Evasion', 'HP')
     state.MagicalDefenseMode:options('MDT')
     state.TreasureMode:options('None','Tag','SATA','Fulltime')
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Twashtar', 'Tauret', 'Aeneas', 'Naegling'}
@@ -109,6 +109,7 @@ function user_setup()
     send_command('bind ^` input /ja "Flee" <me>')
     send_command('bind @w gs c toggle WeaponLock')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !- gs c cycle targetmode')
     send_command('wait 6;input /lockstyleset 164')
@@ -118,6 +119,8 @@ function user_setup()
     send_command('bind f3 gs c cycleback Runes')
     send_command('bind f2 input //gs c toggle UseRune')
     send_command('bind delete gs c toggle BrachyuraEarring')
+    send_command('bind ^/ gs disable all')
+    send_command('bind !/ gs enable all')
     select_default_macro_book()
     Panacea = T{
         'Bind',
@@ -157,6 +160,9 @@ function user_setup()
     moving = false
     update_combat_form()
     determine_haste_group()
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","WeaponSet","Runes","HippoMode","TreasureMode"}) 
+    end
+    
 end
 
 -- Called when this job file is unloaded (eg: job change)
@@ -167,6 +173,17 @@ end
 
 -- Define sets and vars used by this job file.
 function init_gear_sets()
+
+    ---- WeaponSet ----
+
+    sets.Normal = {}
+    sets.Twashtar = {main="Twashtar", sub="Crepuscular Knife",}
+    sets.Tauret = {main="Tauret", sub="Ternion Dagger +1"}
+    sets.Aeneas = {main="Aeneas", sub="Malevolence"}
+    sets.Naegling = {main="Naegling", sub="Crepuscular Knife",}
+
+
+
     --------------------------------------
     -- Special sets (required by rules)
     --------------------------------------
@@ -1065,12 +1082,6 @@ sets.engaged.DW.CRIT.DT.MaxHaste = set_combine(sets.engaged.DW.CRIT.MaxHaste, se
     left_ring="Purity Ring",
     right_ring="Blenmot's Ring +1",}
 
-    sets.Normal = {}
-    sets.Twashtar = {main="Twashtar", sub="Gleti's Knife"}
-    sets.Tauret = {main="Tauret", sub="Ternion Dagger +1"}
-    sets.Aeneas = {main="Aeneas", sub="Malevolence"}
-    sets.Naegling = {main="Naegling", sub="Ternion Dagger +1"}
-
 
 
 end
@@ -1497,9 +1508,18 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
     check_weaponset()
 
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 -- Check for various actions that we've specified in user code as being used with TH gear.
 -- This will only ever be called if TreasureMode is not 'None'.

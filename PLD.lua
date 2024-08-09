@@ -13,7 +13,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-
+    include('Display.lua')
 	-- Load and initialize the include file.
 	include('Mote-Include.lua')
     include('organizer-lib')
@@ -74,10 +74,11 @@ function job_setup()
     state.MagicBurst = M(false, 'Magic Burst')
     state.SrodaBelt = M(false, 'SrodaBelt')
     state.BrachyuraEarring = M(true,false)
-
+    
+    send_command('lua l PLD-HUD')
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
-    send_command('wait 2;input /lockstyleset 150')
+    send_command('wait 2;input /lockstyleset 177')
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
     "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Nexus Cape", "Airmid's Gorget",}
     
@@ -123,11 +124,11 @@ function user_setup()
     state.OffenseMode:options('Normal', 'Hybrid', 'TP', 'Acc', 'STP', 'CRIT')
 	--state.DefenseMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'PDL', 'None')
-    state.CastingMode:options('Normal', 'DT', 'MB') 
+    state.CastingMode:options( 'MB', 'Normal', 'DT', 'MB') 
     state.IdleMode:options('Normal', 'EnemyCritRate', 'PD', 'PDH', 'MEVA', 'ReverenceGauntlets', 'Refresh', 'Resist', 'EnemyTPaccumulation')
     --state.RestingModes:options('Normal')
     state.PhysicalDefenseMode:options('PDT', 'PD', 'PDH', 'Convert', 'Block', 'HPBOOST', 'Enmity' ,'Enmitymax')
-    state.MagicalDefenseMode:options('MDT', 'Turtle', 'Evasion', 'ResistCharm')
+    state.MagicalDefenseMode:options('MDT', 'Turtle', 'Evasion', 'ResistCharm', 'Aminion')
     state.HybridMode:options('Normal', 'PDT', 'MDT', 'Turtle', 'ReverenceGauntlets')
     --state.BreathDefenseModes:options('Turtle')
     --state.HybridDefenseMode:options('PDT', 'MDT', 'Reraise')
@@ -135,7 +136,7 @@ function user_setup()
     --state.BreathDefenseModes:options'Turtle'
     --send_command('bind ^f11 gs c cycle MagicalDefenseModes')
  	--send_command('bind ^= gs c activate MDT')
-    send_command('wait 6;input /lockstyleset 150')
+    send_command('wait 6;input /lockstyleset 177')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !` gs c toggle MagicBurst')
@@ -157,7 +158,10 @@ function user_setup()
      --Alt+/ enable all
     send_command('bind !/ gs enable all')
     state.Runes = M{['description']='Runes', 'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda', 'Lux', 'Tenebrae'}
+    state.Auto_Kite = M(false, 'Auto_Kite')
 
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","ShieldMode","OffenseMode","WeaponskillMode","CastingMode","SrodaBelt","HippoMode","Runes","TreasureMode"}) 
+    end
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -173,7 +177,6 @@ function user_setup()
         [11] = 1.490909,
         [12] = 1.70,
     }
-    state.Auto_Kite = M(false, 'Auto_Kite')
     state.AutoEquipBurst = M(true)
     state.Moving  = M(false, "moving")
 
@@ -265,7 +268,7 @@ back="Rudianos's Mantle",
    -- Fast cast sets for spells   2844HP FC+80/80
  sets.precast.FC = {   
    ammo="Sapience Orb",
-   head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+   head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
    body="Rev. Surcoat +3",
    hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
    legs="Enif Cosciales",
@@ -521,7 +524,7 @@ sets.precast.WS['Resolution'].PDL = set_combine(sets.precast.WS['Requiescat'].PD
  --skill 401/402
  sets.midcast['Enhancing Magic'] ={    
    ammo="Staunch Tathlum +1",
-   head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+   head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
    body="Shab. Cuirass +1",
    hands="Regal Gauntlets",
    legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
@@ -682,7 +685,7 @@ sets.midcast.Refresh.DT = set_combine(sets.midcast['Enhancing Magic'], {waist="G
    sets.midcast.Crusade = {
        main={ name="Colada", augments={'Enh. Mag. eff. dur. +3','Mag. Acc.+20','DMG:+6',}},
        sub={ name="Ajax +1", augments={'Path: A',}},
-       head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+       head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
        body="Shab. Cuirass +1",
        hands="Regal Gauntlets",
        legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
@@ -697,7 +700,7 @@ sets.midcast.Cocoon = {
    main={ name="Colada", augments={'Enh. Mag. eff. dur. +3','Mag. Acc.+20','DMG:+6',}},
    sub={ name="Ajax +1", augments={'Path: A',}},
    ammo="Staunch Tathlum +1",
-   head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+   head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
    body="Shab. Cuirass +1",
    hands="Regal Gauntlets",
    legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
@@ -784,7 +787,7 @@ sets.midcast.Cocoon.DT = {
    })
    sets.midcast.Protect = set_combine(sets.midcast['Enhancing Magic'], {
  sub="Srivatsa",
- head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+ head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
  legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
  neck="Incanter's Torque",
  waist="Olympus Sash",
@@ -793,7 +796,7 @@ sets.midcast.Cocoon.DT = {
  right_ring="Stikini Ring +1",
 })
    sets.midcast.Shell = set_combine(sets.midcast['Enhancing Magic'] , {
-  head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+  head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
  legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
  neck="Incanter's Torque",
  waist="Olympus Sash",
@@ -1210,9 +1213,7 @@ sets.idle.PD = {
     back="Rudianos's Mantle",}
 
     sets.idle.Town ={
-    
     legs="Carmine Cuisses +1",
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
     left_ear="Infused Earring",}
     
    sets.idle.Weak = {head="Crepuscular Helm", body="Crepuscular Mail",}
@@ -1286,8 +1287,7 @@ sets.idle.PD = {
    right_ring="Moonlight Ring",
    back="Rudianos's Mantle",
 }
-
- sets.defense.ResistCharm ={
+ sets.defense.ResistCharm = {
    main="Burtgang",
    ammo="Staunch Tathlum +1",
    head={ name="Founder's Corona", augments={'DEX+10','Accuracy+15','Mag. Acc.+15','Magic dmg. taken -5%',}},
@@ -1303,6 +1303,24 @@ sets.idle.PD = {
    right_ring="Wuji Ring",
    back="Solemnity Cape",
 }	
+
+sets.defense.Aminion = {
+    main="Reikiko",
+    sub="Aegis",
+    ammo="Staunch Tathlum +1",
+    head={ name="Sakpata's Helm", augments={'Path: A',}},
+    body="Adamantite Armor",
+    hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
+    legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
+    feet={ name="Sakpata's Leggings", augments={'Path: A',}},
+    neck="Moonlight Necklace",
+    waist="Carrier's Sash",
+    ear1="Chev. Earring +1",
+    ear2="Sanare Earring",
+    ring1="Shadow Ring",
+    ring2="Apeile Ring +1",
+    back="Rudianos's Mantle",
+}
 
 sets.defense.Dagger = {    
    ammo="Eluder's Sachet",
@@ -2132,6 +2150,7 @@ end
 function customize_idle_set(idleSet)
     if state.HippoMode.value == "Hippo" then
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
+        send_command('input /p Hippo. Socks +1 feet equipped for pull mobs')		
     elseif state.HippoMode.value == "normal" then
        equip({})
     end
@@ -2165,6 +2184,9 @@ function customize_idle_set(idleSet)
     elseif state.TartarusMode.value == "normal" then
        equip({})
     end
+    if state.Auto_Kite.value == true then
+		idleSet = set_combine(idleSet, sets.Kiting)
+	end
   return idleSet
 end
 -- Modify the default melee set after it was constructed.
@@ -2275,7 +2297,18 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
+
 function update_combat_form()
   -- Check for H2H or single-wielding
   if DW == true then
@@ -2331,12 +2364,14 @@ function check_moving()
         add_to_chat(120, 'Not Moving')
     end]]
  
-    if state.DefenseMode.value == 'None' and state.Kiting.value == false then
-        if not state.Auto_Kite.value and moving then
+    if state.DefenseMode.value == 'None'  and state.Kiting.value == false then
+        if state.Auto_Kite.value == false and moving then
             state.Auto_Kite:set(true)
+            send_command('gs c update')
 
         elseif state.Auto_Kite.value == true and moving == false then
             state.Auto_Kite:set(false)
+            send_command('gs c update')
 
         end
     end
@@ -2449,7 +2484,7 @@ end
 function sub_job_change(new,old)
     if user_setup then
         user_setup()
-        send_command('wait 6;input /lockstyleset 150')
+        send_command('wait 6;input /lockstyleset 177')
     end
 end
 function display_current_job_state(eventArgs)
@@ -2526,13 +2561,13 @@ function gearinfo(cmdParams, eventArgs)
     end
 end
 
---[[windower.register_event('hpp change',
+windower.register_event('hpp change',
 function(new_hpp,old_hpp)
     if new_hpp < 5 then
         equip(sets.Reraise)
     end
 end
-)]]
+)
 
 ------------------------------------------------------------------
 -- Reset events
@@ -2591,17 +2626,21 @@ end
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     if player.sub_job == 'DNC' then
-        set_macro_page(1, 37)
+        set_macro_page(5, 37)
     elseif player.sub_job == 'NIN' then
-        set_macro_page(1, 37)
+        set_macro_page(5, 37)
+    elseif player.sub_job == 'DNC' then
+        set_macro_page(5, 37)
     elseif player.sub_job == 'RDM' then
-        set_macro_page(1, 37)
+        set_macro_page(3, 37)
     elseif player.sub_job == 'RUN' then
-        set_macro_page(1, 37)
+        set_macro_page(6, 37)
 	elseif player.sub_job == 'WAR' then
-        set_macro_page(1, 37)
+        set_macro_page(2, 37)
 	elseif player.sub_job == 'BLU' then
         set_macro_page(1, 37)
+    elseif player.sub_job == 'SCH' then
+        set_macro_page(7, 37)
     else
         set_macro_page(1, 37)
     end

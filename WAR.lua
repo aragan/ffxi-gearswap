@@ -14,6 +14,7 @@
 --
 -- Initialization function for this job file.
 function get_sets()
+    include('Display.lua')
     mote_include_version = 2
     -- Load and initialize the include file.
     include('Mote-Include.lua')
@@ -82,6 +83,8 @@ function job_setup()
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.Moving  = M(false, "moving")
     state.BrachyuraEarring = M(true,false)
+    include('Mote-TreasureHunter')
+    state.TreasureMode:set('None')
 
     --state.Buff.Souleater = buffactive.souleater or false
     state.Buff.Berserk = buffactive.berserk or false
@@ -111,17 +114,15 @@ end
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
     -- Options: Override default values
-    state.OffenseMode:options('Normal', 'Acc', 'STP', 'CRIT')
-    state.HybridMode:options('Normal', 'PDT', 'H2H', 'SubtleBlow', 'Counter', 'ressistwater')
+    state.OffenseMode:options('Normal', 'Acc', 'STP', 'CRIT', 'SubtleBlow', 'Counter', 'H2H')
+    state.HybridMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'SC', 'PDL')
     state.CastingMode:options('Normal', 'sird', 'ConserveMP')
     state.IdleMode:options('Normal', 'PDT', 'MDT', 'HP', 'Regen', 'Evasion', 'EnemyCritRate', 'Refresh')
-    state.RestingMode:options('Normal')
+    --state.RestingMode:options('Normal')
     state.PhysicalDefenseMode:options('PDT', 'HP','Evasion', 'Enmity', 'MP', 'Reraise')
     state.MagicalDefenseMode:options('MDT')
-    state.drain = M(false)
-    state.Auto_Kite = M(false, 'Auto_Kite')
-    include('Mote-TreasureHunter')
+    --state.drain = M(false)
 
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
@@ -144,15 +145,19 @@ function user_setup()
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind !f7 gs c cycle shield')
     send_command('bind f6 gs c cycle WeaponSet')
-    send_command('bind f7 gs c cycleback WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind != gs c toggle CapacityMode')
     send_command('bind ^` input /ja "Hasso" <me>')
     send_command('bind !` input /ja "Seigan" <me>')
     send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('bind ^/ gs disable all')
-    send_command('bind ^- gs enable all')
+    send_command('bind !/ gs enable all')
     send_command('wait 6;input /lockstyleset 152')
     select_default_macro_book()
+    state.Auto_Kite = M(false, 'Auto_Kite')
+
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","WeaponSet","shield","TreasureMode"}) 
+    end
 end
  
 -- Called when this job file is unloaded (eg: job change)
@@ -215,7 +220,8 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
      --sets.precast.JA['Mighty Strikes'] = {hands="Fallen's Finger Gauntlets +1"}
      sets.precast.JA['Blood Rage'] = {body="Boii Lorica +3",}
      sets.precast.JA['Provoke'] = set_combine(sets.Enmity, { })
-     sets.precast.JA['Berserk'] = { body="Pummeler's Lorica +3",feet="Agoge Calligae +3"}
+     sets.precast.JA['Berserk'] = { body="Pummeler's Lorica +3",feet="Agoge Calligae +3",
+     back={ name="Cichol's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},}
      sets.precast.JA['Warcry'] = { head={ name="Agoge Mask +3", augments={'Enhances "Savagery" effect',}},}
      sets.precast.JA['Mighty Strikes'] = {hands="Boii Mufflers +3"}
      sets.precast.JA['Retaliation'] = {}
@@ -1134,7 +1140,6 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         back="Moonlight Cape",
     }
         sets.idle.Town ={
-        body="Adamantite Armor",
         feet="Hermes' Sandals +1",
         left_ear="Infused Earring",}      
 
@@ -1965,6 +1970,10 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+
+    if update_job_states then update_job_states() 
+    end
+
     check_weaponset()
     job_handle_equipping_gear(player.status)
 
@@ -1975,6 +1984,13 @@ function sub_job_change(new,old)
         send_command('wait 6;input /lockstyleset 152')
     end
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 function select_default_macro_book()
     -- Default macro set/book

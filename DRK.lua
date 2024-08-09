@@ -7,12 +7,13 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-  
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
 end
 organizer_items = {
+    "Maven's Scythe",
     "Airmid's Gorget",
     "Agwu's Claymore",
     "Reikiko",
@@ -123,6 +124,7 @@ function job_setup()
     send_command('wait 2;input /lockstyleset 165')
     send_command('bind !` gs c toggle MagicBurst')
     include('Mote-TreasureHunter')
+    state.TreasureMode:set('None')
     state.MagicBurst = M(false, 'Magic Burst')
     state.WeaponLock = M(false, 'Weapon Lock')
     state.Buff.Souleater = buffactive.souleater or false
@@ -149,7 +151,7 @@ function job_setup()
     -- Offhand weapons used to activate DW mode
     swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
     sets.weaponList = {"Caladbolg", "Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Lycurgos', 'Naegling', 'Loxotic', 'TernionDagger'}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Lycurgos', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Naegling', 'Loxotic', 'TernionDagger'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
     get_combat_form()
@@ -207,11 +209,14 @@ function user_setup()
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f7 gs c cycle shield')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind !- gs c toggle RP')  
     send_command('bind delete gs c toggle BrachyuraEarring')
 	--send_command('bind f12 gs c cycle IdleMode')
 
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","shield","TreasureMode"}) 
+    end
 end
   
 function user_unload()
@@ -276,7 +281,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
 
     sets.precast.FC = {
         ammo="Sapience Orb",
-        head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+        head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
         body={ name="Fall. Cuirass +3", augments={'Enhances "Blood Weapon" effect',}},
         hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
         legs={ name="Odyssean Cuisses", augments={'Attack+29','"Fast Cast"+5','CHR+10',}},
@@ -893,7 +898,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
       
     sets.midcast.Cure = {    ammo="Staunch Tathlum +1",
     head={ name="Loess Barbuta +1", augments={'Path: A',}},
-    body={ name="Jumalik Mail", augments={'HP+40','Enmity+2',}},
+    body="Jumalik Mail",
     hands="Macabre Gaunt. +1",
     legs={ name="Founder's Hose", augments={'MND+5','Mag. Acc.+5','Attack+3','Breath dmg. taken -2%',}},
     feet={ name="Odyssean Greaves", augments={'"Mag.Atk.Bns."+23','Magic dmg. taken -5%','INT+9',}},
@@ -924,10 +929,10 @@ sets.precast.WS['Red Lotus Blade'].None = {}
     })
     sets.midcast['Dread Spikes'] = {
         ammo="Staunch Tathlum +1",
-        head="Ratri Sallet",
+        head="Ratri Sallet +1",
         body="Heath. Cuirass +2",
-        hands="Ratri Gadlings",
-        legs="Ratri Cuisses",
+        hands="Rat. Gadlings +1",
+        legs="Ratri Cuisses +1",
         feet="Rat. Sollerets +1",
         neck={ name="Unmoving Collar +1", augments={'Path: A',}},
         waist="Plat. Mog. Belt",
@@ -1058,7 +1063,7 @@ sets.precast.WS['Red Lotus Blade'].None = {}
   
    sets.midcast['Enfeebling Magic'] = set_combine(sets.midcast['Dark Magic'], {
     ammo="Pemphredo Tathlum",
-    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+    head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
     body="Ignominy Cuirass +3",
     hands={ name="Fall. Fin. Gaunt. +3", augments={'Enhances "Diabolic Eye" effect',}},
     legs={ name="Fall. Flanchard +3", augments={'Enhances "Muted Soul" effect',}},
@@ -1134,10 +1139,10 @@ sets.precast.WS['Red Lotus Blade'].None = {}
     }
 sets.defense['Dread Spikes'] = {
     ammo={ name="Coiste Bodhar", augments={'Path: A',}},
-    head="Ratri Sallet",
+    head="Ratri Sallet +1",
     body="Heath. Cuirass +2",
-    hands="Ratri Gadlings",
-    legs="Ratri Cuisses",
+    hands="Rat. Gadlings +1",
+    legs="Ratri Cuisses +1",
     feet="Rat. Sollerets +1",
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
@@ -1150,10 +1155,10 @@ sets.defense['Dread Spikes'] = {
 
 sets.defense.SEboost = {
     ammo="Eluder's Sachet",
-    head="Ratri Sallet",
-    body="Ratri Plate",
-    hands="Ratri Gadlings",
-    legs="Ratri Cuisses",
+    head="Ratri Sallet +1",
+    body="Ratri Plate +1",
+    hands="Rat. Gadlings +1",
+    legs="Ratri Cuisses +1",
     feet="Rat. Sollerets +1",
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
@@ -1239,14 +1244,6 @@ sets.defense.SEboost = {
             back="Moonlight Cape",
     }
       
-        sets.idle.Town = {
-            head="Crepuscular Helm",
-            body="Sacro Breastplate",
-            legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
-            left_ear="Infused Earring",
-            left_ring="Stikini Ring +1",
-            right_ring="Stikini Ring +1",
-    }
     
         sets.Adoulin = {body="Councilor's Garb"}
         sets.Kiting = {legs="Carmine Cuisses +1"}
@@ -1303,7 +1300,10 @@ sets.defense.SEboost = {
     })
         sets.idle.Sphere = set_combine(sets.idle, {})
       
-
+        sets.idle.Town = {
+            legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
+            left_ear="Infused Earring",
+    }
     --------------------------------------
     -- Engaged sets
     --------------------------------------
@@ -1906,8 +1906,19 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
+
     check_weaponset()
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
 function job_post_aftercast(spell, action, spellMap, eventArgs)
     --if spell.type == 'WeaponSkill' then
         --if state.Buff.Souleater and state.SouleaterMode.value then
@@ -1967,6 +1978,9 @@ end
   
 -- Modify the default melee set after it was constructed.
 function customize_melee_set(meleeSet)
+    if state.TreasureMode.value == 'Fulltime' then
+        meleeSet = set_combine(meleeSet, sets.TreasureHunter)
+    end
     if state.CapacityMode.value then
         meleeSet = set_combine(meleeSet, sets.CapacityMantle)
     end
@@ -2369,13 +2383,13 @@ function update_melee_groups()
 end
 -- State buff checks that will equip buff gear and mark the event as handled.
 function check_buff(buff_name, eventArgs)
-    --[[if state.Buff[buff_name] then
+    if state.Buff[buff_name] then
         equip(sets.buff[buff_name] or {})
         if state.TreasureMode.value == 'SATA' or state.TreasureMode.value == 'Fulltime' then
             equip(sets.TreasureHunter)
         end
         eventArgs.handled = true
-    end]]
+    end
 end
 -- Check for various actions that we've specified in user code as being used with TH gear.
 -- This will only ever be called if TreasureMode is not 'None'.

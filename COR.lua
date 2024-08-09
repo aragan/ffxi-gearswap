@@ -23,7 +23,8 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-    
+    include('Display.lua')
+
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -109,7 +110,7 @@ function job_setup()
     elemental_ws = S{"Aeolian Edge", "Leaden Salute", "Wildfire"}
     no_shoot_ammo = S{"Animikii Bullet", "Hauksbok Bullet"}
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
-    state.QDMode = M{['description']='Quick Draw Mode', 'STP', 'Enhance', 'Potency', 'TH'}
+    state.QDMode = M{['description']='Quick Draw Mode', 'STP', 'Enhance', 'TH'}
 
 end
 
@@ -126,7 +127,7 @@ function user_setup()
     state.RangedMode:options('Normal', 'Acc', 'STP', 'NOENMITY', 'Critical')
     state.HybridMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'PDL', 'SC')
-    state.CastingMode:options('Normal', 'Resistant')
+    --state.CastingMode:options('Normal', 'Resistant')
     state.IdleMode:options('Normal', 'PDT', 'Evasion', 'HP', 'Regen', 'EnemyCritRate')
     state.PhysicalDefenseMode:options('PDT', 'Evasion', 'HP')
     state.MagicalDefenseMode:options('MDT')
@@ -136,7 +137,7 @@ function user_setup()
     "Kustawi +1", "Zantetsuken", "Excalipoor II", "Warp Cudgel", "Qutrub Knife", "Wind Knife +1", "Firetongue", "Nihility",
         "Extinction", "Heartstopper +1", "Twashtar", "Aeneas", "Gleti's Knife", "Naegling", "Tauret", "Caduceus", "Loxotic Mace +1",
         "Debahocho +1", "Dolichenus", "Arendsi Fleuret", "Demers. Degen +1", "Ternion Dagger +1", "Blurred Knife +1",}
-    state.WeaponSet = M{['description']='Weapon Set', 'normal', 'SWORDS', 'DAGGERS', 'Rostam'}
+    state.WeaponSet = M{['description']='Weapon Set', 'normal', 'SWORDS', 'Tauret', 'Rostam', 'Kustawi'}
     state.Weapongun = M{['description']='Weapon Set', 'normal', 'DeathPenalty', 'Anarchy', 'Fomalhaut', 'Earp'}
 
     gear.RAbullet = "Decimating Bullet"
@@ -164,14 +165,16 @@ function user_setup()
     send_command('bind ^` input /ja "Double-up" <me>')
     send_command('bind !` input /ja "Bolter\'s Roll" <me>')
     send_command('bind !w gs c toggle WeaponLock')
-    send_command('bind @q gs c cycle QDMode')
+    send_command('bind f4 gs c cycle QDMode')
     send_command('bind ^numlock input /ja "Triple Shot" <me>')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     send_command('bind f7 gs c cycle Weapongun')
+    send_command('bind !f7 gs c cycleback Weapongun')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind !- gs c toggle RP')  
     send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('@wait 6;input /lockstyleset 151')
@@ -187,6 +190,8 @@ function user_setup()
     determine_haste_group()
     update_combat_form()
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","RangedMode","WeaponSet","Weapongun","QDMode","TreasureMode"}) 
+    end
 end
 
 
@@ -205,11 +210,13 @@ function init_gear_sets()
     -- Start defining the sets
     --------------------------------------
 
+    ---- WeaponSet ----
 
     sets.normal = {}
-    sets.SWORDS = {main="Naegling", sub="Demers. Degen +1"}
-    sets.DAGGERS = {main="Tauret", sub="Gleti's Knife"}
+    sets.SWORDS = {main="Naegling", sub="Crepuscular Knife",}
+    sets.Tauret = {main="Tauret", sub="Crepuscular Knife",}
     sets.Rostam = {main={ name="Rostam", augments={'Path: A',}}, sub="Tauret"}
+    sets.Kustawi = {main="Kustawi +1", sub="Crepuscular Knife",}
 
     sets.normal = {}
     sets.DeathPenalty = {range="Death Penalty"}
@@ -276,7 +283,7 @@ function init_gear_sets()
 
     -- Fast cast sets for spells
     
-    sets.precast.FC = {    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+    sets.precast.FC = {    head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
     hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
     legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
     left_ear="Etiolation Earring",
@@ -319,7 +326,7 @@ sets.precast.JA['Super Jump'] = sets.precast.JA.Jump
     sets.precast.RA = {
         hands={ name="Lanun Gants +3", augments={'Enhances "Fold" effect',}},
         head="Chass. Tricorne +2",
-        body="Oshosi Vest",
+        body="Oshosi Vest +1",
         legs={ name="Adhemar Kecks +1", augments={'AGI+12','"Rapid Shot"+13','Enmity-6',}},
     feet="Meg. Jam. +2",
     neck={ name="Comm. Charm +2", augments={'Path: A',}},
@@ -757,7 +764,6 @@ sets.midcast.RA.Critical = set_combine(sets.midcast.RA, {
             back="Camulus's Mantle",
     })
     sets.idle.Town ={legs="Carmine Cuisses +1",
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
         left_ear="Infused Earring",}
     sets.idle.HP =  {
             head={ name="Nyame Helm", augments={'Path: B',}},
@@ -1120,7 +1126,6 @@ sets.engaged.Ranged.PDT = set_combine(sets.Ranged,{
     legs="Chas. Culottes +3",
     feet="Malignance Boots",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-    left_ring="Defending Ring",
 })
 sets.engaged.STP.PDT = set_combine(sets.engaged.STP,{
     head="Malignance Chapeau",
@@ -1129,7 +1134,6 @@ sets.engaged.STP.PDT = set_combine(sets.engaged.STP,{
     legs="Chas. Culottes +3",
     feet="Malignance Boots",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-    left_ring="Defending Ring",
 })
 sets.engaged.DW.PDT = set_combine(sets.engaged.DW, {
     head="Malignance Chapeau",
@@ -1166,7 +1170,6 @@ sets.engaged.DW.Ranged.PDT = set_combine(sets.engaged.DW.Ranged,{
     legs="Chas. Culottes +3",
     feet="Malignance Boots",
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-    left_ring="Defending Ring",
 })
 
 sets.engaged.DW.STP.PDT = set_combine(sets.engaged.DW.STP,{
@@ -1177,7 +1180,6 @@ sets.engaged.DW.STP.PDT = set_combine(sets.engaged.DW.STP,{
     feet="Malignance Boots",
     left_ear="Suppanomimi",
     waist="Reiki Yotai",
-    left_ring="Defending Ring",
 })
 
         sets.engaged.DW.PDT.LowHaste = set_combine(sets.engaged.DW.LowHaste, sets.engaged.Hybrid)
@@ -1560,9 +1562,18 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
-
+    if update_job_states then update_job_states() 
+    end
     check_weaponset()
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
 -------------------------------------------------------------------------------------------------------------------

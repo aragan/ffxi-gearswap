@@ -28,6 +28,7 @@
 function get_sets()
 	-- Load and initialize the include file.
     mote_include_version = 2
+    include('Display.lua')
 	include('Mote-Include.lua')
 	include('organizer-lib')
 end
@@ -86,34 +87,35 @@ function job_setup()
     include('Mote-TreasureHunter')
     state.WeaponLock = M(false, 'Weapon Lock')
 	send_command('bind @w gs c toggle WeaponLock')
-    get_combat_form()
     --get_combat_weapon()
-    update_melee_groups()
     send_command('wait 2;input /lockstyleset 172')
     state.Moving  = M(false, "moving")
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.BrachyuraEarring = M(true,false)
-
     state.YoichiAM = M(false, 'Cancel Yoichi AM Mode')
     -- list of weaponskills that make better use of otomi helm in low acc situations
     wsList = S{'Tachi: Shoha', 'Tachi: Jinpu', 'Tachi: Enpi'}
-
     gear.RAarrow = {name="Eminent Arrow"}
     LugraWSList = S{'Tachi: Fudo', 'Tachi: Shoha', 'Namas Arrow', 'Impulse Drive', 'Stardiver'}
-
+    no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
+    "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Reraise Earring", "Reraise Gorget", "Airmid's Gorget",}
     state.Buff.Sekkanoki = buffactive.sekkanoki or false
     state.Buff.Sengikori = buffactive.sengikori or false
     state.Buff['Third Eye'] = buffactive['Third Eye'] or false
     state.Buff['Meikyo Shisui'] = buffactive['Meikyo Shisui'] or false
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Masamune', 'Dojikiri', 'Polearm', 'TernionDagger', 'Club'}
+    get_combat_form()
+    update_melee_groups()
+
 end
 
 
 -- Setup vars that are user-dependent.  Can override this function in a sidecar file.
 function user_setup()
     -- Options: Override default values
-    state.OffenseMode:options('Normal', 'Acc','MaxAcc', 'CRIT' )
-    state.HybridMode:options('Normal', 'PDT', 'STP', 'triple', 'Fullhaste', 'SubtleBlow', 'Counter', 'Range')
-    state.WeaponskillMode:options('Normal', 'Mid', 'SC', 'Acc', 'PDL')
+    state.OffenseMode:options('Normal', 'MaxAcc', 'STP', 'CRIT', 'triple', 'SubtleBlow', 'Range' )
+    state.HybridMode:options('Normal', 'PDT', 'Counter')
+    state.WeaponskillMode:options('Normal', 'SC', 'Acc', 'PDL')
     state.IdleMode:options('Normal','PDT' ,'Regen', 'MDT', 'HP', 'Evasion', 'EnemyCritRate')
     state.RestingMode:options('Normal')
     state.PhysicalDefenseMode:options('PDT', 'Evasion', 'Reraise')
@@ -140,24 +142,21 @@ function user_setup()
     send_command('bind ![ input /lockstyle off')
     send_command('bind != gs c toggle CapacityMode')
     send_command('bind !w gs c toggle WeaponLock')
+    send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind ^/ gs disable all')
     send_command('bind ^; gs enable all')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('wait 6;input /lockstyleset 172')
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","WeaponSet","TreasureMode"}) 
+    end
 end
 
 
 -- Called when this job file is unloaded (eg: job change)
 function file_unload()
-    send_command('unbind ^[')
-    send_command('unbind !=')
-    send_command('unbind ![')
-    send_command('unbind ^/')
-    send_command('unbind ^-')
-    send_command('unbind ^=')
-
 end
 
 --[[
@@ -174,6 +173,15 @@ function init_gear_sets()
     --------------------------------------
     -- Start defining the sets
     --------------------------------------
+              
+           --Weaponsets
+
+    sets.Normal = {}
+    sets.Masamune = {main="Masamune", sub="Utu Grip"}
+    sets.Dojikiri = {main="Dojikiri Yasutsuna", sub="Utu Grip"}
+    sets.Polearm = {main="Shining One", sub="Utu Grip"}
+    sets.TernionDagger = {main="Ternion Dagger +1"}
+    sets.Club = {main="Mafic Cudgel"}
 
     sets.TreasureHunter = { 
         ammo="Per. Lucky Egg",
@@ -392,22 +400,6 @@ function init_gear_sets()
         ear2="Thrud Earring",
         ear1="Lugra Earring +1", 
         left_ring="Regal Ring",
-        right_ring="Cornelia's Ring",
-        back="Smertrios's Mantle",
-    })
-
-    sets.precast.WS['Tachi: Kaiten'].Mid = set_combine(sets.precast.WS['Tachi: Kaiten'], {
-        ammo="Knobkierrie",
-        body="Nyame Mail",
-        body="Nyame Mail",
-        hands="Nyame Gauntlets",
-        legs="Nyame Flanchard",
-        feet="Nyame Sollerets",
-        neck={ name="Warder's Charm +1", augments={'Path: A',}},
-        waist={ name="Sailfi Belt +1", augments={'Path: A',}},
-        ear2="Thrud Earring",
-        ear1="Lugra Earring +1", 
-        LEFT_ring="Sroda Ring", 
         right_ring="Cornelia's Ring",
         back="Smertrios's Mantle",
     })
@@ -792,15 +784,6 @@ function init_gear_sets()
    	    body="Hizamaru Haramaki +2",
     }
     
-    sets.idle.Town = {        
-        head="Valorous Mask",
-        ear2="Infused Earring",
-        feet="Danzo Sune-Ate",
-}
-    -- sets.idle.Town.Adoulin = set_combine(sets.idle.Town, {
-    --     body="Councilor's Garb"
-    -- })
-    
     sets.idle = {        
     head="Valorous Mask",
     body="Adamantite Armor",
@@ -816,6 +799,13 @@ function init_gear_sets()
     back="Moonlight Cape",
 }
 
+sets.idle.Town = {        
+    ear2="Infused Earring",
+    feet="Danzo Sune-Ate",
+}
+-- sets.idle.Town.Adoulin = set_combine(sets.idle.Town, {
+--     body="Councilor's Garb"
+-- })
     sets.idle.Regen = set_combine(sets.idle, { 
         neck={ name="Bathy Choker +1", augments={'Path: A',}},
         right_ear="Infused Earring",
@@ -835,7 +825,21 @@ function init_gear_sets()
         head="Crepuscular Helm",
     	body="Crepuscular Mail",
     })
-
+    sets.idle.HP =  { 
+        ammo="Staunch Tathlum +1",
+        head="Crepuscular Helm",
+        body="Adamantite Armor",
+        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
+        feet={ name="Nyame Sollerets", augments={'Path: B',}},
+        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+        waist="Plat. Mog. Belt",
+        left_ear="Tuisto Earring",
+        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        left_ring="Eihwaz Ring",
+        right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+        back="Moonlight Cape",
+    }
     sets.Kiting = {feet="Danzo Sune-ate"}
     sets.Adoulin = {body="Councilor's Garb"}
     sets.MoveSpeed = {feet="Danzo Sune-ate"}
@@ -897,7 +901,7 @@ function init_gear_sets()
     back="Takaha Mantle",
     })
 
-    sets.engaged.Fullhaste = set_combine(sets.engaged, {
+    --[[sets.engaged.Fullhaste = set_combine(sets.engaged, {
         ammo="Aurgelmir Orb +1",
         head="Kasuga Kabuto +2",
         body="Kasuga Domaru +2",
@@ -911,7 +915,8 @@ function init_gear_sets()
         right_ring="Chirich Ring +1",
         left_ring="Niqmaddu Ring",
         back="Takaha Mantle",
-         })
+         })]]
+
     sets.engaged.SubtleBlow = set_combine(sets.engaged, {        
         body="Dagon Breast.",
         legs={ name="Mpaca's Hose", augments={'Path: A',}},
@@ -1002,7 +1007,9 @@ function init_gear_sets()
     sets.engaged.Acc.PDT = set_combine(sets.engaged.Acc,sets.engaged.Hybrid)
     sets.engaged.MaxAcc.PDT = set_combine(sets.engaged.MaxAcc,sets.engaged.Hybrid)
     sets.engaged.CRIT.PDT = set_combine(sets.engaged.CRIT, sets.engaged.Hybrid)
-    sets.engaged.SubtleBlow.PDT = set_combine(sets.engaged.SubtleBlow, sets.engaged.Hybrid)
+    sets.engaged.SubtleBlow.PDT = set_combine(sets.engaged.SubtleBlow, sets.engaged.Hybrid, {        
+        right_ring="Niqmaddu Ring",
+    })
 
     sets.engaged.STP = {range=empty,
         ammo="Aurgelmir Orb +1",
@@ -1182,8 +1189,11 @@ function job_aftercast(spell, action, spellMap, eventArgs)
 	if state.Buff[spell.english] ~= nil then
 		state.Buff[spell.english] = not spell.interrupted or buffactive[spell.english]
 	end
+    check_weaponset()
 end
 function job_handle_equipping_gear(player,status, eventArgs)
+    check_weaponset()
+    check_gear()
 
 end
 
@@ -1232,7 +1242,10 @@ function customize_melee_set(meleeSet)
     if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
         meleeSet = set_combine(meleeSet,{neck="Vim Torque +1"})
     end
+    check_weaponset()
+
     return meleeSet
+
 end
 if spellMap == 'Utsusemi' then
     if buffactive['Copy Image (3)'] or buffactive['Copy Image (4+)'] then
@@ -1257,19 +1270,28 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
+    check_weaponset()
+
 end
 
 -------------------------------------------------------------------------------------------------------------------
 -- Customization hooks for idle and melee sets, after they've been automatically constructed.
 -------------------------------------------------------------------------------------------------------------------
-
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 -------------------------------------------------------------------------------------------------------------------
 -- General hooks for other events.
 -------------------------------------------------------------------------------------------------------------------
 function job_status_change(newStatus, oldStatus, eventArgs)
     if newStatus == 'Engaged' then
-        if not buffactive['hasso '] then
-            send_command('@input /ja "hasso " <me>')
+        if not buffactive['hasso'] then
+            send_command('@wait 2;input /ja "hasso" <me>')
         elseif player.inventory['Eminent Arrow'] then
             gear.RAarrow.name = 'Eminent Arrow'
         elseif player.inventory['Eminent Arrow'] then
@@ -1280,6 +1302,10 @@ function job_status_change(newStatus, oldStatus, eventArgs)
     elseif newStatus == 'Idle' then
         determine_idle_group()
     end
+end
+
+function check_weaponset()
+    equip(sets[state.WeaponSet.current])
 end
 -- Called when a player gains or loses a buff.
 -- buff == buff gained or lost
@@ -1482,7 +1508,8 @@ end
 function job_update(cmdParams, eventArgs)
 	get_combat_form()
     update_melee_groups()
-    job_self_command()
+    check_weaponset()
+    check_gear()
     --get_combat_weapon()
 end
 
@@ -1533,6 +1560,8 @@ function get_combat_form()
     -- else
     --     state.CombatForm:reset()
     -- end
+    check_weaponset()
+
 end
 
 function seigan_thirdeye_active()
@@ -1607,7 +1636,30 @@ windower.raw_register_event('prerender',function()
     end
 end)
 
-
+function check_gear()
+    if no_swap_gear:contains(player.equipment.left_ring) then
+        disable("ring1")
+    else
+        enable("ring1")
+    end
+    if no_swap_gear:contains(player.equipment.right_ring) then
+        disable("ring2")
+    else
+        enable("ring2")
+    end
+end
+windower.register_event('zone change',
+    function()
+        if no_swap_gear:contains(player.equipment.left_ring) then
+            enable("ring1")
+            equip(sets.idle)
+        end
+        if no_swap_gear:contains(player.equipment.right_ring) then
+            enable("ring2")
+            equip(sets.idle)
+        end
+    end
+)
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     -- Default macro set/book

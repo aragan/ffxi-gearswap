@@ -61,7 +61,7 @@ function global_on_load()
 	send_command('bind !f12 gs c reset DefenseMode')
 
 	send_command('bind ^- gs c toggle selectnpctargets')
-	send_command('bind ^= gs c cycle pctargetmode')
+	send_command('bind !- gs c cycle pctargetmode')
 
 end
 
@@ -83,6 +83,10 @@ function global_on_unload()
 	send_command('unbind ^-')
 	send_command('unbind ^=')
 	send_command('lua u AutoCOR')
+	send_command('lua u PLD-HUD')
+	send_command('lua u DNC-hud')
+	send_command('lua u sch-hud')
+
 	send_command('input //parse reset')
 	--send_command('input //gs org')
 

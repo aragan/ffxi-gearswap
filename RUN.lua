@@ -8,7 +8,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-
+    include('Display.lua')
 	-- Load and initialize the include file.
 	include('Mote-Include.lua')
     include('organizer-lib')
@@ -21,7 +21,6 @@ organizer_items = {
 "Lycurgos",
 "Foreshock Sword",
 "Hepatizon Axe +1",
-    "Aettir",
     "Lentus Grip",
     "Mafic Cudgel",
     "Gyudon",
@@ -65,8 +64,7 @@ function job_setup()
     send_command('wait 2;input /lockstyleset 165')
 	include('Mote-TreasureHunter')
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
-    rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda',
-        'Lux','Tenebrae'}
+    rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda','Lux','Tenebrae'}
 	-- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -126,13 +124,14 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind !s gs c toggle SrodaBelt')
-    send_command('bind ^- gs enable all')
     send_command('bind ^/ gs disable all')
+    send_command('bind !/ gs enable all')
     send_command('bind f4 gs c cycle Runes')
     send_command('bind f3 gs c cycleback Runes')
     send_command('bind f2 input //gs c rune')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind delete gs c toggle BrachyuraEarring')
 
     state.Moving  = M(false, "moving")
@@ -144,9 +143,11 @@ function user_setup()
     state.Runes = M{['description']='Runes', 'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda', 'Lux', 'Tenebrae'}
     state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
 
-    state.WeaponSet = M{['description']='Weapon Set', 'normal', 'Aettir', 'Naegling', 'Lycurgos'}
+    state.WeaponSet = M{['description']='Weapon Set', 'normal', 'Epeolatry', 'Naegling', 'Lycurgos'}
 
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","Runes","HippoMode","TreasureMode"}) 
+    end
 end
 
 
@@ -154,7 +155,7 @@ function init_gear_sets()
 
     --sets.Epeolatry = {main="Epeolatry", sub="Refined Grip +1",}
     sets.Naegling = {main="Naegling", sub="Chanter's Shield"}
-    sets.Aettir = {main="Aettir", sub="Refined Grip +1",}
+    sets.Epeolatry = {main="Epeolatry", sub="Refined Grip +1",}
     sets.Lycurgos = {main="Lycurgos", sub="Refined Grip +1",}
 
     sets.Enmity =    { 
@@ -419,7 +420,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
         feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
     })
-    sets.midcast['Phalanx'].SIRD = set_combine(sets.midcast['Phalanx'],sets.midcast.SIRD,)
+    sets.midcast['Phalanx'].SIRD = set_combine(sets.midcast['Phalanx'],sets.midcast.SIRD)
     sets.midcast['Regen'] = set_combine(sets.midcast['Enhancing Magic'], {
         head="Rune. Bandeau +3",
         neck="Sacro Gorget",
@@ -473,7 +474,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
 	sets.defense.PDT = {   
     ammo="Staunch Tathlum +1",
-    main="Aettir",
+    main="Epeolatry",
     sub="Refined Grip +1",
     head="Nyame Helm",
     body="Adamantite Armor",
@@ -490,7 +491,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
     sets.defense.PDH = {
     ammo="Staunch Tathlum +1",
-    main="Aettir",
+    main="Epeolatry",
     sub="Refined Grip +1",
     head="Erilaz Galea +2",
     body="Erilaz Surcoat +3",
@@ -507,7 +508,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     }
     sets.defense.Enmity = { 
         ammo="Iron Gobbet",
-        main="Aettir",
+        main="Epeolatry",
         sub="Alber Strap",
         head="Halitus Helm",
         body={ name="Emet Harness +1", augments={'Path: A',}},
@@ -564,7 +565,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         waist="Engraved Belt",
     })
 	sets.defense.MDT = {
-    main="Aettir",
+    main="Epeolatry",
     sub="Refined Grip +1",
     ammo="Staunch Tathlum +1",
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -608,7 +609,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         back="Ogma's Cape",}
 
     sets.idle.Town = {
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
     left_ear="Infused Earring",
     legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
     
@@ -635,7 +635,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     })
     sets.idle.PDH = {
         ammo="Staunch Tathlum +1",
-        main="Aettir",
+        main="Epeolatry",
         sub="Refined Grip +1",
         head="Erilaz Galea +2",
         body="Erilaz Surcoat +3",
@@ -653,7 +653,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
     sets.idle.PDT = {   
         ammo="Staunch Tathlum +1",
-        main="Aettir",
+        main="Epeolatry",
         sub="Refined Grip +1",
         head="Nyame Helm",
         body="Adamantite Armor",
@@ -1146,20 +1146,6 @@ end
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
 
--- Select default macro book on initial load or subjob change.
-function select_default_macro_book()
-	-- Default macro set/book
-	if player.sub_job == 'WAR' then
-		set_macro_page(3, 19)
-	elseif player.sub_job == 'NIN' then
-		set_macro_page(3, 19)
-	elseif player.sub_job == 'SAM' then
-		set_macro_page(3, 19)
-	else
-		set_macro_page(3, 19)
-	end
-end
-
 function get_rune_obi_element()
     weather_rune = buffactive[elements.rune_of[world.weather_element] or '']
     day_rune = buffactive[elements.rune_of[world.day_element] or '']
@@ -1199,9 +1185,19 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
     check_weaponset()
 
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
 function check_weaponset()
     equip(sets[state.WeaponSet.current])
     if (player.sub_job ~= 'NIN' and player.sub_job ~= 'DNC') then
@@ -1323,6 +1319,8 @@ function display_current_job_state(eventArgs)
     local r_msg = state.Runes.current
     local r_color = ''
     if state.Runes.current == 'Ignis' then r_color = 167
+        send_command("@input /echo <----- All Cumulative Magic Duration Effects Have Expired ----->")
+
     elseif state.Runes.current == 'Gelus' then r_color = 210
     elseif state.Runes.current == 'Flabra' then r_color = 204
     elseif state.Runes.current == 'Tellus' then r_color = 050
@@ -1437,6 +1435,22 @@ windower.raw_register_event('status change',function(new, old)
 end)
 
 
-
+-- Select default macro book on initial load or subjob change.
+function select_default_macro_book()
+	-- Default macro set/book
+	if player.sub_job == 'WAR' then
+		set_macro_page(7, 19)
+    elseif player.sub_job == 'SCH' then
+        set_macro_page(6, 19) 
+    elseif player.sub_job == 'BLU' then
+        set_macro_page(1, 37)
+	elseif player.sub_job == 'NIN' then
+		set_macro_page(3, 19)
+	elseif player.sub_job == 'SAM' then
+		set_macro_page(3, 19)
+	else
+		set_macro_page(3, 19)
+	end
+end
 
 

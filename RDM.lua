@@ -14,7 +14,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
 	include('organizer-lib')
@@ -99,10 +99,10 @@ function user_setup()
     state.IdleMode:options('Normal', 'PDT', 'MDT','Regen', 'HP', 'EnemyCritRate', 'Evasion', 'Enmity', 'Sphere')
 	state.PhysicalDefenseMode:options('PDT')
     state.MagicalDefenseMode:options('MDT')
-	state.CastingMode:options('Normal', 'Burst', 'Duration', 'SIRD')
+	state.CastingMode:options( 'Duration','Normal', 'Burst', 'SIRD')
 
 	state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'SWORDS', 'Crocea', 'DAGGERS', 'Club'}
-	state.Shield = M{['description']='Weapon Set', 'Normal', 'Shield'}
+	state.Shield = M{['description']='Weapon Set', 'Normal', 'Ammurapi', 'Bulwark'}
     state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
     state.EnSpell = M{['description']='EnSpell', 'Enfire', 'Enblizzard', 'Enaero', 'Enstone', 'Enthunder', 'Enwater'}
     state.BarElement = M{['description']='BarElement', 'Barfire', 'Barblizzard', 'Baraero', 'Barstone', 'Barthunder', 'Barwater'}
@@ -115,6 +115,7 @@ function user_setup()
 	select_default_macro_book()
 	send_command('bind f10 gs c cycle IdleMode')
 	send_command('bind ^f10 gs c set DefenseMode Physical')
+	send_command('bind ^f11 gs c set DefenseMode Magical')
 	send_command('bind f5 gs c cycle WeaponskillMode')
 	send_command('bind f11 gs c cycle Enfeeb')
 	send_command('bind f12 gs c cycle CastingMode')
@@ -130,9 +131,10 @@ function user_setup()
     send_command('bind f3 gs c cycle BarElement')
     send_command('bind f4 gs c cycle BarStatus')
     send_command('bind @a gs c toggle NM')
-    send_command('bind @s gs c cycle SleepMode')
+    send_command('bind !s gs c cycle SleepMode')
     send_command('bind delete gs c toggle BrachyuraEarring')
-
+    send_command('bind ^/ gs disable all')
+    send_command('bind !/ gs enable all')
 	send_command('wait 6;input /lockstyleset 152')
     state.Auto_Kite = M(false, 'Auto_Kite')
 
@@ -156,14 +158,16 @@ function user_setup()
     moving = false
 
     update_combat_form()
+	if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","Enfeeb","WeaponSet","Shield","HippoMode","TreasureMode"}) 
+    end
 end
  
 -- Called when this job file is unloaded (eg: job change)
 function user_unload()
-    --[[send_command('unbind f12')
+    send_command('unbind f12')
     send_command('unbind f11')
 	send_command('unbind f10')
-	send_command('unbind f8')]]
+	--send_command('unbind f8')
 
 end
 
@@ -173,13 +177,17 @@ function init_gear_sets()
     -- Start defining the sets
     --------------------------------------
 
+	    ---- WeaponSet ----
+
 	sets.Normal = {}
 	sets.SWORDS = {main="Naegling", sub="Demers. Degen +1"}
-	sets.Crocea = {main="Crocea Mors", sub="Demers. Degen +1"}
-	sets.Club = {main="Daybreak", sub="Sacro Bulwark"}
+	sets.Crocea = {main="Crocea Mors", sub="Daybreak"}
+	sets.Club = {main="Maxentius", sub="Thibron"}
 	sets.DAGGERS = {main="Tauret", sub="Gleti's Knife",}
 
-	sets.Shield = {sub="Sacro Bulwark"}
+	sets.Ammurapi = {sub="Ammurapi Shield"}
+	sets.Bulwark = {sub="Sacro Bulwark"}
+
 	sets.DefaultShield = {sub="Sacro Bulwark"}
 
     -- Precast Sets
@@ -253,7 +261,7 @@ function init_gear_sets()
 		right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 		left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 	}
 	sets.precast.WS.PDL = set_combine(sets.precast.WS, {
 		ammo="Crepuscular Pebble",
@@ -282,7 +290,7 @@ function init_gear_sets()
 		right_ear="Regal Earring",
 		left_ring="Rufescent Ring",
 		right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
 	sets.precast.WS['Requiescat'].PDL = set_combine(sets.precast.WS['Requiescat'], {
 		ammo="Crepuscular Pebble",
@@ -303,7 +311,7 @@ function init_gear_sets()
 		right_ear="Regal Earring",
 		left_ring="Archon Ring",
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
 
     sets.precast.WS['Savage Blade'] = {
@@ -319,7 +327,7 @@ function init_gear_sets()
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 		left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 	}
 	sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS['Savage Blade'], {
 		ammo="Crepuscular Pebble",
@@ -331,16 +339,16 @@ function init_gear_sets()
 		ammo="Pemphredo Tathlum",
 		head="Nyame Helm",
 		body="Nyame Mail",
-		hands="Jhakri Cuffs +2",
+		hands="Nyame Gauntlets",
 		legs="Nyame Flanchard",
 		feet="Nyame Sollerets",
-		neck="Baetyl Pendant",
+		neck="Fotia Gorget",
 		waist="Orpheus's Sash",
 		left_ear="Malignance Earring",
 		right_ear="Regal Earring",
 		left_ring="Freke Ring",
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 		}
 
 
@@ -357,7 +365,7 @@ function init_gear_sets()
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 		left_ring="Freke Ring",
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
 		
 	sets.precast.WS['Death Blossom'] = {
@@ -373,7 +381,7 @@ function init_gear_sets()
     left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
     right_ring="Cornelia's Ring",
-    back="Sucellos's Cape",
+    back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 	}
 	sets.precast.WS['Death Blossom'].PDL = set_combine(sets.precast.WS['Death Blossom'], {
 		ammo="Crepuscular Pebble",
@@ -395,7 +403,7 @@ function init_gear_sets()
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 		left_ring="Rufescent Ring",
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 	}
 	sets.precast.WS['Chant Du Cygne'].PDL = set_combine(sets.precast.WS['Chant Du Cygne'], {
 		ammo="Crepuscular Pebble",
@@ -417,7 +425,7 @@ function init_gear_sets()
 		left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
 		left_ring="Rufescent Ring",
 		right_ring="Cornelia's Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
 	} 
 	sets.precast.WS['Evisceration'].PDL = set_combine(sets.precast.WS['Evisceration'], {
 		ammo="Crepuscular Pebble",
@@ -437,7 +445,7 @@ function init_gear_sets()
         right_ear="Friomisi Earring",
         left_ring="Cornelia's Ring",
         right_ring="Archon Ring",
-		back="Sucellos's Cape",
+		back={ name="Sucellos's Cape", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
 	sets.precast.WS['Myrkr'] = {
 		ammo="Pemphredo Tathlum",
@@ -525,7 +533,7 @@ sets.TreasureHunter = {
         left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
         right_ring="Kishar Ring",
     }
-	sets.Duration={
+	sets.Duration = {
 		main={ name="Colada", augments={'Enh. Mag. eff. dur. +3','Mag. Acc.+20','DMG:+6',}},
 		sub="Ammurapi Shield",
 		head="Telchine Cap",
@@ -697,8 +705,6 @@ sets.TreasureHunter = {
 	})
 	
     sets.midcast['Enfeebling Magic'] = {
-		main={ name="Contemplator +1", augments={'Path: A',}},
-		sub="Enki Strap",
 		ammo=empty,
 		range="Ullr",
         head={ name="Viti. Chapeau +3", augments={'Enfeebling Magic duration','Magic Accuracy',}},
@@ -716,8 +722,6 @@ sets.TreasureHunter = {
     }
 	
 	sets.midcast['Enfeebling Magic'].Macc = set_combine(sets.midcast['Enfeebling Magic'], {
-		main={ name="Contemplator +1", augments={'Path: A',}},
-		sub="Enki Strap",
 		ammo=empty,
 		range="Ullr",
         head={ name="Viti. Chapeau +3", augments={'Enfeebling Magic duration','Magic Accuracy',}},
@@ -735,8 +739,6 @@ sets.TreasureHunter = {
 	})
 		
 	sets.midcast['Enfeebling Magic'].Skill = {
-		main={ name="Contemplator +1", augments={'Path: A',}},
-		sub="Enki Strap",
 		ammo=empty,
 		range="Ullr",
 		head={ name="Viti. Chapeau +3", augments={'Enfeebling Magic duration','Magic Accuracy',}},
@@ -771,8 +773,6 @@ sets.TreasureHunter = {
 	}
     
 	sets.Saboteur = set_combine(sets.midcast['Enfeebling Magic'].Potency, {
-		main={ name="Contemplator +1", augments={'Path: A',}},
-		sub="Enki Strap",
 		--hands="Lethargy Gantherots +1"
 	})
 
@@ -789,8 +789,9 @@ sets.TreasureHunter = {
         hands="Amalric Gages +1",
 		legs="Jhakri Slops +2",
 		feet={ name="Vitiation Boots +3", augments={'Immunobreak Chance',}},
+		neck="Sibyl Scarf",
         waist="Sacro Cord",
-		left_ear="Regal Earring",
+		left_ear="Malignance Earring",
 		right_ear="Regal Earring",
 		left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
 		right_ring="Freke Ring",
@@ -800,11 +801,11 @@ sets.TreasureHunter = {
 		head="C. Palug Crown",
 		body="Lethargy Sayon +3",
         hands="Amalric Gages +1",
-		legs="Ea Slops",
+		legs="Jhakri Slops +2",
 		feet={ name="Vitiation Boots +3", augments={'Immunobreak Chance',}},
 		neck="Sibyl Scarf",
 		waist={ name="Acuity Belt +1", augments={'Path: A',}},
-		left_ear="Regal Earring",
+		left_ear="Malignance Earring",
 		right_ear="Regal Earring",
 		left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
 		right_ring="Freke Ring",
@@ -945,7 +946,6 @@ sets.TreasureHunter = {
 		back="Moonlight Cape",}
 
         sets.idle.Town ={legs="Carmine Cuisses +1",
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
         left_ear="Infused Earring",}
     
     sets.idle.Weak = {
@@ -996,10 +996,9 @@ sets.TreasureHunter = {
 	}
 
 	sets.idle.HP={
-		main="Naegling",
 		ammo="Staunch Tathlum +1",
 		head="Nyame Helm",
-		body="Nyame Mail",
+        body="Adamantite Armor",
 		hands="Nyame Gauntlets",
 		legs="Nyame Flanchard",
 		feet="Nyame Sollerets",
@@ -1631,9 +1630,17 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+	if update_job_states then update_job_states() 
+    end
 	check_weaponset()
 end
 
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 function job_get_spell_map(spell, default_spell_map)
 end
@@ -2017,9 +2024,6 @@ function display_current_job_state(eventArgs)
     local msg = ''
     if state.MagicBurst.value then
         msg = ' Burst: On |'
-    end
-    if state.DeathMode.value then
-        msg = msg .. ' Death: On |'
     end
     if state.Kiting.value then
         msg = msg .. ' Kiting: On |'

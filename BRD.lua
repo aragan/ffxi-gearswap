@@ -27,6 +27,7 @@
 
 -- Initialization function for this job file.
 function get_sets()
+    include('Display.lua') 
     mote_include_version = 2
     
     -- Load and initialize the include file.
@@ -82,11 +83,13 @@ organizer_items = {
     "Reraise Earring",}
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
+
     state.ExtraSongsMode = M{['description']='Extra Songs', 'None', 'Dummy', 'FullLength', 'Marsyas'}
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
     state.Buff['Pianissimo'] = buffactive['pianissimo'] or false
     state.BrachyuraEarring = M(true,false)
+    
     send_command('wait 6;input /lockstyleset 168')
     -- For tracking current recast timers via the Timers plugin.
     custom_timers = {}
@@ -177,8 +180,9 @@ function user_setup()
     send_command('bind !` input /ma "Chocobo Mazurka" <me>')
     send_command('wait 2;input /lockstyleset 168')
     send_command('bind @w gs c toggle WeaponLock')
+    send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind ^= gs c cycle treasuremode')
-    send_command('bind ^- gs enable all')
+    send_command('bind !/ gs enable all')
     send_command('bind ^/ gs disable all')
     --send_command('bind f7 input //fillmode')
     send_command('bind f1 gs c cycle HippoMode')
@@ -189,6 +193,7 @@ function user_setup()
     send_command('bind f4 gs c cycle Threnody')
     send_command('bind !f4 gs c Threnody')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind @` gs c cycle LullabyMode')
     send_command('bind delete gs c toggle BrachyuraEarring')
 
@@ -199,7 +204,10 @@ function user_setup()
     state.Auto_Kite = M(false, 'Auto_Kite')
     state.Moving  = M(false, "moving")
     moving = false
-
+	--add that at the end of user_setup
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","WeaponskillMode","WeaponSet","ExtraSongsMode","Etude","Carol","HippoMode","TreasureMode"}) 
+    end
+    
 end
 
 
@@ -215,11 +223,13 @@ function init_gear_sets()
     -- Start defining the sets
     --------------------------------------
     
+    ---- WeaponSet ----
+
     --sets.Carnwenhan = {main="Carnwenhan", sub="Gleti's Knife"}
     sets.normal = {}
-    sets.Twashtar = {main="Twashtar", sub="Ternion Dagger +1"}
-    sets.Tauret = {main="Tauret", sub="Gleti's Knife"}
-    sets.Naegling = {main="Naegling", sub="Ternion Dagger +1"}
+    sets.Twashtar = {main="Twashtar", sub="Crepuscular Knife",}
+    sets.Tauret = {main="Tauret", sub="Crepuscular Knife",}
+    sets.Naegling = {main="Naegling", sub="Crepuscular Knife",}
     sets.Xoanon = {main="Xoanon", sub="Alber Strap"}
 
     sets.DefaultShield = {sub="Genmei Shield"}
@@ -328,6 +338,7 @@ function init_gear_sets()
     
     sets.precast.WS.PDL = set_combine(sets.precast.WS,{
         body="Bunzi's Robe",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         })
     -- Specific weaponskill sets.  Uses the base set if an appropriate WSMod version isn't found.
     sets.precast.WS['Evisceration'] = { range="Linos",
@@ -346,6 +357,7 @@ function init_gear_sets()
     }
     sets.precast.WS['Evisceration'].PDL = set_combine(sets.precast.WS['Evisceration'],{
         body="Bunzi's Robe",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         })
     sets.precast.WS['Exenterator'] = {range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
@@ -370,7 +382,7 @@ function init_gear_sets()
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Fotia Gorget",
+    neck={ name="Bard's Charm +2", augments={'Path: A',}},
         ear1="Ishvara Earring",
         ear2="Regal Earring",
         ring1="Sroda Ring", 
@@ -387,8 +399,8 @@ body="Bihu Jstcorps. +3",
 hands={ name="Nyame Gauntlets", augments={'Path: B',}},
 legs={ name="Nyame Flanchard", augments={'Path: B',}},
 feet={ name="Nyame Sollerets", augments={'Path: B',}}, 
-   neck="Fotia Gorget",
-    ear2="Ishvara Earring",
+neck={ name="Bard's Charm +2", augments={'Path: A',}},
+ear2="Ishvara Earring",
     ear1="Moonshade Earring",
     ring1="Ilabrat Ring",
     ring2="Cornelia's Ring",
@@ -432,6 +444,7 @@ feet={ name="Nyame Sollerets", augments={'Path: B',}},
 
 sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS['Savage Blade'],{
 body="Bunzi's Robe",
+neck={ name="Bard's Charm +2", augments={'Path: A',}},
 })
 sets.precast.WS['Flash Nova'] = {
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -794,8 +807,7 @@ sets.midcast.SongStringSkill = {
 
     sets.idle.Town = {    
     feet="Fili Cothurnes +2",
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
-    left_ring="Stikini Ring +1",
+    left_ear="Infused Earring",
 }
 sets.idle.HP = {
     ammo="Staunch Tathlum +1",
@@ -861,10 +873,10 @@ sets.idle.Sphere = set_combine(sets.idle, {
     sets.engaged = {range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Ashera Harness",
-        hands="Bunzi's Gloves",
+        hands="Volte Mittens",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet="Battlecast Gaiters",
-        neck="Lissome Necklace",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
         right_ear="Cessance Earring",
         left_ear="Telos Earring",
@@ -881,7 +893,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         hands="Bunzi's Gloves",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Lissome Necklace",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
         left_ear="Telos Earring",
         right_ear="Fili Earring +1",
@@ -904,7 +916,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         hands="Aya. Manopolas +2",
         legs="Aya. Cosciales +2",
         feet="Aya. Gambieras +2",
-        neck="Lissome Necklace",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
         left_ear="Telos Earring",
         right_ear="Cessance Earring",
@@ -918,7 +930,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         hands="Bunzi's Gloves",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet="Battlecast Gaiters",
-        neck="Lissome Necklace",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist="Reiki Yotai",
         left_ear="Suppanomimi",
         right_ear="Balder Earring +1",
@@ -936,10 +948,10 @@ sets.idle.Sphere = set_combine(sets.idle, {
         range="Linos",
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Ashera Harness",
-        hands="Bunzi's Gloves",
+        hands="Volte Mittens",
         legs={ name="Zoar Subligar +1", augments={'Path: A',}},
         feet="Battlecast Gaiters",
-        neck="Lissome Necklace",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist="Reiki Yotai",
         left_ear="Suppanomimi",
         right_ear="Balder Earring +1",
@@ -954,7 +966,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         hands="Aya. Manopolas +2",
         legs="Aya. Cosciales +2",
         feet="Aya. Gambieras +2",
-        neck="Lissome Necklace",
+        neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist="Reiki Yotai",
         left_ear="Suppanomimi",
         right_ear="Cessance Earring",
@@ -1311,8 +1323,18 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
+
     check_weaponset()
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 function update_offense_mode()
     if (player.sub_job == 'NIN' and player.sub_job_level > 9) or (player.sub_job == 'DNC' and player.sub_job_level > 19) then

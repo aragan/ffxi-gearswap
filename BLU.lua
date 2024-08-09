@@ -16,6 +16,7 @@
 
 -- Initialization function for this job file.
 function get_sets()
+    include('Display.lua') 
     mote_include_version = 2
     
     -- Load and initialize the include file.
@@ -190,11 +191,18 @@ function job_setup()
         'Crashing Thunder','Droning Whirlwind','Gates of Hades','Harden Shell','Polar Roar',
         'Pyric Bulwark','Thunderbolt','Tourbillion','Uproot','Cruel Joke',
     }
-
+    -- Mote has capitalization errors in the default Absorb mappings, so we use our own
+    absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
+    state.Storms =  M{['description']='storms', 'Sandstorm', 'Aurorastorm', 'Voidstorm', 'Firestorm', 'Rainstorm', 'Windstorm', 'Hailstorm', 'Thunderstorm'}
+    storms = S{"Aurorastorm", "Voidstorm", "Firestorm", "Sandstorm", "Rainstorm", "Windstorm", "Hailstorm", "Thunderstorm"}
+    
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
     "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1",
     "Reraise Earring", "Reraise Gorget", "Airmid's Gorget","Wh. Rarab Cap +1",}
-    elemental_ws = S{'Flash Nova', 'Sanguine Blade'}
+    elemental_ws = S{'Flash Nova', 'Sanguine Blade','Seraph Blade','Burning Blade','Red Lotus Blade',
+     'Shining Strike', 'Shining Blade'}
+    clubList = S{'Maxentius','Bunzi\'s Rod', 'Warp Cudgel'}
+    swordList = S{'Naegling', 'Iris'}
 
 end
 
@@ -208,7 +216,7 @@ function user_setup()
     state.HybridMode:options('Normal', 'DT', 'STR')
     state.RangedMode:options('Normal', 'Acc')
     state.WeaponskillMode:options('Normal', 'PDL', 'SC')
-    state.CastingMode:options('Normal', 'SIRD', 'ConserveMP')
+    state.CastingMode:options('Normal', 'SIRD', 'ConserveMP', 'Duration')
     state.IdleMode:options('Normal', 'PDT','MDT', 'Evasion','Regen', 'HP', 'EnemyCritRate', 'Enmity', 'Learning')
     state.PhysicalDefenseMode:options('PDT', 'Evasion', 'Enmity')
     state.MagicalDefenseMode:options('MDT')
@@ -218,18 +226,22 @@ function user_setup()
 
     send_command('lua l azureSets')
     -- Additional local binds
+    send_command('bind f7 input //Sublimator')
+    send_command('bind f3 gs c cycle Storms')
+    send_command('bind f2 input //gs c Storms')
     send_command('bind ^` input /ja "Chain Affinity" <me>')
     send_command('bind !` input /ja "Efflux" <me>')
     send_command('bind @` input /ja "Burst Affinity" <me>')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind delete gs c toggle BrachyuraEarring')
-    send_command('alias lamp input /targetnpc;wait .1; input //tradenpc 1 "Smouldering Lamp";wait 1.4;setkey numpadenter down;wait 0.1;setkey numpadenter up;wait .1;setkey up down;wait .1;setkey up up;wait .1;setkey numpadenter down;wait 0.1;setkey numpadenter up;wait .1;setkey right down;wait .6;setkey right up;wait .1;setkey numpadenter down;wait .1;setkey numpadenter up;')
-    send_command('alias glowing input /targetnpc;wait .1; input //tradenpc 1 "Glowing Lamp";wait 1.8;setkey up down;wait .1;setkey up up;wait .1;setkey numpadenter down;wait 0.1;setkey numpadenter up;')
+    send_command('alias lamp input /targetnpc;wait .1; input //tradenpc 1 "Smoldering Lamp";wait 1.4;setkey numpadenter down;wait 0.1;setkey numpadenter up;wait .1;setkey up down;wait .1;setkey up up;wait .1;setkey numpadenter down;wait 0.1;setkey numpadenter up;wait .1;setkey right down;wait .4;setkey right up;wait .1;setkey numpadenter down;wait .1;setkey numpadenter up;')  --//lamp
+    send_command('alias glowing input /targetnpc;wait .1; input //tradenpc 1 "Glowing Lamp";wait 1.8;setkey up down;wait .1;setkey up up;wait .1;setkey numpadenter down;wait 0.1;setkey numpadenter up;') -- //glowing 
     send_command('wait 6;input /lockstyleset 152')
     send_command('bind f4 input //fillmode')
     send_command('bind ^/ gs disable all')
@@ -258,6 +270,9 @@ function user_setup()
     moving = false
     update_combat_form()
     determine_haste_group()
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","HippoMode","TreasureMode"}) 
+    end
+        
 end
 
 
@@ -322,12 +337,23 @@ function init_gear_sets()
 
     sets.buff['Burst Affinity'] = {feet="Hashi. Basmak +2"}
     sets.buff['Chain Affinity'] = {head="Mavi Kavuk +2", feet="Assimilator's Charuqs"}
-    sets.buff.Convergence = {head="Luhlaza Keffiyeh"}
+    sets.buff.Convergence = {head="Luh. Keffiyeh +3"}
     sets.buff.Diffusion = {feet="Luhlaza Charuqs +3"}
     sets.buff.Enchainment = {body="Luhlaza Jubbah"}
-    sets.buff.Efflux = {legs="Hashishin Tayt +2",}
+    sets.buff.Efflux = {legs="Hashishin Tayt +3",}
 
-    
+    ---- WeaponSet ----
+
+    sets.Normal = {}
+    sets.Naegling = {main="Naegling", sub="Thibron"}
+    sets.Naegling2 = {main="Naegling", sub="Zantetsuken"}
+    sets.Maxentius = {main="Maxentius", sub="Thibron"}
+    sets.Nuking = {main="Maxentius", sub="Bunzi's Rod"}
+    sets.Learn = {
+        main="Iris", 
+        sub="Iris",}
+
+
     -- Precast Sets
     sets.Enmity = {
         ammo="Sapience Orb", --2
@@ -367,7 +393,7 @@ sets.precast.Waltz = {   body="Passion Jacket",
           
 sets.precast.FC = {      
         ammo="Sapience Orb",
-        head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
+        head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
         body="Pinga Tunic +1",
         hands={ name="Leyline Gloves", augments={'Accuracy+15','Mag. Acc.+15','"Mag.Atk.Bns."+15','"Fast Cast"+3',}},
         legs="Pinga Pants +1",
@@ -469,12 +495,11 @@ sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS['Savage Blade'
 })
     
 sets.precast.WS['Sanguine Blade'] = set_combine(sets.precast.WS, {
-        
     ammo="Pemphredo Tathlum",
     head="Pixie Hairpin +1",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
-    legs="Nyame Flanchard",
+    legs={ name="Luhlaza Shalwar +3", augments={'Enhances "Assimilation" effect',}},
     feet="Nyame Sollerets",
     neck="Sibyl Scarf",
     waist="Orpheus's Sash",
@@ -544,7 +569,7 @@ sets.precast.WS['Aeolian Edge'] = {    ammo="Oshasha's Treatise",
 head="Nyame Helm",
 body="Nyame Mail",
 hands="Nyame Gauntlets",
-legs="Nyame Flanchard",
+legs={ name="Luhlaza Shalwar +3", augments={'Enhances "Assimilation" effect',}},
 feet="Nyame Sollerets",
 ear1="Moonshade Earring",
 ear2="Friomisi Earring",
@@ -559,7 +584,7 @@ sets.precast.WS['Flash Nova'] = set_combine(sets.precast.WS, {
     head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
-    legs="Nyame Flanchard",
+    legs={ name="Luhlaza Shalwar +3", augments={'Enhances "Assimilation" effect',}},
     feet="Nyame Sollerets",
     neck="Baetyl Pendant",
     waist="Orpheus's Sash",
@@ -575,7 +600,7 @@ sets.precast.WS['Myrkr'] = {
     head="Nyame Helm",
     body="Nyame Mail",
     hands="Nyame Gauntlets",
-    legs="Nyame Flanchard",
+    legs={ name="Luhlaza Shalwar +3", augments={'Enhances "Assimilation" effect',}},
     feet="Nyame Sollerets",
     neck="Baetyl Pendant",
     waist="Orpheus's Sash",
@@ -583,7 +608,7 @@ sets.precast.WS['Myrkr'] = {
     right_ear="Friomisi Earring",
     left_ring="Cornelia's Ring",
     right_ring="Freke Ring",
-    back={ name="Aurist's Cape +1", augments={'Path: A',}},
+    back={ name="Rosmerta's Cape", augments={'INT+20','Mag. Acc+20 /Mag. Dmg.+20','Evasion+10','"Mag.Atk.Bns."+10','Evasion+15',}},
 }
 sets.precast.WS['Cataclysm'] = {
     ammo="Pemphredo Tathlum",
@@ -680,7 +705,7 @@ sets.precast.WS['Shattersoul'] = {
         head="Luh. Keffiyeh +3",
         body="Assim. Jubbah +3",
         hands={ name="Rawhide Gloves", augments={'Mag. Acc.+15','INT+7','MND+7',}},
-        legs="Hashishin Tayt +2",
+        legs="Hashishin Tayt +3",
         feet="Luhlaza Charuqs +3",
         neck={ name="Mirage Stole +2", augments={'Path: A',}},
         right_ear="Hashi. Earring +1", 
@@ -705,7 +730,7 @@ sets.midcast['Blue Magic'].Physical = {
     head="Gleti's Mask",
     body="Hashishin Mintan +2",
     hands="Hashi. Bazu. +2",
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck="Rep. Plat. Medal",
     waist="Prosilio Belt +1",
@@ -721,7 +746,7 @@ sets.midcast['Blue Magic'].PhysicalAcc = {
     head="Gleti's Mask",
     body="Hashishin Mintan +2",
     hands="Hashi. Bazu. +2",
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     waist="Olseni Belt",
@@ -816,6 +841,22 @@ ear2="Mache Earring +1",
 ring2="Ilabrat Ring",})
 
 sets.midcast['Blue Magic'].MagicAccuracy = {
+    ammo="Pemphredo Tathlum",
+    head="Malignance Chapeau",
+    body="Malignance Tabard",
+    hands="Malignance Gloves",
+    legs="Malignance Tights",
+    feet="Malignance Boots",
+    neck={ name="Mirage Stole +2", augments={'Path: A',}},
+    waist="Luminary Sash",
+    left_ear="Crep. Earring",
+    right_ear="Digni. Earring",
+    left_ring="Stikini Ring +1",
+    right_ring="Stikini Ring +1",
+    back={ name="Aurist's Cape +1", augments={'Path: A',}},   
+}
+
+sets.midcast['Blue Magic']['Cruel Joke'] = {
     main="Naegling",
     sub="Sakpata's Sword",
     ammo="Pemphredo Tathlum",
@@ -832,12 +873,12 @@ sets.midcast['Blue Magic'].MagicAccuracy = {
     right_ring="Stikini Ring +1",
     back={ name="Aurist's Cape +1", augments={'Path: A',}},   
 }
-
 sets.midcast['Blue Magic'].MagicAccuracy.SIRD = set_combine(sets.SIRD, sets.midcast['Blue Magic'].MagicAccuracy)
     -- Breath Spells --
     
 sets.midcast['Blue Magic'].Breath = set_combine(sets.midcast['Blue Magic'].Magical, { 
     ammo="Mavi Tathlum",
+    head="Luh. Keffiyeh +3",
 })
 
     -- Other Types --
@@ -853,10 +894,10 @@ sets.midcast['Blue Magic'].Stun = set_combine(sets.midcast['Blue Magic'].MagicAc
 sets.midcast['Blue Magic']['White Wind'] = {
     ammo="Staunch Tathlum +1",
     head={ name="Nyame Helm", augments={'Path: B',}},
-    body="Pinga Tunic",
-    hands={ name="Telchine Gloves", augments={'Enh. Mag. eff. dur. +8',}},
-    legs="Pinga Pants",
-    feet={ name="Medium's Sabots", augments={'MP+25','MND+2','"Conserve MP"+3',}},
+    body="Pinga Tunic +1",
+    hands="Telchine Gloves",
+    legs="Pinga Pants +1",
+    feet="Medium's Sabots",
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
     left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
@@ -865,14 +906,15 @@ sets.midcast['Blue Magic']['White Wind'] = {
     right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
     back="Moonlight Cape",
 }
+sets.midcast['Blue Magic']['White Wind'].SIRD = set_combine(sets.SIRD ,sets.midcast['Blue Magic'].MagicAccuracy, {})
 
 sets.midcast['Blue Magic'].Healing = {
     ammo="Staunch Tathlum +1",
     head={ name="Nyame Helm", augments={'Path: B',}},
-    body="Pinga Tunic",
-    hands={ name="Telchine Gloves", augments={'Enh. Mag. eff. dur. +8',}},
-    legs="Pinga Pants",
-    feet={ name="Medium's Sabots", augments={'MP+25','MND+2','"Conserve MP"+3',}},
+    body="Pinga Tunic +1",
+    hands="Telchine Gloves",
+    legs="Pinga Pants +1",
+    feet="Medium's Sabots",
     neck={ name="Unmoving Collar +1", augments={'Path: A',}},
     waist="Plat. Mog. Belt",
     left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
@@ -891,7 +933,7 @@ sets.midcast['Blue Magic'].SkillBasedBuff = {
     head="Luh. Keffiyeh +3",
     body="Assim. Jubbah +3",
     hands={ name="Rawhide Gloves", augments={'Mag. Acc.+15','INT+7','MND+7',}},
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     right_ear="Hashi. Earring +1", 
@@ -907,7 +949,7 @@ sets.midcast['Blue Magic'].Buff = {
     head="Luh. Keffiyeh +3",
     body="Assim. Jubbah +3",
     hands={ name="Rawhide Gloves", augments={'Mag. Acc.+15','INT+7','MND+7',}},
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     right_ear="Hashi. Earring +1", 
@@ -957,7 +999,7 @@ sets.midcast['Enhancing Magic'] = {
     back={ name="Fi Follet Cape +1", augments={'Path: A',}},
 }
 
-sets.midcast.EnhancingDuration = {
+sets.midcast.Duration = {
     ammo="Pemphredo Tathlum",
     head="Telchine Cap",
     body="Telchine Chas.",
@@ -984,13 +1026,20 @@ sets.midcast.Protectra = sets.midcast.Protect
 sets.midcast.Shell = sets.midcast.Protect
 sets.midcast.Shellra = sets.midcast.Protect
 
+sets.midcast['Dark Magic'] = {
+    neck="Erra Pendant",
+    left_ear="Regal Earring",
+    left_ring="Stikini Ring +1",
+    right_ring="Stikini Ring +1",
+}
 sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {
     main="Sakpata's Sword",
     ammo="Staunch Tathlum +1",
-    head={ name="Carmine Mask", augments={'Accuracy+15','Mag. Acc.+10','"Fast Cast"+3',}},
-    body="Telchine Chas.",
+    head={ name="Carmine Mask +1", augments={'Accuracy+20','Mag. Acc.+12','"Fast Cast"+4',}},
+    body={ name="Herculean Vest", augments={'Phys. dmg. taken -1%','Accuracy+11 Attack+11','Phalanx +2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
     hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
     legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},
+    feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
     neck="Incanter's Torque",
     waist="Olympus Sash",
     left_ear="Andoaa Earring",
@@ -999,6 +1048,7 @@ sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {
     right_ring="Stikini Ring +1",
     back={ name="Fi Follet Cape +1", augments={'Path: A',}},
 })
+sets.midcast.Phalanx.Duration = set_combine(sets.midcast.Duration, {})
 
 sets.midcast.Phalanx.SIRD = set_combine(sets.SIRD, sets.midcast.Phalanx) 
     
@@ -1025,7 +1075,7 @@ sets.Learning = {
     head="Luh. Keffiyeh +3",
     body="Assim. Jubbah +3",
     hands="Assim. Bazu. +2",
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     right_ear="Hashi. Earring +1", 
@@ -1168,7 +1218,7 @@ back="Shadow Mantle",}
 sets.idle.HP = {
     ammo="Staunch Tathlum +1",
     head="Nyame Helm",
-    body="Nyame Mail",
+    body="Adamantite Armor",
     hands="Nyame Gauntlets",
     legs="Nyame Flanchard",
     feet="Nyame Sollerets",
@@ -1196,7 +1246,6 @@ sets.idle.Regen = set_combine(sets.idle, {
 sets.idle.MDT = set_combine(sets.defense.MDT, {})
 sets.idle.Enmity = set_combine(sets.defense.Enmity, {})
 sets.idle.Town = {legs="Carmine Cuisses +1",
-neck={ name="Bathy Choker +1", augments={'Path: A',}},
 left_ear="Infused Earring",}
 
 sets.idle.Learning = set_combine(sets.idle, sets.Learning, { 
@@ -1288,7 +1337,7 @@ sets.engaged.Learning = {
     head="Luh. Keffiyeh +3",
     body="Assim. Jubbah +3",
     hands="Assim. Bazu. +2",
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     right_ear="Hashi. Earring +1", 
@@ -1375,7 +1424,7 @@ sets.engaged.DW.Learning =  set_combine(sets.engaged.DW, sets.Learning, {
     head="Luh. Keffiyeh +3",
     body="Assim. Jubbah +3",
     hands="Assim. Bazu. +2",
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet="Luhlaza Charuqs +3",
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     right_ear="Hashi. Earring +1", 
@@ -1515,7 +1564,7 @@ sets.engaged.Learning.DT = set_combine(sets.engaged.Learning, sets.engaged.Hybri
     head={ name="Luh. Keffiyeh +3", augments={'Enhances "Convergence" effect',}},
     body="Assim. Jubbah +3",
     hands="Assim. Bazu. +2",
-    legs="Hashishin Tayt +2",
+    legs="Hashishin Tayt +3",
     feet={ name="Luhlaza Charuqs +3", augments={'Enhances "Diffusion" effect',}},
     neck={ name="Mirage Stole +2", augments={'Path: A',}},
     waist="Flume Belt +1",
@@ -1579,16 +1628,8 @@ sets.magic_burst = set_combine(sets.midcast['Blue Magic'].Magical, {
     ring2="Jhakri Ring", --5
     --back="Seshaw Cape", --5
 })
-sets.Normal = {}
-sets.Naegling = {main="Naegling", sub="Thibron"}
-sets.Naegling2 = {main="Naegling", sub="Zantetsuken"}
-sets.Maxentius = {main="Maxentius", sub="Thibron"}
-sets.Nuking = {main="Maxentius", sub="Bunzi's Rod"}
 
-sets.Learn = {
-    main="Iris", 
-    sub="Iris",
-}
+
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -1653,11 +1694,7 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             end
         end
     end
-    if state.CastingMode.value == 'SIRD' then
-        equip(sets.SIRD)
-    elseif state.CastingMode.value == 'ConserveMP' then
-        equip(sets.ConserveMP)
-    end
+
 end
 -- Run after the default midcast() is done.
 -- eventArgs is the same one used in job_midcast, in case information needs to be persisted.
@@ -1679,7 +1716,11 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
         end
     end
     if spell.skill == 'Enhancing Magic' and classes.NoSkillSpells:contains(spell.english) then
+        if state.CastingMode.value == 'Duration' then
+            equip(sets.midcast.Duration)
+        else
         equip(sets.midcast['Enhancing Magic'])
+        end
         if spellMap == 'Refresh' then
             equip(sets.midcast.Refresh)
         elseif spellMap == 'Aquaveil' then
@@ -1691,7 +1732,11 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
         end
     end
 
-
+    if state.CastingMode.value == 'SIRD' then
+        equip(sets.SIRD)
+    elseif state.CastingMode.value == 'ConserveMP' then
+        equip(sets.ConserveMP)
+    end
     -- If in learning mode, keep on gear intended to help with that, regardless of action.
     if state.CastingMode.value == 'Learning' then
         equip(sets.Learning)
@@ -1911,6 +1956,14 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if swordList:contains(player.equipment.main) then
+        send_command('input /lockstyleset 152')
+    elseif clubList:contains(player.equipment.main) then
+        send_command('input /lockstyleset 149')
+    end
+    if update_job_states then update_job_states() 
+    end
+
     check_weaponset()
 end
 function check_weaponset()
@@ -2023,6 +2076,9 @@ end
 
 function job_self_command(cmdParams, eventArgs)
     gearinfo(cmdParams, eventArgs)
+    if cmdParams[1]:lower() == 'storms' then
+        send_command('@input /ma "'..state.Storms.value..'" <stpc>')
+    end
 end
 
 function gearinfo(cmdParams, eventArgs)
@@ -2077,6 +2133,13 @@ function check_moving()
     end
 end
 
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
+
 function check_gear()
     if no_swap_gear:contains(player.equipment.left_ring) then
         disable("ring1")
@@ -2106,8 +2169,11 @@ windower.register_event('zone change',
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     -- Default macro set/book
+    set_macro_page(6, 40)
     if player.sub_job == 'DNC' then
         set_macro_page(6, 40)
+    elseif player.sub_job == "SCH" then
+        set_macro_page(8, 40)
     else
         set_macro_page(6, 40)
     end

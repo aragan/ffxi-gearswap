@@ -8,7 +8,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -42,7 +42,8 @@ function user_setup()
     state.OffenseMode:options('None', 'Normal', 'Melee', 'Shield')
     state.CastingMode:options('Normal', 'MB')
     state.IdleMode:options('Normal', 'PDT', 'Refresh', 'Sphere')
-
+    state.PhysicalDefenseMode:options('PDT')
+    state.MagicalDefenseMode:options('MDT')
     gear.default.weaponskill_waist = "Windbuffet Belt +1"
 
     geo_sub_weapons = S{"", ""}
@@ -56,7 +57,8 @@ function user_setup()
     send_command('bind ^/ gs disable all')
     send_command('bind f4 input //fillmode')
     send_command('bind delete gs c toggle BrachyuraEarring')
-
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","HippoMode"}) 
+    end
 end
 
 function file_unload()
@@ -317,7 +319,7 @@ function init_gear_sets()
         hands="Geo. Mitaines +3",
         legs="Geomancy Pants +2",
         feet="Bagua Sandals +3",
-        neck="Incanter's Torque",
+        neck={ name="Bagua Charm +2", augments={'Path: A',}},
         waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
         left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
         right_ear="Azimuth Earring +1",
@@ -335,7 +337,7 @@ function init_gear_sets()
         hands="Geo. Mitaines +3",
         legs={ name="Bagua Pants +3", augments={'Enhances "Mending Halation" effect',}},
         feet="Azimuth Gaiters +2",
-        neck="Incanter's Torque",
+        neck={ name="Bagua Charm +2", augments={'Path: A',}},
         waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
         left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
         right_ear="Azimuth Earring +1",
@@ -554,6 +556,7 @@ function init_gear_sets()
     hands="Telchine Gloves",
     legs="Telchine Braconi",
     feet="Telchine Pigaches",
+    neck="Incanter's Torque",
     waist="Olympus Sash",
     left_ear="Andoaa Earring",
     right_ear="Gifted Earring",
@@ -642,7 +645,7 @@ function init_gear_sets()
     hands="Geo. Mitaines +3",
     legs={ name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
     feet="Bagua Sandals +3",
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    neck={ name="Bagua Charm +2", augments={'Path: A',}},
     waist="Isa Belt",
     left_ear="Handler's Earring +1",
     right_ear="Handler's Earring",
@@ -660,7 +663,7 @@ function init_gear_sets()
     hands="Geo. Mitaines +3",
     legs={ name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
     feet="Bagua Sandals +3",
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    neck={ name="Bagua Charm +2", augments={'Path: A',}},
     waist="Isa Belt",
     left_ear="Handler's Earring +1",
     right_ear="Handler's Earring",
@@ -689,9 +692,10 @@ function init_gear_sets()
     --    legs="Bagua Pants", 
     --})
 
-    sets.idle.Town = set_combine(sets.idle, {
+    sets.idle.Town =  {
         feet="Geo. Sandals +2",
-    })
+        left_ear="Infused Earring",
+    }
 
     sets.idle.Weak = sets.idle
 
@@ -1061,7 +1065,16 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
@@ -1138,8 +1151,6 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
-add_to_chat(159,'Author Aragan GEO.Lua File (from Asura)')
-add_to_chat(159,'For details, visit https://github.com/aragan/ffxi-lua-all-job')
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     set_macro_page(5, 34)

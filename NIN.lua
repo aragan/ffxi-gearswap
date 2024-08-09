@@ -14,6 +14,7 @@
 -- Macro #2 //console gs c toggle UseRune
 function get_sets()
     mote_include_version = 2
+    include('Display.lua')
     include('Mote-Include.lua')
     include('organizer-lib')
     organizer_items = {
@@ -122,6 +123,7 @@ function user_setup()
     
     send_command('bind @w gs c toggle WeaponLock')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind ^[ gs c toggle UseWarp')
     send_command('bind != gs c toggle CapacityMode')
@@ -158,6 +160,8 @@ function user_setup()
         }
     update_combat_form()
     determine_haste_group()
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","RangedMode","WeaponskillMode","WeaponSet","CastingMode","Runes","TreasureMode"}) 
+    end
 end
 
 
@@ -1591,6 +1595,9 @@ end
 
 -- Modify the default melee set after it was constructed.
 function customize_melee_set(meleeSet)
+    if state.TreasureMode.value == 'Fulltime' then
+        meleeSet = set_combine(meleeSet, sets.TreasureHunter)
+    end
     if state.CapacityMode.value then
         meleeSet = set_combine(meleeSet, sets.CapacityMantle)
     end
@@ -1872,6 +1879,12 @@ function check_gear()
     end
 end
 
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 windower.register_event('zone change',
     function()
@@ -1911,6 +1924,9 @@ end
 function check_buff(buff_name, eventArgs)
     if state.Buff[buff_name] then
         equip(sets.buff[buff_name] or {})
+        if state.TreasureMode.value == 'SATA' or state.TreasureMode.value == 'Fulltime' then
+            equip(sets.TreasureHunter)
+        end
         eventArgs.handled = true
     end
 end
@@ -2011,6 +2027,14 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if swordList:contains(player.equipment.main) then
+        send_command('input /lockstyleset 152')
+    elseif GKList:contains(player.equipment.main) then
+        send_command('input /lockstyleset 172')
+
+    end
+    if update_job_states then update_job_states() 
     end
 
     check_weaponset()

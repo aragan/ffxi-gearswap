@@ -45,7 +45,7 @@
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
-
+    include('Display.lua')
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
@@ -178,6 +178,8 @@ function user_setup()
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     select_default_macro_book()
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","PhysicalDefenseMode","CastingMode","HippoMode"}) 
+    end
 end
 
 
@@ -735,21 +737,10 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
         body="Hagondes Coat",hands="Serpentes Cuffs",ring1="Evoker's Ring",ring2="Sangoma Ring",
         back="Samanisi Cape",waist="Fucho-no-Obi",legs="Summoner's Spats",feet="Herald's Gaiters"}
 
-    sets.idle.Town = {main="Contemplator +1",
-    sub="Elan Strap +1",
-    ammo="Sancus Sachet +1",
-    head={ name="Glyphic Horn +1", augments={'Enhances "Astral Flow" effect',}},
-    body="Con. Doublet +3",
-    hands={ name="Glyphic Bracers +1", augments={'Inc. Sp. "Blood Pact" magic burst dmg.',}},
-    legs={ name="Glyphic Spats +1", augments={'Increases Sp. "Blood Pact" accuracy',}},
+    sets.idle.Town = {
     feet="Herald's Gaiters",
-    neck="Caller's Pendant",
-    waist="Fucho-no-Obi",
-    left_ear="Rimeice Earring",
-    right_ear="Evans Earring",
-    left_ring="Thurandaut Ring",
-    right_ring="Fervor Ring",
-    back={ name="Campestres's Cape", augments={'Pet: M.Acc.+20 Pet: M.Dmg.+20','Eva.+20 /Mag. Eva.+20','Pet: Magic Damage+10','Pet: Haste+10',}},}
+    left_ear="Infused Earring",
+}
 
     -- Favor uses Caller's Horn instead of Convoker's Horn for refresh
     sets.idle.Avatar.Favor = {    head="Beckoner's Horn +2",}
@@ -1334,7 +1325,16 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
+    if update_job_states then update_job_states() 
+    end
 end
+
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 
 -- Event handler for updates to player skill, since we can't rely on skill being
 -- correct at pet_aftercast for the creation of custom timers.

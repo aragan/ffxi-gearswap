@@ -69,7 +69,9 @@
 
 -- Initialization function for this job file.
 function get_sets()
+    include('Display.lua')
     mote_include_version = 2
+    send_command('lua l sch-hud')
 
     -- Load and initialize the include file.
     include('Mote-Include.lua')
@@ -113,7 +115,7 @@ function job_setup()
         "Stone V", "Water V", "Aero V", "Fire V", "Blizzard V", "Thunder V"}
     state.StaffMode = M{['description']='Staff Mode', 'normal','Mpaca', 'Marin'} 
     state.Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
-    state.HelixMode = M{['description']='Helix Mode', 'Potency', 'Duration'}
+    state.HelixMode = M{['description']='Helix Mode', 'Duration', 'Potency'}
     state.RegenMode = M{['description']='Regen Mode', 'Duration', 'Potency'}
     --state.RP = M(false, "Reinforcement Points Mode")
     state.WeaponLock = M(false, 'Weapon Lock')
@@ -164,6 +166,8 @@ function user_setup()
     state.OffenseMode:options('None', 'Normal', 'Acc', 'DT')
     state.CastingMode:options('Normal', 'magicburst', 'Enmity', 'ConserveMP' , 'Sird', 'SubtleBlow', 'Proc')
     state.IdleMode:options('Normal', 'DT', 'Resist','BoostMB', 'vagary', 'Sphere')
+    state.PhysicalDefenseMode:options('PDT')
+    state.MagicalDefenseMode:options('MDT')
     state.HippoMode = M{['description']='Hippo Mode', 'normal', 'Hippo'}
 
     send_command('wait 6;input /lockstyleset 173')
@@ -174,6 +178,8 @@ function user_setup()
     send_command('bind ^` input /ja Immanence <me>')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind @q gs c toggle AutoEquipBurst')
+    send_command('bind f11 gs c cycle CastingMode')
+    send_command('bind !f11 gs c set DefenseMode Magical')
     send_command('bind ^- gs c scholar light')
     send_command('bind ^= gs c scholar dark')
     send_command('bind ^[ gs c scholar power')
@@ -185,9 +191,9 @@ function user_setup()
     send_command('bind !] gs c scholar duration')
     send_command('bind !; gs c scholar cost')
     -- send_command('bind @c gs c toggle CP')
-    send_command('bind @h gs c cycle HelixMode')
+    send_command('bind f5 gs c cycle HelixMode')
     send_command('bind @r gs c cycle RegenMode')
-    send_command('bind @s gs c toggle StormSurge')
+    send_command('bind !s gs c toggle StormSurge')
     send_command('bind !w gs c toggle WeaponLock')
     --send_command('bind !- gs c toggle RP')  
     send_command('bind ^numpad0 input /Myrkr')
@@ -205,6 +211,8 @@ function user_setup()
 
     state.Auto_Kite = M(false, 'Auto_Kite')
     --moving = false
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","StaffMode","Storms","StormSurge","HelixMode","HippoMode"}) 
+    end
 end
 
 -- Called when this job file is unloaded (eg: job change)
@@ -223,6 +231,7 @@ function user_unload()
     send_command('unbind !;')
     send_command('unbind ^,')
     send_command('unbind !.')
+    send_command('unbind f11')
     -- send_command('unbind @c')
     send_command('unbind @h')
     send_command('unbind @g')
@@ -289,7 +298,7 @@ function init_gear_sets()
     back={ name="Fi Follet Cape +1", augments={'Path: A',}},
         }
 
-        sets.precast.FC.Grimoire = {head="Peda. M.Board +3", feet="Acad. Loafers +3"}
+    sets.precast.FC.Grimoire = {head="Peda. M.Board +3", feet="Acad. Loafers +3"}
 
     sets.precast.FC.Grimoire.EnhancingDuration = set_combine(sets.precast.FC, {
        feet="Acad. Loafers +3", waist="Siegel Sash"})
@@ -696,8 +705,26 @@ function init_gear_sets()
     
     sets.midcast.Aspir = sets.midcast.Drain
 
-    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {})
-
+    sets.midcast.Stun = set_combine(sets.midcast['Dark Magic'], {
+        main={ name="Musa", augments={'Path: C',}},
+        sub="Enki Strap",
+        ammo="Pemphredo Tathlum",
+        head="Peda. M.Board +3", 
+        body={ name="Agwu's Robe", augments={'Path: A',}},
+        hands="Acad. Bracers +3",
+        legs={ name="Agwu's Slops", augments={'Path: A',}},
+        feet="Acad. Loafers +3",
+        neck={ name="Argute Stole +2", augments={'Path: A',}},
+        waist="Witful Belt",
+        left_ear="Regal Earring",
+        right_ear="Malignance Earring",
+        left_ring="Stikini Ring +1",
+        right_ring="Stikini Ring +1",
+        back="Lugh's Cape",
+    })
+    sets.midcast.Stun.Alacrity = set_combine(sets.midcast.Stun, {
+        feet="Peda. Loafers +3"
+    })
     -- Elemental Magic
     sets.midcast['Elemental Magic'] = {
         ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
@@ -854,7 +881,7 @@ function init_gear_sets()
         ammo="Homiliary",
         head="Befouled Crown",
         body="Arbatel Gown +3",
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
         legs="Assid. Pants +1",
         feet="Nyame Sollerets",
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
@@ -932,9 +959,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
     body="Annoint. Kalasiris",
 })
     sets.idle.Town = set_combine(sets.idle, {
-        main="Mpaca's Staff",
-        body="Shamash Robe",
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        main={ name="Musa", augments={'Path: C',}},
         left_ear="Infused Earring",
         feet="Herald's Gaiters"})
         
@@ -1050,18 +1075,18 @@ sets.MoveSpeed = {feet="Herald's Gaiters"}
 
     sets.buff['Ebullience'] = {head="Arbatel Bonnet +2"}
     sets.buff['Rapture'] = {head="Arbatel Bonnet +2"}
-    sets.buff['Perpetuance'] = {hands="Arbatel Bracers +2"}
+    sets.buff['Perpetuance'] = {hands="Arbatel Bracers +3"}
     sets.buff['Penury'] = {legs="Arbatel Pants +1"}
     sets.buff['Parsimony'] = {legs="Arbatel Pants +1"}
-    sets.buff['Celerity'] = {feet="Peda. Loafers"}
-    sets.buff['Alacrity'] = {feet="Peda. Loafers"}
+    sets.buff['Celerity'] = {feet="Peda. Loafers +3"}
+    sets.buff['Alacrity'] = {feet="Peda. Loafers +3"}
     sets.buff['Klimaform'] = {feet="Arbatel Loafers +3"}
 
     sets.buff['Immanence'] = {
         head="Peda. M.Board +3", 
         feet="Acad. Loafers +3",
         body="Nyame Mail",
-        hands="Arbatel Bracers +2",
+        hands="Arbatel Bracers +3",
         legs="Nyame Flanchard",
         neck={ name="Warder's Charm +1", augments={'Path: A',}},
         back="Lugh's Cape",}
@@ -1397,8 +1422,15 @@ function job_state_change(stateField, newValue, oldValue)
         enable('ear1')
         state.BrachyuraEarring:set(false)
     end
+    if update_job_states then update_job_states() 
+    end
 end
-
+windower.register_event('zone change',
+    function()
+        --add that at the end of zone change
+        if update_job_states then update_job_states() end
+    end
+)
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
 -------------------------------------------------------------------------------------------------------------------
