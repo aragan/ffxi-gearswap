@@ -113,7 +113,6 @@ end
 function job_setup()
     info.addendumNukes = S{"Stone IV", "Water IV", "Aero IV", "Fire IV", "Blizzard IV", "Thunder IV",
         "Stone V", "Water V", "Aero V", "Fire V", "Blizzard V", "Thunder V"}
-    state.StaffMode = M{['description']='Staff Mode', 'normal','Mpaca', 'Marin'} 
     state.Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
     state.HelixMode = M{['description']='Helix Mode', 'Duration', 'Potency'}
     state.RegenMode = M{['description']='Regen Mode', 'Duration', 'Potency'}
@@ -123,7 +122,10 @@ function job_setup()
     state.StormSurge = M(false, 'Stormsurge')
     state.Moving  = M(false, "moving")
     state.AutoEquipBurst = M(true)
-    state.BrachyuraEarring = M(true,false)
+    state.HippoMode = M(false, "hippoMode")
+
+    state.WeaponSet = M{['description']='Weapon Set', 'normal','Mpaca', 'Marin'} 
+
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -168,13 +170,12 @@ function user_setup()
     state.IdleMode:options('Normal', 'DT', 'Resist','BoostMB', 'vagary', 'Sphere')
     state.PhysicalDefenseMode:options('PDT')
     state.MagicalDefenseMode:options('MDT')
-    state.HippoMode = M{['description']='Hippo Mode', 'normal', 'Hippo'}
 
     send_command('wait 6;input /lockstyleset 173')
 
     -- Additional local binds
     --send_command('bind f4 @input /ja "Sublimation" <me>')
-    send_command('bind f6 input //Sublimator')
+    send_command('bind f7 input //Sublimator')
     send_command('bind ^` input /ja Immanence <me>')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind @q gs c toggle AutoEquipBurst')
@@ -191,27 +192,27 @@ function user_setup()
     send_command('bind !] gs c scholar duration')
     send_command('bind !; gs c scholar cost')
     -- send_command('bind @c gs c toggle CP')
-    send_command('bind f2 gs c cycle HelixMode')
+    send_command('bind f5 gs c cycle HelixMode')
     send_command('bind @r gs c cycle RegenMode')
     send_command('bind !s gs c toggle StormSurge')
     send_command('bind !w gs c toggle WeaponLock')
     --send_command('bind !- gs c toggle RP')  
     send_command('bind ^numpad0 input /Myrkr')
-    send_command('bind f7 gs c cycle StaffMode')
+    send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     send_command('bind f4 gs c cycle Storms')
     send_command('bind f3 gs c cycleback Storms')
     send_command('bind f2 input //gs c Storms')
-    send_command('bind delete gs c toggle BrachyuraEarring')
 
     select_default_macro_book()
     set_lockstyle()
 
     state.Auto_Kite = M(false, 'Auto_Kite')
-    --moving = false
-    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","StaffMode","Storms","StormSurge","HippoMode"}) 
+    --hippoMode = false
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode"},{"IdleMode","OffenseMode","CastingMode","WeaponSet","Storms","StormSurge","HelixMode"}) 
     end
 end
 
@@ -261,6 +262,11 @@ function init_gear_sets()
     ---------------------------------------- Precast Sets ------------------------------------------
     ------------------------------------------------------------------------------------------------
 
+    ---- WeaponSet ---- 
+    sets.normal = {}
+    sets.Marin = {main="Marin Staff +1",sub="Enki Strap"}
+    sets.Mpaca = {main="Mpaca's Staff",sub="Enki Strap"}
+
     -- Precast sets to enhance JAs
     sets.precast.JA['Tabula Rasa'] = {legs="Peda. Pants +3"}
     sets.precast.JA['Enlightenment'] = {body="Peda. Gown +3"}
@@ -298,7 +304,7 @@ function init_gear_sets()
     back={ name="Fi Follet Cape +1", augments={'Path: A',}},
         }
 
-        sets.precast.FC.Grimoire = {head="Peda. M.Board +3", feet="Acad. Loafers +3"}
+    sets.precast.FC.Grimoire = {head="Peda. M.Board +3", feet="Acad. Loafers +3"}
 
     sets.precast.FC.Grimoire.EnhancingDuration = set_combine(sets.precast.FC, {
        feet="Acad. Loafers +3", waist="Siegel Sash"})
@@ -516,13 +522,12 @@ function init_gear_sets()
     sets.midcast.Cursna = set_combine(sets.midcast.StatusRemoval, {
         ammo="Pemphredo Tathlum",
         body={ name="Vanya Robe", augments={'HP+50','MP+50','"Refresh"+2',}},
-        hands={ name="Fanatic Gloves", augments={'MP+50','Healing magic skill +8','"Conserve MP"+5','"Fast Cast"+5',}},
         feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
         legs={ name="Vanya Slops", augments={'Healing magic skill +20','"Cure" spellcasting time -7%','Magic dmg. taken -3',}},
         neck="Debilis Medallion",
         waist="Gishdubar Sash",
         left_ring="Haoma's Ring",
-        right_ring="Haoma's Ring",
+        right_ring="Menelaus's Ring",
         })
 
     sets.midcast['Enhancing Magic'] = {
@@ -960,8 +965,6 @@ sets.idle.Sphere = set_combine(sets.idle, {
 })
     sets.idle.Town = set_combine(sets.idle, {
         main={ name="Musa", augments={'Path: C',}},
-        body="Shamash Robe",
-        neck={ name="Bathy Choker +1", augments={'Path: A',}},
         left_ear="Infused Earring",
         feet="Herald's Gaiters"})
         
@@ -1164,6 +1167,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
     elseif spell.name == 'Impact' then
         equip(sets.precast.FC.Impact)
     end
+    if spell.type == 'WeaponSkill' then
+        if elemental_ws:contains(spell.name) then
+            -- Matching double weather (w/o day conflict).
+            if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 1.7 yalms.
+            elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Matching day and weather.
+            elseif spell.element == world.day_element and spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 8 yalms.
+            elseif spell.target.distance < (8 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Match day or weather.
+            elseif spell.element == world.day_element or spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            end
+        end
+    end
 end
 
 -- Run after the general midcast() is done.
@@ -1256,6 +1279,10 @@ function job_aftercast(spell, action, spellMap, eventArgs)
             send_command('timers create "Breakga Petrification" 33 down spells/00365.png') 
         end
     end
+    if player.status ~= 'Engaged' and state.WeaponLock.value == false then
+        check_weaponset()
+    end
+    check_weaponset()
 end
 
 
@@ -1269,12 +1296,6 @@ end
 function job_buff_change(buff, gain)
     if buff == "Sublimation: Activated" then
         handle_equipping_gear(player.status)
-    end
-    if buff == "Protect" then
-        if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
-        end
     end
     if buff == "Tabula Rasa" then
         if gain then
@@ -1417,15 +1438,9 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
-    end
     if update_job_states then update_job_states() 
     end
+    check_weaponset()
 end
 windower.register_event('zone change',
     function()
@@ -1439,13 +1454,6 @@ windower.register_event('zone change',
 
 function job_handle_equipping_gear(playerStatus, eventArgs)
 
-    if state.StaffMode.value == "Marin" then
-        equip({main="Marin Staff +1",sub="Enki Strap"})
-    elseif state.StaffMode.value == "Mpaca" then
-        equip({main="Mpaca's Staff",sub="Enki Strap"})
-    elseif state.StaffMode.value == "normal" then
-        equip({})
-    end
 end
 
 -- Called by the 'update' self-command.
@@ -1480,6 +1488,8 @@ function customize_melee_set(meleeSet)
     else
         enable('neck')
     end]]  
+    check_weaponset()
+
     return meleeSet
 end
 function customize_idle_set(idleSet)
@@ -1507,12 +1517,14 @@ function customize_idle_set(idleSet)
     else
         enable('neck')
     end]]
-    if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
-    elseif state.HippoMode.value == "normal" then
-       equip({})
     end
     return idleSet
+end
+
+function check_weaponset()
+    equip(sets[state.WeaponSet.current])
 end
 
 -- Function to display the current relevant user state when doing an update.
@@ -1806,7 +1818,7 @@ end
 moving = false
 windower.raw_register_event('prerender',function()
     mov.counter = mov.counter + 1;
-	if state.HippoMode.value == "Hippo" then
+	if state.HippoMode.value == true then
 		moving = false
     elseif mov.counter>15 then
         local pl = windower.ffxi.get_mob_by_index(player.index)

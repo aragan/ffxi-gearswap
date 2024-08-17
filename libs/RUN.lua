@@ -21,7 +21,6 @@ organizer_items = {
 "Lycurgos",
 "Foreshock Sword",
 "Hepatizon Axe +1",
-    "Aettir",
     "Lentus Grip",
     "Mafic Cudgel",
     "Gyudon",
@@ -65,8 +64,7 @@ function job_setup()
     send_command('wait 2;input /lockstyleset 165')
 	include('Mote-TreasureHunter')
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
-    rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda',
-        'Lux','Tenebrae'}
+    rune_enchantments = S{'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda','Lux','Tenebrae'}
 	-- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -126,13 +124,14 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind !s gs c toggle SrodaBelt')
-    send_command('bind ^- gs enable all')
     send_command('bind ^/ gs disable all')
+    send_command('bind !/ gs enable all')
     send_command('bind f4 gs c cycle Runes')
     send_command('bind f3 gs c cycleback Runes')
     send_command('bind f2 input //gs c rune')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind f6 gs c cycle WeaponSet')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind delete gs c toggle BrachyuraEarring')
 
     state.Moving  = M(false, "moving")
@@ -142,12 +141,12 @@ function user_setup()
     state.WeaponLock = M(false, 'Weapon Lock')
     state.Knockback = M(false, 'Knockback')
     state.Runes = M{['description']='Runes', 'Ignis', 'Gelus', 'Flabra', 'Tellus', 'Sulpor', 'Unda', 'Lux', 'Tenebrae'}
-    state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
+    state.HippoMode = M(false, "hippoMode")
 
-    state.WeaponSet = M{['description']='Weapon Set', 'normal', 'Aettir', 'Naegling', 'Lycurgos'}
+    state.WeaponSet = M{['description']='Weapon Set', 'normal', 'Epeolatry', 'Naegling', 'Lycurgos'}
 
     select_default_macro_book()
-    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","Runes","HippoMode","TreasureMode"}) 
+    if init_job_states then init_job_states({"WeaponLock","HippoMode"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","Runes","TreasureMode"}) 
     end
 end
 
@@ -156,7 +155,7 @@ function init_gear_sets()
 
     --sets.Epeolatry = {main="Epeolatry", sub="Refined Grip +1",}
     sets.Naegling = {main="Naegling", sub="Chanter's Shield"}
-    sets.Aettir = {main="Aettir", sub="Refined Grip +1",}
+    sets.Epeolatry = {main="Epeolatry", sub="Refined Grip +1",}
     sets.Lycurgos = {main="Lycurgos", sub="Refined Grip +1",}
 
     sets.Enmity =    { 
@@ -262,7 +261,7 @@ sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
     left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Cornelia's Ring",
     right_ring="Regal Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
 }
     sets.precast.WS.PDL = {
         ammo="Crepuscular Pebble",
@@ -282,7 +281,7 @@ sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
     right_ear="Sherida Earring",
     left_ring="Niqmaddu Ring",
     right_ring="Epona's Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
 }
     sets.precast.WS['Resolution'].PDL = set_combine(sets.precast.WS['Resolution'], {
         ammo="Crepuscular Pebble",
@@ -301,7 +300,7 @@ sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
     right_ear="Sherida Earring",
     left_ring="Niqmaddu Ring",
     right_ring="Regal Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
 }
     sets.precast.WS['Dimidiation'].PDL = set_combine(sets.precast.WS['Dimidiation'], {
     ammo="Crepuscular Pebble",
@@ -321,7 +320,7 @@ sets.precast.FC.Stoneskin = set_combine(sets.precast.FC['Enhancing Magic'], {
     left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
     left_ring="Cornelia's Ring",
     right_ring="Regal Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
 })
     sets.precast.WS['Ground Strike'].PDL = set_combine(sets.precast.WS['Ground Strike'], { 
         ammo="Crepuscular Pebble",
@@ -340,7 +339,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     right_ear="Thrud Earring",
     left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
     right_ring="Cornelia's Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
     })
     sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS['Savage Blade'], {
         ammo="Crepuscular Pebble",
@@ -475,7 +474,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
 	sets.defense.PDT = {   
     ammo="Staunch Tathlum +1",
-    main="Aettir",
+    main="Epeolatry",
     sub="Refined Grip +1",
     head="Nyame Helm",
     body="Adamantite Armor",
@@ -492,7 +491,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
     sets.defense.PDH = {
     ammo="Staunch Tathlum +1",
-    main="Aettir",
+    main="Epeolatry",
     sub="Refined Grip +1",
     head="Erilaz Galea +2",
     body="Erilaz Surcoat +3",
@@ -509,7 +508,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     }
     sets.defense.Enmity = { 
         ammo="Iron Gobbet",
-        main="Aettir",
+        main="Epeolatry",
         sub="Alber Strap",
         head="Halitus Helm",
         body={ name="Emet Harness +1", augments={'Path: A',}},
@@ -566,7 +565,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         waist="Engraved Belt",
     })
 	sets.defense.MDT = {
-    main="Aettir",
+    main="Epeolatry",
     sub="Refined Grip +1",
     ammo="Staunch Tathlum +1",
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -610,7 +609,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         back="Ogma's Cape",}
 
     sets.idle.Town = {
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
     left_ear="Infused Earring",
     legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
     
@@ -637,7 +635,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     })
     sets.idle.PDH = {
         ammo="Staunch Tathlum +1",
-        main="Aettir",
+        main="Epeolatry",
         sub="Refined Grip +1",
         head="Erilaz Galea +2",
         body="Erilaz Surcoat +3",
@@ -655,7 +653,7 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
     sets.idle.PDT = {   
         ammo="Staunch Tathlum +1",
-        main="Aettir",
+        main="Epeolatry",
         sub="Refined Grip +1",
         head="Nyame Helm",
         body="Adamantite Armor",
@@ -860,6 +858,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             equip({left_ear="Ishvara Earring"})
 		end
 	end
+    if spell.type == 'WeaponSkill' then
+        if elemental_ws:contains(spell.name) then
+            -- Matching double weather (w/o day conflict).
+            if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 1.7 yalms.
+            elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Matching day and weather.
+            elseif spell.element == world.day_element and spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 8 yalms.
+            elseif spell.target.distance < (8 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Match day or weather.
+            elseif spell.element == world.day_element or spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            end
+        end
+    end
 end
 ------------------------------------------------------------------
 -- Action events
@@ -1074,10 +1092,8 @@ function customize_idle_set(idleSet)
     if state.IdleMode.current == 'EnemyCritRate' then
         idleSet = set_combine(idleSet, sets.idle.EnemyCritRate )
     end
-    if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
-    elseif state.HippoMode.value == "normal" then
-       equip({})
     end
     if state.Auto_Kite.value == true then
        idleSet = set_combine(idleSet, sets.Kiting)
@@ -1147,20 +1163,6 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- Utility functions specific to this job.
 -------------------------------------------------------------------------------------------------------------------
-
--- Select default macro book on initial load or subjob change.
-function select_default_macro_book()
-	-- Default macro set/book
-	if player.sub_job == 'WAR' then
-		set_macro_page(3, 19)
-	elseif player.sub_job == 'NIN' then
-		set_macro_page(3, 19)
-	elseif player.sub_job == 'SAM' then
-		set_macro_page(3, 19)
-	else
-		set_macro_page(3, 19)
-	end
-end
 
 function get_rune_obi_element()
     weather_rune = buffactive[elements.rune_of[world.weather_element] or '']
@@ -1335,6 +1337,8 @@ function display_current_job_state(eventArgs)
     local r_msg = state.Runes.current
     local r_color = ''
     if state.Runes.current == 'Ignis' then r_color = 167
+        send_command("@input /echo <----- All Cumulative Magic Duration Effects Have Expired ----->")
+
     elseif state.Runes.current == 'Gelus' then r_color = 210
     elseif state.Runes.current == 'Flabra' then r_color = 204
     elseif state.Runes.current == 'Tellus' then r_color = 050
@@ -1449,6 +1453,22 @@ windower.raw_register_event('status change',function(new, old)
 end)
 
 
-
+-- Select default macro book on initial load or subjob change.
+function select_default_macro_book()
+	-- Default macro set/book
+	if player.sub_job == 'WAR' then
+		set_macro_page(7, 19)
+    elseif player.sub_job == 'SCH' then
+        set_macro_page(6, 19) 
+    elseif player.sub_job == 'BLU' then
+        set_macro_page(1, 37)
+	elseif player.sub_job == 'NIN' then
+		set_macro_page(3, 19)
+	elseif player.sub_job == 'SAM' then
+		set_macro_page(3, 19)
+	else
+		set_macro_page(3, 19)
+	end
+end
 
 

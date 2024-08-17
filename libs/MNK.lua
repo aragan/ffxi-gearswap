@@ -55,7 +55,6 @@ function job_setup()
     state.FootworkWS = M(false, 'Footwork on WS')
     state.WeaponLock = M(false, 'Weapon Lock')
     state.Moving  = M(false, "moving")
-    state.BrachyuraEarring = M(true,false)
 
     include('Mote-TreasureHunter')
     send_command('wait 2;input /lockstyleset 160')
@@ -75,7 +74,7 @@ function user_setup()
     state.HybridMode:options('Normal', 'PDT', 'Counter')
     state.PhysicalDefenseMode:options('PDT', 'HP')
     state.IdleMode:options('Normal', 'PDT', 'HP', 'Evasion', 'MDT', 'Regen', 'EnemyCritRate')
-    state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
+    state.HippoMode = M(false, "hippoMode")
 
     update_combat_form()
     update_melee_groups()
@@ -84,7 +83,6 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind f1 gs c cycle HippoMode')
-    send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('bind f4 input //fillmode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
@@ -105,7 +103,7 @@ function user_setup()
             [11] = 1.490909,
             [12] = 1.70,
         }
-    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","HippoMode","TreasureMode"}) 
+    if init_job_states then init_job_states({"WeaponLock","HippoMode"},{"IdleMode","OffenseMode","WeaponskillMode","TreasureMode"}) 
     end
 end
 -- Called when this job file is unloaded (eg: job change)
@@ -217,15 +215,11 @@ function init_gear_sets()
         legs="Malignance Tights",
         left_ring="Sroda Ring", 
     })
-    sets.precast.WS.Mod = set_combine(sets.precast.WS, {
-       
-    })
+    sets.precast.WS.Mod = set_combine(sets.precast.WS, {})
 
 
     -- Specific weaponskill sets.
     
-    -- legs={name="Quiahuiz Trousers", augments={'Phys. dmg. taken -2%','Magic dmg. taken -2%','STR+8'}}}
-
     sets.precast.WS['Raging Fists'] = set_combine(sets.precast.WS, {
         ammo="Coiste Bodhar",
         head={ name="Mpaca's Cap", augments={'Path: A',}},
@@ -270,7 +264,6 @@ function init_gear_sets()
         left_ring="Sroda Ring", 
     })
 
-    
     sets.precast.WS['Asuran Fists'] = set_combine(sets.precast.WS, {
         ammo="Coiste Bodhar",
         head="Nyame Helm",
@@ -293,9 +286,7 @@ function init_gear_sets()
         left_ring="Sroda Ring", 
     })
 
-    sets.precast.WS["Ascetic's Fury"] = set_combine(sets.precast.WS, {
-       
-    })
+    sets.precast.WS["Ascetic's Fury"] = set_combine(sets.precast.WS, {})
     sets.precast.WS["Ascetic's Fury"].PDL = set_combine(sets.precast.WS["Ascetic's Fury"],{
         ammo="Crepuscular Pebble",
         hands="Bhikku Gloves +2",
@@ -479,23 +470,75 @@ function init_gear_sets()
     sets.precast.WS["Dragon Kick"].Mod = set_combine(sets.precast.WS["Dragon Kick"], sets.precast.WS.Mod)
     sets.precast.WS["Tornado Kick"].Mod = set_combine(sets.precast.WS["Tornado Kick"], sets.precast.WS.Mod)
 
+-- Elemental Weapon Skill --elemental_ws--
 
-    sets.precast.WS['Cataclysm'] = {
-        ammo="Pemphredo Tathlum",
-        head="Pixie Hairpin +1",
-        body="Nyame Mail",
-        hands="Nyame Gauntlets",
-        legs="Nyame Flanchard",
-        feet="Nyame Sollerets",
-        neck="Sibyl Scarf",
-        waist="Orpheus's Sash",
-        right_ear="Friomisi Earring",
-        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-        left_ring="Archon Ring",
-        right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-        back="Sacro Mantle",
-    }
-    
+-- SANGUINE BLADE
+-- 50% MND / 50% STR Darkness Elemental
+sets.precast.WS['Sanguine Blade'] = set_combine(sets.precast.WS, {
+    ammo="Pemphredo Tathlum",
+    head="Pixie Hairpin +1",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck="Sibyl Scarf",
+    waist="Orpheus's Sash",
+    right_ear="Friomisi Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    left_ring="Archon Ring",
+    right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
+    back="Sacro Mantle",
+})
+
+sets.precast.WS["Dark Harvest"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Shadow of Death"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Infernal Scythe"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Steal"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Drain"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS.Cataclysm = sets.precast.WS["Sanguine Blade"]
+
+sets.precast.WS["Burning Blade"] = set_combine(sets.precast.WS, {
+    ammo={ name="Seeth. Bomblet +1", augments={'Path: A',}},
+    head="Nyame Helm",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+neck="Baetyl Pendant",
+waist="Orpheus's Sash",
+right_ear="Friomisi Earring",
+left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+left_ring="Dingir Ring",
+right_ring="Cornelia's Ring",
+back="Sacro Mantle",})
+
+sets.precast.WS["Red Lotus Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cloudsplitter"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Primal Rend"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Aeolian Edge"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cyclone"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Gust Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flash Nova"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Thunder Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Raiden Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Frostbite"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Freezebite"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Herculean Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Earth Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Rock Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Starburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Sunburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flaming Arrow"] = set_combine(sets.precast.WS["Burning Blade"],{})
+
+
+
+
+
+
     
     -- Midcast Sets
     sets.midcast.FastRecast = {
@@ -604,7 +647,9 @@ sets.defense.Evasion = {
 
     }
 
-    sets.idle.Town = {feet="Hermes' Sandals +1"}
+    sets.idle.Town = {feet="Hermes' Sandals +1",
+    left_ear="Infused Earring",
+}
     
     sets.idle.Weak = sets.idle
     sets.idle.PDT = sets.defense.PDT
@@ -845,6 +890,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             equip(sets.CapacityMantle)
         end
         -- Replace Moonshade Earring if we're at cap TP
+        if spell.type == 'WeaponSkill' then
+            if elemental_ws:contains(spell.name) then
+                -- Matching double weather (w/o day conflict).
+                if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                    equip({waist="Hachirin-no-Obi"})
+                -- Target distance under 1.7 yalms.
+                elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                    equip({waist="Orpheus's Sash"})
+                -- Matching day and weather.
+                elseif spell.element == world.day_element and spell.element == world.weather_element then
+                    equip({waist="Hachirin-no-Obi"})
+                -- Target distance under 8 yalms.
+                elseif spell.target.distance < (8 + spell.target.model_size) then
+                    equip({waist="Orpheus's Sash"})
+                -- Match day or weather.
+                elseif spell.element == world.day_element or spell.element == world.weather_element then
+                    equip({waist="Hachirin-no-Obi"})
+                end
+            end
+        end
     end
     
 end
@@ -878,12 +943,7 @@ function job_buff_change(buff, gain)
             end
         end
     end
-    if buff == "Protect" then
-        if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
-        end
-    end
+
     -- Set Footwork as combat form any time it's active and Hundred Fists is not.
     if buff == 'Footwork' and gain and not buffactive['hundred fists'] then
         state.CombatForm:set('Footwork')
@@ -1048,10 +1108,8 @@ end
 -------------------------------------------------------------------------------------------------------------------
 
 function customize_idle_set(idleSet)
-    if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
-    elseif state.HippoMode.value == "normal" then
-       equip({})
     end
     if world.area:contains("Adoulin") then
         idleSet = set_combine(idleSet, {body="Councilor's Garb"})
@@ -1090,13 +1148,6 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
-    end
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
     end
     if (buff == "Impetus" and gain) or buffactive.impetus then
         equip({body="Bhikku Cyclas +2"})
@@ -1172,7 +1223,7 @@ end
 moving = false
 windower.raw_register_event('prerender',function()
     mov.counter = mov.counter + 1;
-	if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
 		moving = false
     elseif mov.counter>15 then
         local pl = windower.ffxi.get_mob_by_index(player.index)

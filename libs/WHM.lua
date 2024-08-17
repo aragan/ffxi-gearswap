@@ -65,7 +65,6 @@ function job_setup()
     state.Buff['Afflatus Solace'] = buffactive['Afflatus Solace'] or false
     state.Buff['Afflatus Misery'] = buffactive['Afflatus Misery'] or false
     state.Moving  = M(false, "moving")
-    state.BrachyuraEarring = M(true,false)
     barStatus = S{'Barpoison','Barparalyze','Barvirus','Barsilence','Barpetrify','Barblind','Baramnesia','Barsleep','Barpoisonra','Barparalyzra','Barvira','Barsilencera','Barpetra','Barblindra','Baramnesra','Barsleepra'}
 
     send_command('wait 2;input /lockstyleset 178')
@@ -83,7 +82,7 @@ function user_setup()
     state.WeaponskillMode:options('Normal', 'PDL')
     state.IdleMode:options('Normal', 'PDT', 'Refresh', 'Sphere')
     state.PhysicalDefenseMode:options('PDT','DT','HP', 'Evasion', 'MP')
-    state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
+    state.HippoMode = M(false, "hippoMode")
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
@@ -111,8 +110,8 @@ function user_setup()
     send_command('bind !f3 gs c BarElement')
     send_command('bind f4 gs c cycle BarStatus')
     send_command('bind !f4 gs c BarStatus')
-    send_command('bind delete gs c toggle BrachyuraEarring')
-
+    send_command('bind ^/ gs disable all')
+    send_command('bind !/ gs enable all')
     -- 'Out of Range' distance; WS will auto-cancel
     range_mult = {
         [0] = 0,
@@ -129,7 +128,7 @@ function user_setup()
         [12] = 1.70,
     }
     select_default_macro_book()
-    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","SrodaNecklace","BarElement","BarStatus","HippoMode"}) 
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode","SrodaNecklace"},{"IdleMode","OffenseMode","CastingMode","BarElement","BarStatus","BoostSpell"}) 
     end
 end
 
@@ -1025,7 +1024,6 @@ function init_gear_sets()
     })
     sets.idle.Town = {
     feet="Herald's Gaiters",
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
     left_ear="Infused Earring",
     }
     
@@ -1312,6 +1310,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
     if spell.name == 'Impact' then
 		equip(sets.precast.FC.Impact)
 	end
+    if spell.type == 'WeaponSkill' then
+        if elemental_ws:contains(spell.name) then
+            -- Matching double weather (w/o day conflict).
+            if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 1.7 yalms.
+            elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Matching day and weather.
+            elseif spell.element == world.day_element and spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 8 yalms.
+            elseif spell.target.distance < (8 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Match day or weather.
+            elseif spell.element == world.day_element or spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            end
+        end
+    end
 end
 function job_post_midcast(spell, action, spellMap, eventArgs)
     -- Apply Divine Caress boosting items as highest priority over other gear, if applicable.
@@ -1376,12 +1394,6 @@ end
 -- buff == buff gained or lost
 -- gain == true if the buff was gained, false if it was lost.
 function job_buff_change(buff, gain)
-    if buff == "Protect" then
-        if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
-        end
-    end
     if buff == "doom" then
         if gain then
             equip(sets.Doom)
@@ -1510,13 +1522,6 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
-    end
     if update_job_states then update_job_states() 
     end
     handle_equipping_gear(player.status)
@@ -1578,10 +1583,8 @@ function customize_idle_set(idleSet)
     if player.mpp < 51 then
         idleSet = set_combine(idleSet, sets.latent_refresh)
     end
-    if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
-    elseif state.HippoMode.value == "normal" then
-       equip({})
     end
     return idleSet
 end
@@ -1658,7 +1661,7 @@ end
 moving = false
 windower.raw_register_event('prerender',function()
     mov.counter = mov.counter + 1;
-	if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
 		moving = false
     elseif mov.counter>15 then
         local pl = windower.ffxi.get_mob_by_index(player.index)

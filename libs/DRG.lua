@@ -61,7 +61,6 @@ function job_setup()
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
     state.WeaponLock = M(false, 'Weapon Lock')
-    state.BrachyuraEarring = M(true,false)
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     send_command('wait 2;input /lockstyleset 152')
     -- list of weaponskills that make better use of Gavialis helm
@@ -104,7 +103,7 @@ function user_setup()
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f7 gs c cycle shield')
     send_command('bind f6 gs c cycle WeaponSet')
-    send_command('bind delete gs c toggle BrachyuraEarring')
+    send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('wait 6;input /lockstyleset 152')
 	select_default_macro_book()
 
@@ -274,7 +273,7 @@ sets.precast.JA.Jump = {
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Regal Ring",
         right_ring="Cornelia's Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
     sets.precast.WS.SC = set_combine(sets.precast.WS, {
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -303,7 +302,7 @@ sets.precast.JA.Jump = {
         right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Sroda Ring", 
         right_ring="Niqmaddu Ring",
-        back="Bleating Mantle",
+        back={ name="Brigantia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},
     })
 	sets.precast.WS['Stardiver'].SC = set_combine(sets.precast.WS['Stardiver'], {    head="Nyame Helm",
     head={ name="Blistering Sallet +1", augments={'Path: A',}},
@@ -337,7 +336,7 @@ sets.precast.JA.Jump = {
         right_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Regal Ring",
         right_ring="Cornelia's Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
 	sets.precast.WS["Camlann's Torment"].SC = set_combine(sets.precast.WS["Camlann's Torment"], {    head="Nyame Helm",
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -369,7 +368,7 @@ sets.precast.JA.Jump = {
         right_ear="Pel. Earring +1",
         left_ring="Regal Ring",
         right_ring="Niqmaddu Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
 	sets.precast.WS['Drakesbane'].SC = set_combine(sets.precast.WS['Drakesbane'], {    head="Nyame Helm",
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -401,7 +400,7 @@ sets.precast.JA.Jump = {
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Regal Ring",
         right_ring="Niqmaddu Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
     sets.precast.WS['Geirskogul'].SC = set_combine(sets.precast.WS['Geirskogul'], {    head="Nyame Helm",
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -432,7 +431,7 @@ sets.precast.JA.Jump = {
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Niqmaddu Ring",
         right_ring="Cornelia's Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
 	sets.precast.WS['Impulse Drive'].SC = set_combine(sets.precast.WS['Impulse Drive'], {    head="Nyame Helm",
     head={ name="Nyame Helm", augments={'Path: B',}},
@@ -450,56 +449,7 @@ sets.precast.JA.Jump = {
     right_ear="Pel. Earring +1",
     left_ring="Sroda Ring", 
     })
-    sets.precast.WS['Thunder Thrust'] = set_combine(sets.precast.WS, {
-        ammo="Pemphredo Tathlum",
-        head={ name="Nyame Helm", augments={'Path: B',}},
-        body={ name="Nyame Mail", augments={'Path: B',}},
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-        legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Sibyl Scarf",
-        waist="Orpheus's Sash",
-        right_ear="Pel. Earring +1",
-        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-        left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-        right_ring="Cornelia's Ring",
-        back="Argocham. Mantle",
-    })
-    sets.precast.WS['Raiden Thrust'] = set_combine(sets.precast.WS, {
-        ammo="Pemphredo Tathlum",
-        head={ name="Nyame Helm", augments={'Path: B',}},
-        body={ name="Nyame Mail", augments={'Path: B',}},
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-        legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Sibyl Scarf",
-        waist="Orpheus's Sash",
-        right_ear="Pel. Earring +1",
-        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-        left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-        right_ring="Cornelia's Ring",
-        back="Argocham. Mantle",
-    })
-    sets.precast.WS['Raiden Thrust'].PDL = set_combine(sets.precast.WS, {
-    })
 
-    sets.precast.WS['Aeolian Edge'] = set_combine(sets.precast.WS, {
-        ammo="Pemphredo Tathlum",
-        head={ name="Nyame Helm", augments={'Path: B',}},
-        body={ name="Nyame Mail", augments={'Path: B',}},
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-        legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Sibyl Scarf",
-        waist="Orpheus's Sash",
-        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-        right_ear="Friomisi Earring",
-        left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-        right_ring="Cornelia's Ring",
-        back="Argocham. Mantle",
-    })
-    sets.precast.WS['Aeolian Edge'].PDL = set_combine(sets.precast.WS, {
-    })
     sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         ammo="Knobkierrie",
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -513,7 +463,7 @@ sets.precast.JA.Jump = {
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Regal Ring",
         right_ring="Cornelia's Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
     sets.precast.WS['Savage Blade'].PDL = set_combine(sets.precast.WS, {
         hands="Gleti's Gauntlets",
@@ -522,39 +472,7 @@ sets.precast.JA.Jump = {
         right_ear="Pel. Earring +1",
         left_ring="Sroda Ring", 
     })
-    sets.precast.WS['Cataclysm'] = set_combine(sets.precast.WS, {
-        ammo="Pemphredo Tathlum",
-        head="Pixie Hairpin +1",
-        body={ name="Nyame Mail", augments={'Path: B',}},
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-        legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Sibyl Scarf",
-        waist="Orpheus's Sash",
-        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-        right_ear="Friomisi Earring",
-        left_ring="Archon Ring",
-        right_ring="Cornelia's Ring",
-        back="Argocham. Mantle",
-    })
 
-    sets.precast.WS['Cataclysm'].PDL = set_combine(sets.precast.WS, {})
-
-    sets.precast.WS['Myrkr'] = {
-        ammo="Pemphredo Tathlum",
-        head={ name="Nyame Helm", augments={'Path: B',}},
-        body={ name="Nyame Mail", augments={'Path: B',}},
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-        legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck="Baetyl Pendant",
-        waist="Orpheus's Sash",
-        left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
-        right_ear="Friomisi Earring",
-        left_ring="Cornelia's Ring",
-        right_ring="Freke Ring",
-        back={ name="Aurist's Cape +1", augments={'Path: A',}},
-    }
     sets.precast.WS['Black Halo'] = {
         ammo="Knobkierrie",
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -568,7 +486,7 @@ sets.precast.JA.Jump = {
         right_ear="Brutal Earring",
         left_ring="Regal Ring",
         right_ring="Cornelia's Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
     sets.precast.WS['Judgment'] = {
         ammo="Knobkierrie",
@@ -583,7 +501,7 @@ sets.precast.JA.Jump = {
         left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
         left_ring="Regal Ring",
         right_ring="Cornelia's Ring",
-        back="Brigantia's Mantle",
+        back={ name="Brigantia's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
     sets.precast.WS['Judgment'].SC = set_combine(sets.precast.WS['Judgment'], {
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -600,16 +518,6 @@ sets.precast.JA.Jump = {
         right_ear="Pel. Earring +1",
         left_ring="Sroda Ring", 
     })
-
-    sets.precast.WS["Flash Nova"] = sets.precast.WS["Myrkr"]
-    sets.precast.WS['Starburst'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Sunburst'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Earth Crusher'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Rock Crusher'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Seraph Strike'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Shining Strike'] = sets.precast.WS['Myrkr']
-    sets.precast.WS['Sanguine Blade'] = sets.precast.WS['Cataclysm']
-
     sets.precast.WS['Shattersoul'] = {
         ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -626,7 +534,69 @@ sets.precast.JA.Jump = {
         back={ name="Aurist's Cape +1", augments={'Path: A',}},
     }
 	
-	-- Sets to return to when not performing an action.
+-- Elemental Weapon Skill --elemental_ws--
+
+-- SANGUINE BLADE
+-- 50% MND / 50% STR Darkness Elemental
+sets.precast.WS['Sanguine Blade'] = set_combine(sets.precast.WS, {
+    ammo="Pemphredo Tathlum",
+    head="Pixie Hairpin +1",
+    body={ name="Nyame Mail", augments={'Path: B',}},
+    hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+    legs={ name="Nyame Flanchard", augments={'Path: B',}},
+    feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    neck="Sibyl Scarf",
+    waist="Orpheus's Sash",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    right_ear="Friomisi Earring",
+    left_ring="Archon Ring",
+    right_ring="Cornelia's Ring",
+    back="Argocham. Mantle",
+})
+
+sets.precast.WS["Dark Harvest"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Shadow of Death"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Infernal Scythe"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Steal"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Drain"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS.Cataclysm = sets.precast.WS["Sanguine Blade"]
+
+sets.precast.WS["Burning Blade"] = set_combine(sets.precast.WS, {
+    ammo="Pemphredo Tathlum",
+    head={ name="Nyame Helm", augments={'Path: B',}},
+    body={ name="Nyame Mail", augments={'Path: B',}},
+    hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+    legs={ name="Nyame Flanchard", augments={'Path: B',}},
+    feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    neck="Sibyl Scarf",
+    waist="Orpheus's Sash",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    right_ear="Friomisi Earring",
+    left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
+    right_ring="Cornelia's Ring",
+    back="Argocham. Mantle",})
+
+sets.precast.WS["Red Lotus Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cloudsplitter"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Primal Rend"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Aeolian Edge"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cyclone"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Gust Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flash Nova"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Thunder Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Raiden Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Frostbite"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Freezebite"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Herculean Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Earth Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Rock Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Starburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Sunburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flaming Arrow"] = set_combine(sets.precast.WS["Burning Blade"],{})
 	
 	-- Resting sets
 	sets.resting = {
@@ -790,7 +760,7 @@ sets.precast.JA.Jump = {
         right_ear="Brutal Earring",
         left_ring="Niqmaddu Ring",
         right_ring="Petrov Ring",
-        back="Tactical Mantle",
+        back={ name="Brigantia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},
     }
 
 	sets.engaged.Acc = set_combine(sets.engaged.Mid, {
@@ -806,7 +776,7 @@ sets.precast.JA.Jump = {
         right_ear="Telos Earring",
         left_ring="Chirich Ring +1",
         right_ring="Chirich Ring +1",
-        back="Tactical Mantle",
+        back={ name="Brigantia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},
     })
 
     sets.engaged.STP = set_combine(sets.engaged.Mid, {
@@ -822,7 +792,7 @@ sets.precast.JA.Jump = {
         right_ear="Telos Earring",
         left_ring="Chirich Ring +1",
         right_ring="Chirich Ring +1",
-        back="Tactical Mantle",
+        back={ name="Brigantia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},
     })
 
     sets.engaged.CRIT = set_combine(sets.engaged, {
@@ -838,7 +808,7 @@ sets.precast.JA.Jump = {
         right_ear="Brutal Earring",
         left_ring="Niqmaddu Ring",
         right_ring="Hetairoi Ring",
-        back="Annealed Mantle",    })
+        back={ name="Brigantia's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},    })
 
         sets.engaged.SubtleBlow = set_combine(sets.engaged, {        
             body="Dagon Breast.",
@@ -891,25 +861,26 @@ sets.engaged.DW.SubtleBlow.DT = set_combine(sets.engaged.DW.SubtleBlow, sets.eng
     sets.engaged.PDT = set_combine(sets.engaged, {
         head="Hjarrandi Helm",
         body="Hjarrandi Breast.",
-        hands="Sulev. Gauntlets +2",
+        hands="Pel. Vambraces +2",
         left_ring="Moonlight Ring",
+        right_ring="Moonlight Ring",
         waist="Tempus Fugit +1",
     })
 	sets.engaged.STP.PDT = set_combine(sets.engaged.STP, {
         head="Hjarrandi Helm",
         body="Hjarrandi Breast.",
-        hands="Sulev. Gauntlets +2",
+        hands="Pel. Vambraces +2",
         left_ring="Moonlight Ring",
-        right_ring="Defending Ring",
+        right_ring="Moonlight Ring",
         waist="Tempus Fugit +1",
 
     })
 	sets.engaged.Acc.PDT = set_combine(sets.engaged.Acc, {
         head="Hjarrandi Helm",
         body="Hjarrandi Breast.",
-        hands="Sulev. Gauntlets +2",
+        hands="Pel. Vambraces +2",
         left_ring="Moonlight Ring",
-        right_ring="Defending Ring",
+        right_ring="Moonlight Ring",
         waist="Tempus Fugit +1",
 
     })
@@ -983,6 +954,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             equip({left_ear="Ishvara Earring"})
 		end
 	end
+    if spell.type == 'WeaponSkill' then
+        if elemental_ws:contains(spell.name) then
+            -- Matching double weather (w/o day conflict).
+            if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 1.7 yalms.
+            elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Matching day and weather.
+            elseif spell.element == world.day_element and spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 8 yalms.
+            elseif spell.target.distance < (8 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Match day or weather.
+            elseif spell.element == world.day_element or spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            end
+        end
+    end
 end
     --[[if spell.type == 'WeaponSkill' then
         if state.CapacityMode.value then
@@ -1027,7 +1018,7 @@ end
 -- Set eventArgs.handled to true if we don't want any automatic gear equipping to be done.
 function job_aftercast(spell, action, spellMap, eventArgs)
 	if state.HybridMode.value == 'Reraise' or
-    (state.HybridMode.value == 'Physical' and state.PhysicalDefenseMode.value == 'Reraise') then
+    (state.HybridMode.value == 'DT' and state.PhysicalDefenseMode.value == 'Reraise') then
 		equip(sets.Reraise)
 	end
     check_weaponset()
@@ -1073,13 +1064,6 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
-    end
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
     end
     if update_job_states then update_job_states() 
     end
@@ -1156,12 +1140,6 @@ function job_buff_change(buff, gain)
             send_command('input /p "Ancient Circle" [ON]')		
         else	
             send_command('input /p "Ancient Circle" [OFF]')
-        end
-    end
-    if buff == "Protect" then
-        if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
         end
     end
     if buff == "doom" then
@@ -1323,14 +1301,23 @@ end
 -------------------------------------------------------------------------------------------------------------------
 
 -- Called for custom player commands.
-function job_self_command(cmdParams, eventArgs)
+--[[function job_self_command(cmdParams, eventArgs)
     if player.hpp < 5 then --if u hp 10% or down click f12 to change to sets.Reraise this code add from Aragan Asura
         equip(sets.Reraise)
         send_command('input //gs equip sets.Reraise')
         eventArgs.handled = true
     end
     return
+end]]
+
+windower.register_event('hpp change', -- code add from Aragan Asura
+function(new_hpp,old_hpp)
+    if new_hpp < 5 then
+        equip(sets.Reraise)
+    end
 end
+)
+
 function customize_idle_set(idleSet)
     -- if state.CP.current == 'on' then
     --     equip(sets.CP)
