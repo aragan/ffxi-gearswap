@@ -66,9 +66,6 @@ function job_setup()
     state.MagicBurst = M(false, 'Magic Burst')
     state.Buff.Innin = buffactive.innin or false
     state.Buff.Yonin = buffactive.Yonin or false
-    state.BrachyuraEarring = M(true,false)
-
-
 
     state.HasteMode = M{['description']='Haste Mode', 'Hi', 'Normal'}
     state.Runes = M{['description']='Runes', "Ignis", "Gelus", "Flabra", "Tellus", "Sulpor", "Unda", "Lux", "Tenebrae"}
@@ -85,6 +82,7 @@ function job_setup()
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.Proc = M(false, 'Proc')
     state.unProc = M(false, 'unProc')
+    state.phalanxset = M(false,true)
 
 
     swordList = S{'Naegling'}
@@ -133,10 +131,11 @@ function user_setup()
     send_command('bind f2 input //gs c toggle UseRune')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind f5 gs c cycle WeaponskillMode')
-    send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     send_command('wait 6;input /lockstyleset 144')
+    send_command('bind ^p gs c toggle phalanxset')
+
     -- send_command('bind !- gs equip sets.crafting')
     select_default_macro_book()
     state.Auto_Kite = M(false, 'Auto_Kite')
@@ -255,16 +254,17 @@ function init_gear_sets()
     -- Ranged
     --------------------------------------
 
-    sets.precast.RA = { 
-    ammo=empty,
-    range="Trollbane",  
+    sets.precast.RA = {ammo=empty,
+    head={ name="Nyame Helm", augments={'Path: B',}},
     body={ name="Nyame Mail", augments={'Path: B',}},
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
     feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    left_ear="Crep. Earring",
+    right_ear="Telos Earring",
     }
-    sets.midcast.RA.Acc = set_combine(sets.midcast.RA, {
-    })
+
+    sets.midcast.RA.Acc = set_combine(sets.midcast.RA, {})
     sets.midcast.RA.TH = set_combine(sets.midcast.RA, set.TreasureHunter)
 
     -- Fast cast sets for spells
@@ -307,7 +307,7 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
 		left_ring="Eihwaz Ring",
         right_ring="Vengeful Ring",
         back="Reiki Cloak",
-         }
+    }
     -- skill ++ 
     sets.midcast.Ninjutsu = {
         feet={ name="Mochi. Kyahan +3", augments={'Enh. Ninj. Mag. Acc/Cast Time Red.',}},
@@ -325,7 +325,13 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
         right_ring="Stikini Ring +1",
         back="Moonlight Cape",
 	}
-    sets.midcast.Phalanx = sets.midcast['Enhancing Magic'] 
+    sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {
+        body={ name="Herculean Vest", augments={'Phys. dmg. taken -1%','Accuracy+11 Attack+11','Phalanx +2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
+        hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
+        feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
+    })
+    sets.midcast.Phalanx.SIRD = set_combine(sets.midcast.Phalanx,sets.midcast.SIRD)
+
     sets.midcast.Cure = {
         ammo="Pemphredo Tathlum",
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -805,25 +811,6 @@ sets.midcast.Absorb = {
     --range="Wingcutter +1",
     neck={ name="Warder's Charm +1", augments={'Path: A',}},
     })
-    sets.precast.WS['Cyclone'] = set_combine(sets.precast.WS['Aeolian Edge'],{})
-    sets.precast.WS['Cyclone'].PDL = set_combine(sets.precast.WS['Aeolian Edge'].PDL,{})
-    sets.precast.WS['Gust Slash'] = set_combine(sets.precast.WS['Aeolian Edge'],{})
-    sets.precast.WS['Gust Slash'].PDL = set_combine(sets.precast.WS['Aeolian Edge'].PDL,{})
-    sets.precast.WS['Burning Blade'] = set_combine(sets.precast.WS['Aeolian Edge'],{})
-    sets.precast.WS['Burning Blade'].PDL = set_combine(sets.precast.WS['Aeolian Edge'],{
-        neck={ name="Warder's Charm +1", augments={'Path: A',}},
-    })
-
-    sets.precast.WS['Shining Blade'] = set_combine(sets.precast.WS['Aeolian Edge'], {
-    right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-    })
-    sets.precast.WS['Shining Blade'].PDL = set_combine(sets.precast.WS['Aeolian Edge'], {
-        right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
-        neck={ name="Warder's Charm +1", augments={'Path: A',}},
-    })
-    sets.precast.WS["Flash Nova"] = set_combine(sets.precast.WS['Aeolian Edge'], {})
-    sets.precast.WS["Shining Strike"] = set_combine(sets.precast.WS['Aeolian Edge'], {})
-    sets.precast.WS["Seraph Strike"] = set_combine(sets.precast.WS['Aeolian Edge'], {})
 
     sets.precast.WS['Tachi: Jinpu'] = set_combine(sets.precast.WS['Aeolian Edge'], {
         ammo={ name="Seeth. Bomblet +1", augments={'Path: A',}},
@@ -940,6 +927,71 @@ sets.midcast.Absorb = {
        sets.precast.WS['Shoulder Tackle'].PDL = set_combine(sets.precast.WS['Blade: Shun'].PDL, sets.precast.WS)
        sets.precast.WS['Combo'] = set_combine(sets.precast.WS['Blade: Shun'], sets.precast.WS) 
        sets.precast.WS['Combo'].PDL = set_combine(sets.precast.WS['Blade: Shun'].PDL, sets.precast.WS) 
+
+-- Elemental Weapon Skill --elemental_ws--
+
+-- SANGUINE BLADE
+-- 50% MND / 50% STR Darkness Elemental
+sets.precast.WS['Sanguine Blade'] = set_combine(sets.precast.WS, {
+    ammo={ name="Seeth. Bomblet +1", augments={'Path: A',}},
+    head="Pixie Hairpin +1",
+body={ name="Nyame Mail", augments={'Path: B',}},
+hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+legs={ name="Nyame Flanchard", augments={'Path: B',}},
+feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    neck="Sibyl Scarf",
+    waist="Orpheus's Sash",
+    right_ear="Friomisi Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    left_ring="Archon Ring",
+    right_ring="Cornelia's Ring",
+    back="Sacro Mantle",
+})
+
+sets.precast.WS["Dark Harvest"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Shadow of Death"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Infernal Scythe"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Steal"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Drain"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS.Cataclysm = sets.precast.WS["Sanguine Blade"]
+
+sets.precast.WS["Burning Blade"] = set_combine(sets.precast.WS, {
+    ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
+    head={ name="Mochi. Hatsuburi +3", augments={'Enhances "Yonin" and "Innin" effect',}},
+body={ name="Nyame Mail", augments={'Path: B',}},
+hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+legs={ name="Nyame Flanchard", augments={'Path: B',}},
+feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    neck="Baetyl Pendant",
+    waist="Orpheus's Sash",
+    left_ring="Cornelia's Ring",
+    right_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
+    right_ear="Friomisi Earring",
+    left_ear={ name="Moonshade Earring", augments={'Accuracy+4','TP Bonus +250',}},
+    back="Sacro Mantle",
+})
+
+sets.precast.WS["Red Lotus Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cloudsplitter"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Primal Rend"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cyclone"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Gust Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flash Nova"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Thunder Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Raiden Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Frostbite"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Freezebite"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Herculean Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Earth Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Rock Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Starburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Sunburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flaming Arrow"] = set_combine(sets.precast.WS["Burning Blade"],{})
+
 
 
     -- Defense sets
@@ -1450,7 +1502,12 @@ function job_precast(spell, action, spellMap, eventArgs)
             return
         end
     end
-
+    if spell.english == 'Warcry' then
+        if buffactive['Warcry'] then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: Warcry its up [active]')
+        end
+    end
     if spell.name == 'Spectral Jig' and buffactive.sneak then
         -- If sneak is active when using, cancel before completion
         -- send_command('cancel 71')
@@ -1489,6 +1546,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
         if elemental_ws:contains(spell.name) and player.tp > 2900 then
             equip({ear1="Crematio Earring"})
         end
+        if spell.type == 'WeaponSkill' then
+            if elemental_ws:contains(spell.name) then
+                -- Matching double weather (w/o day conflict).
+                if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                    equip({waist="Hachirin-no-Obi"})
+                -- Target distance under 1.7 yalms.
+                elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                    equip({waist="Orpheus's Sash"})
+                -- Matching day and weather.
+                elseif spell.element == world.day_element and spell.element == world.weather_element then
+                    equip({waist="Hachirin-no-Obi"})
+                -- Target distance under 8 yalms.
+                elseif spell.target.distance < (8 + spell.target.model_size) then
+                    equip({waist="Orpheus's Sash"})
+                -- Match day or weather.
+                elseif spell.element == world.day_element or spell.element == world.weather_element then
+                    equip({waist="Hachirin-no-Obi"})
+                end
+            end
+        end
         if is_sc_element_today(spell) then
             if state.OffenseMode.current == 'Normal' and wsList:contains(spell.english) then
                 equip(sets.WSDayBonus)
@@ -1503,7 +1580,6 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             end
         elseif spell.english == 'Blade: Ten' then
             equip(sets.OdrMoon)
-            
         end
     end
 end
@@ -1625,10 +1701,9 @@ function job_buff_change(buff, gain)
     if buff == "Migawari" and not gain then
         add_to_chat(123, "*** MIGAWARI DOWN ***")
     end
-    if buff == "Protect" then
+    if buff == "phalanx" or "Phalanx II" then
         if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
+            state.phalanxset:set(false)
         end
     end
     if buff == "doom" then
@@ -1962,13 +2037,6 @@ end
 
 -- Handle notifications of general user state change.
 function job_state_change(stateField, newValue, oldValue)
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
-    end
     if stateField == 'Capacity Point Mantle' then
         gear.Back = newValue
     elseif stateField == 'Proc' then
@@ -1982,22 +2050,29 @@ function job_state_change(stateField, newValue, oldValue)
         local msg = ''
         if newValue == 'Ignis' then
             msg = msg .. 'Increasing resistence against ICE and deals FIRE damage.'
+            add_to_chat(167, msg)
         elseif newValue == 'Gelus' then
             msg = msg .. 'Increasing resistence against WIND and deals ICE damage.'
+            add_to_chat(210, msg)
         elseif newValue == 'Flabra' then
             msg = msg .. 'Increasing resistence against EARTH and deals WIND damage.'
+            add_to_chat(215, msg)
         elseif newValue == 'Tellus' then
             msg = msg .. 'Increasing resistence against LIGHTNING and deals EARTH damage.'
+            add_to_chat(206, msg)
         elseif newValue == 'Sulpor' then
             msg = msg .. 'Increasing resistence against WATER and deals LIGHTNING damage.'
+            add_to_chat(050, msg)
         elseif newValue == 'Unda' then
             msg = msg .. 'Increasing resistence against FIRE and deals WATER damage.'
+            add_to_chat(207, msg)
         elseif newValue == 'Lux' then
             msg = msg .. 'Increasing resistence against DARK and deals LIGHT damage.'
+            add_to_chat(001, msg)
         elseif newValue == 'Tenebrae' then
             msg = msg .. 'Increasing resistence against LIGHT and deals DARK damage.'
+            add_to_chat(160, msg)
         end
-        add_to_chat(123, msg)
    -- elseif stateField == 'moving' then
    --     if state.Moving.value then
    --         local res = require('resources')
@@ -2027,6 +2102,13 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if state.phalanxset .value == true then
+        --equip(sets.midcast.Phalanx)
+        send_command('gs equip sets.midcast.Phalanx')
+        send_command('input /p Phalanx set equiped [ON] PLZ GIVE ME PHALANX')		
+    else 
+        state.phalanxset:set(false)
     end
     if swordList:contains(player.equipment.main) then
         send_command('input /lockstyleset 152')
@@ -2198,14 +2280,15 @@ end
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     -- Default macro set/book
-    set_macro_page(8, 27)
-    --[[if player.sub_job == 'DNC' then
-        set_macro_page(8, 27)
+    if player.sub_job == 'DNC' then
+        set_macro_page(1, 27)
     elseif player.sub_job == 'WAR' then
-        set_macro_page(8, 27)
+        set_macro_page(3, 27)
     elseif player.sub_job == 'RUN' then
         set_macro_page(8, 27)
+        send_command('lua l AutoRUN')
+        send_command('lua l runewidget')
     else
         set_macro_page(8, 27)
-    end]]
+    end
 end
