@@ -82,12 +82,11 @@ organizer_items = {
     "Reraise Earring",}
 -- Setup vars that are user-independent.  state.Buff vars initialized here will automatically be tracked.
 function job_setup()
-
-    state.ExtraSongsMode = M{['description']='Extra Songs', 'None', 'Dummy', 'FullLength'}
+	send_command('lua l Singer')
+    state.ExtraSongsMode = M{['description']='Extra Songs', 'None', 'Dummy', 'FullLength', 'Marsyas'}
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
     state.Buff['Pianissimo'] = buffactive['pianissimo'] or false
-    
     send_command('wait 6;input /lockstyleset 168')
     -- For tracking current recast timers via the Timers plugin.
     custom_timers = {}
@@ -143,8 +142,9 @@ function user_setup()
     
     -- Adjust this if using the Terpander (new +song instrument)
     info.ExtraSongInstrument = 'Daurdabla'
-
     info.SongHorn = 'Gjallarhorn'
+    info.SongMarsyas = 'Marsyas'
+
 
     -- How many extra songs we can keep from Daurdabla/Terpander
     info.ExtraSongs = 2
@@ -155,10 +155,11 @@ function user_setup()
     state.MagicBurst = M(false, 'Magic Burst')
     state.HippoMode = M(false, "hippoMode")
 
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Twashtar', 'TwashtarCrepuscular', 'Tauret', 'Naegling', 'NaeglingCrepuscular', 'Aeneas', 'Xoanon'}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Twashtar', 'TwashtarCrepuscular', 'Tauret', 'Naegling', 'NaeglingCrepuscular','Carnwenhan', 'Aeneas', 'Xoanon'}
     --state.Moving = M(false, "moving")
 
-
+    --keyboard buttons bind
+    --use //listbinds    .. to show command keys
     -- Additional local binds
     send_command('bind f7 gs c cycle ExtraSongsMode')
     send_command('bind !` input /ma "Chocobo Mazurka" <me>')
@@ -208,13 +209,13 @@ function init_gear_sets()
     
     ---- WeaponSet ----
 
-    --sets.Carnwenhan = {main="Carnwenhan", sub="Gleti's Knife"}
     sets.normal = {}
     sets.Twashtar = {main="Twashtar", sub="Centovente"}
     sets.TwashtarCrepuscular = {main="Twashtar", sub="Crepuscular Knife"}
     sets.Tauret = {main="Tauret", sub="Crepuscular Knife",}
     sets.Naegling = {main="Naegling", sub="Centovente"}
     sets.NaeglingCrepuscular = {main="Naegling", sub="Crepuscular Knife"}
+    sets.Carnwenhan = {main="Carnwenhan", sub="Crepuscular Knife"}
     sets.Aeneas = {main="Aeneas", sub="Centovente"}
     sets.Xoanon = {main="Xoanon", sub="Alber Strap"}
 
@@ -292,7 +293,7 @@ function init_gear_sets()
 })
 
     sets.precast.FC.BardSong = {
-        main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
+        main="Carnwenhan",
         sub={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
         head="Fili Calot +2",
         body="Inyanga Jubbah +2",
@@ -310,6 +311,8 @@ function init_gear_sets()
 
     sets.precast.FC.DaurdablaDummy = set_combine(sets.precast.FC.BardSong, {range=info.ExtraSongInstrument})
     sets.precast.FC.Gjallarhorn = set_combine(sets.precast.FC.BardSong, {range=info.SongHorn})
+    sets.precast.FC.Marsyas = set_combine(sets.precast.FC.BardSong, {range=info.SongMarsyas})
+
 
     
     -- Precast sets to enhance JAs
@@ -554,7 +557,8 @@ sets.precast.WS['Shattersoul'] = {
     sets.midcast.FastRecast = {}
         
     -- Gear to enhance certain classes of songs.  No instruments added here since Gjallarhorn is being used.
-    sets.midcast.Ballad = {}
+    sets.midcast.Ballad = {    	legs="Fili Rhingrave +2",--legs="Fili Rhingrave +3",
+}
     sets.midcast.Lullaby = {}
     sets.midcast.Madrigal = {head="Fili Calot +2", back="Intarabus's Cape",}
     sets.midcast.March = {hands="Fili Manchettes +2",}
@@ -562,15 +566,34 @@ sets.precast.WS['Shattersoul'] = {
     sets.midcast.Minne = {}
     sets.midcast.Paeon = {}
     sets.midcast.Carol = {}
-    sets.midcast["Sentinel's Scherzo"] = {}
-    sets.midcast['Magic Finale'] = {}
+    sets.midcast["Sentinel's Scherzo"] = {    	feet="Fili Cothurnes +2",--feet="Fili Cothurnes +3",
+}
+    sets.midcast['Magic Finale'] = {    	neck="Sanctity Necklace",
+    waist="Luminary Sash",
+    legs="Fili Rhingrave +2",--legs="Fili Rhingrave +3",
+}
 
     sets.midcast.Mazurka = {range=info.ExtraSongInstrument}
     
-
+    sets.AUGMENT = {
+    main="Carnwenhan",
+    sub={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
+    head="Fili Calot +2",
+    body="Fili Hongreline +2",
+    hands="Fili Manchettes +2",
+    legs="Fili Rhingrave +2",
+    feet="Fili Cothurnes +2",
+    neck="Mnbw. Whistle +1",
+    ear1="Odnowa Earring +1",
+    ear2="Etiolation Earring",
+    ring1="Moonlight Ring",
+    ring2="Defending Ring",
+    waist="Flume Belt +1",
+    back="Intarabus's Cape",
+    }
     -- For song buffs (duration and AF3 set bonus)
     sets.midcast.SongEffect = {
-        main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
+    main="Carnwenhan",
     sub={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
     head="Fili Calot +2",
     body="Fili Hongreline +2",
@@ -579,14 +602,14 @@ sets.precast.WS['Shattersoul'] = {
     feet="Brioso Slippers +3",
     neck="Mnbw. Whistle +1",
     ear1="Odnowa Earring +1",
-    ear2="Etiolation Earring",
-    ring1="Moonlight Ring",
-    ring2="Defending Ring",
-    waist="Flume Belt +1",
+    ear2="Loquac. Earring",
+    ring1="Stikini Ring +1",
+    ring2="Stikini Ring +1",
+    waist="Witful Belt",
     back="Intarabus's Cape",
 }
 sets.midcast.SongEffect.AUGMENT = {
-    main={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
+main="Carnwenhan",
 sub={ name="Kali", augments={'Mag. Acc.+15','String instrument skill +10','Wind instrument skill +10',}},
 head="Fili Calot +2",
 body="Fili Hongreline +2",
@@ -654,6 +677,15 @@ sets.midcast.SongStringSkill = {
     sets.midcast.DaurdablaDummy.AUGMENT = set_combine(sets.midcast.SongEffect.AUGMENT, {range=info.ExtraSongInstrument})
 
     sets.midcast.Gjallarhorn = set_combine(sets.midcast.SongEffect, {range=info.SongHorn})
+    sets.midcast.Marsyas = set_combine(sets.midcast.SongEffect, {range=info.SongMarsyas})
+
+    --dummy songs
+    sets.midcast["Army's Paeon"] = sets.midcast.DaurdablaDummy
+    sets.midcast["Valor Minuet"] = sets.midcast.DaurdablaDummy
+    sets.midcast["Knight's Minne"] = sets.midcast.DaurdablaDummy
+    sets.midcast["Sheepfoe Mambo"] = sets.midcast.DaurdablaDummy
+    sets.midcast["Shining Fantasia"] = sets.midcast.DaurdablaDummy
+    sets.midcast["Herb Pastoral"] = sets.midcast.DaurdablaDummy
 
     -- Other general spells and classes.
     sets.midcast.Cure = {
@@ -891,7 +923,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Ashera Harness",
         hands="Volte Mittens",
-        legs={ name="Zoar Subligar +1", augments={'Path: A',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet="Battlecast Gaiters",
         neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -909,7 +941,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Ashera Harness",
         hands="Bunzi's Gloves",
-        legs={ name="Zoar Subligar +1", augments={'Path: A',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
         neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist={ name="Sailfi Belt +1", augments={'Path: A',}},
@@ -947,7 +979,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Ashera Harness",
         hands="Bunzi's Gloves",
-        legs={ name="Zoar Subligar +1", augments={'Path: A',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet="Battlecast Gaiters",
         neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist="Reiki Yotai",
@@ -968,7 +1000,7 @@ sets.idle.Sphere = set_combine(sets.idle, {
         head={ name="Blistering Sallet +1", augments={'Path: A',}},
         body="Ashera Harness",
         hands="Volte Mittens",
-        legs={ name="Zoar Subligar +1", augments={'Path: A',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet="Battlecast Gaiters",
         neck={ name="Bard's Charm +2", augments={'Path: A',}},
         waist="Reiki Yotai",
@@ -1010,8 +1042,8 @@ sets.idle.Sphere = set_combine(sets.idle, {
 
 sets.engaged.Hybrid = {
     hands="Bunzi's Gloves",
-    legs="Nyame Flanchard",
-    feet="Nyame Sollerets",
+    legs={ name="Nyame Flanchard", augments={'Path: B',}},
+    feet={ name="Nyame Sollerets", augments={'Path: B',}},
     ring1="Moonlight Ring", --5/5
     ring2="Moonlight Ring", --5/5
     }
@@ -1368,11 +1400,6 @@ function update_combat_form()
     elseif DW == false then
         state.CombatForm:reset()
     end
-    if player.equipment.sub:endswith('Shield') then
-        state.CombatForm:reset()
-    end
-    check_weaponset()
-
 end
 -------------------------------------------------------------------------------------------------------------------
 -- User code that supplements standard library decisions.
@@ -1468,6 +1495,8 @@ function get_song_class(spell)
         return 'DaurdablaDummy'
     elseif state.ExtraSongsMode.value == 'FullLength' then
         return 'Gjallarhorn'
+    elseif state.ExtraSongsMode.value == 'Marsyas' then
+        return 'Marsyas'
     else
         return 'SongEffect'
     end
@@ -1701,12 +1730,13 @@ windower.raw_register_event('prerender',function()
     end
 end)
 
+
+windower.raw_register_event('zone change',reset_timers)
+windower.raw_register_event('logout',reset_timers)
+
+
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     set_macro_page(1, 32)
 end
-
-
-windower.raw_register_event('zone change',reset_timers)
-windower.raw_register_event('logout',reset_timers)
 

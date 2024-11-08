@@ -10,4 +10,8 @@ info.status =
   ["Refresh"]=43,
   ["Crusade"]=153,  
   ["Enlight"]=50,  
+  ["Occultation"]=36,  
+  ["Diamondhide"]=37,  
+  ["Cocoon"]=93,  
+  
 }

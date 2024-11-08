@@ -82,6 +82,7 @@ function job_setup()
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.Proc = M(false, 'Proc')
     state.unProc = M(false, 'unProc')
+    state.phalanxset = M(false,true)
 
 
     swordList = S{'Naegling'}
@@ -133,6 +134,8 @@ function user_setup()
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     send_command('wait 6;input /lockstyleset 144')
+    send_command('bind ^p gs c toggle phalanxset')
+
     -- send_command('bind !- gs equip sets.crafting')
     select_default_macro_book()
     state.Auto_Kite = M(false, 'Auto_Kite')
@@ -304,7 +307,7 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
 		left_ring="Eihwaz Ring",
         right_ring="Vengeful Ring",
         back="Reiki Cloak",
-         }
+    }
     -- skill ++ 
     sets.midcast.Ninjutsu = {
         feet={ name="Mochi. Kyahan +3", augments={'Enh. Ninj. Mag. Acc/Cast Time Red.',}},
@@ -322,7 +325,13 @@ sets.precast.FC.Cure = set_combine(sets.precast.FC, {
         right_ring="Stikini Ring +1",
         back="Moonlight Cape",
 	}
-    sets.midcast.Phalanx = sets.midcast['Enhancing Magic'] 
+    sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {
+        body={ name="Herculean Vest", augments={'Phys. dmg. taken -1%','Accuracy+11 Attack+11','Phalanx +2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
+        hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
+        feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
+    })
+    sets.midcast.Phalanx.SIRD = set_combine(sets.midcast.Phalanx,sets.midcast.SIRD)
+
     sets.midcast.Cure = {
         ammo="Pemphredo Tathlum",
         head={ name="Nyame Helm", augments={'Path: B',}},
@@ -1692,6 +1701,11 @@ function job_buff_change(buff, gain)
     if buff == "Migawari" and not gain then
         add_to_chat(123, "*** MIGAWARI DOWN ***")
     end
+    if buff == "phalanx" or "Phalanx II" then
+        if gain then
+            state.phalanxset:set(false)
+        end
+    end
     if buff == "doom" then
         if gain then
             equip(sets.buff.Doom)
@@ -2036,22 +2050,29 @@ function job_state_change(stateField, newValue, oldValue)
         local msg = ''
         if newValue == 'Ignis' then
             msg = msg .. 'Increasing resistence against ICE and deals FIRE damage.'
+            add_to_chat(167, msg)
         elseif newValue == 'Gelus' then
             msg = msg .. 'Increasing resistence against WIND and deals ICE damage.'
+            add_to_chat(210, msg)
         elseif newValue == 'Flabra' then
             msg = msg .. 'Increasing resistence against EARTH and deals WIND damage.'
+            add_to_chat(215, msg)
         elseif newValue == 'Tellus' then
             msg = msg .. 'Increasing resistence against LIGHTNING and deals EARTH damage.'
+            add_to_chat(206, msg)
         elseif newValue == 'Sulpor' then
             msg = msg .. 'Increasing resistence against WATER and deals LIGHTNING damage.'
+            add_to_chat(050, msg)
         elseif newValue == 'Unda' then
             msg = msg .. 'Increasing resistence against FIRE and deals WATER damage.'
+            add_to_chat(207, msg)
         elseif newValue == 'Lux' then
             msg = msg .. 'Increasing resistence against DARK and deals LIGHT damage.'
+            add_to_chat(001, msg)
         elseif newValue == 'Tenebrae' then
             msg = msg .. 'Increasing resistence against LIGHT and deals DARK damage.'
+            add_to_chat(160, msg)
         end
-        add_to_chat(123, msg)
    -- elseif stateField == 'moving' then
    --     if state.Moving.value then
    --         local res = require('resources')
@@ -2081,6 +2102,13 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if state.phalanxset .value == true then
+        --equip(sets.midcast.Phalanx)
+        send_command('gs equip sets.midcast.Phalanx')
+        send_command('input /p Phalanx set equiped [ON] PLZ GIVE ME PHALANX')		
+    else 
+        state.phalanxset:set(false)
     end
     if swordList:contains(player.equipment.main) then
         send_command('input /lockstyleset 152')
@@ -2252,14 +2280,15 @@ end
 -- Select default macro book on initial load or subjob change.
 function select_default_macro_book()
     -- Default macro set/book
-    set_macro_page(8, 27)
-    --[[if player.sub_job == 'DNC' then
-        set_macro_page(8, 27)
+    if player.sub_job == 'DNC' then
+        set_macro_page(1, 27)
     elseif player.sub_job == 'WAR' then
-        set_macro_page(8, 27)
+        set_macro_page(3, 27)
     elseif player.sub_job == 'RUN' then
         set_macro_page(8, 27)
+        send_command('lua l AutoRUN')
+        send_command('lua l runewidget')
     else
         set_macro_page(8, 27)
-    end]]
+    end
 end

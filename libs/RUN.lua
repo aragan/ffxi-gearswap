@@ -12,6 +12,8 @@ function get_sets()
 	-- Load and initialize the include file.
 	include('Mote-Include.lua')
     include('organizer-lib')
+    send_command('lua l AutoRUN')
+    send_command('lua l runewidget')
     res = require 'resources'
 end
 organizer_items = {
@@ -57,7 +59,7 @@ function job_setup()
     state.Knockback = M(false, 'Knockback')
     state.SrodaBelt = M(false, 'SrodaBelt')
     state.BrachyuraEarring = M(true,false)
-    state.phalanxset = M(true,false)
+    state.phalanxset = M(false,true)
 
     send_command('wait 2;input /lockstyleset 165')
 	include('Mote-TreasureHunter')
@@ -89,7 +91,7 @@ function job_setup()
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
               "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1",}
 
-    rayke_duration = 35
+    rayke_duration = 47
     gambit_duration = 96
     -- Table of entries
     rune_timers = T{}
@@ -131,7 +133,7 @@ function user_setup()
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind delete gs c toggle BrachyuraEarring')
-    send_command('bind !p gs c toggle phalanxset')
+    send_command('bind ^p gs c toggle phalanxset')
 
     state.Moving  = M(false, "moving")
 
@@ -240,7 +242,7 @@ function init_gear_sets()
         left_ring="Prolix Ring",
         right_ring="Kishar Ring",}
 
-        sets.precast.FC.Cure = set_combine(sets.precast.FC,{
+    sets.precast.FC.Cure = set_combine(sets.precast.FC,{
         legs="Doyen Pants",
         })
     sets.precast.FC['Enhancing Magic'] = set_combine(sets.precast.FC, {
@@ -483,8 +485,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
 	sets.defense.PDT = {   
     ammo="Staunch Tathlum +1",
-    main="Epeolatry",
-    sub="Refined Grip +1",
     head="Nyame Helm",
     body="Adamantite Armor",
     hands="Nyame Gauntlets",
@@ -500,8 +500,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
     sets.defense.PDH = {
     ammo="Staunch Tathlum +1",
-    main="Epeolatry",
-    sub="Refined Grip +1",
     head="Erilaz Galea +2",
     body="Erilaz Surcoat +3",
     hands="Erilaz Gauntlets +2",
@@ -517,7 +515,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     }
     sets.defense.Enmity = { 
         ammo="Iron Gobbet",
-        main="Epeolatry",
         sub="Alber Strap",
         head="Halitus Helm",
         body={ name="Emet Harness +1", augments={'Path: A',}},
@@ -566,16 +563,14 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
         main="Malignance Sword",
         sub="Chanter's Shield",
         ammo="Staunch Tathlum +1",
-        head={ name="Founder's Corona", augments={'DEX+10','Accuracy+15','Mag. Acc.+15','Magic dmg. taken -5%',}},
-        body={ name="Sakpata's Plate", augments={'Path: A',}},
+        head={ name="Nyame Helm", augments={'Path: B',}},
+        body="Runeist Coat +3",
         hands="Erilaz Gauntlets +2",
         legs="Rune. Trousers +3",
         neck={ name="Warder's Charm +1", augments={'Path: A',}},
         waist="Engraved Belt",
     })
 	sets.defense.MDT = {
-    main="Epeolatry",
-    sub="Refined Grip +1",
     ammo="Staunch Tathlum +1",
     head={ name="Nyame Helm", augments={'Path: B',}},
     body="Runeist Coat +3",
@@ -644,8 +639,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
     })
     sets.idle.PDH = {
         ammo="Staunch Tathlum +1",
-        main="Epeolatry",
-        sub="Refined Grip +1",
         head="Erilaz Galea +2",
         body="Erilaz Surcoat +3",
         hands="Erilaz Gauntlets +2",
@@ -662,8 +655,6 @@ sets.precast.WS['Savage Blade'] = set_combine(sets.precast.WS, {
 
     sets.idle.PDT = {   
         ammo="Staunch Tathlum +1",
-        main="Epeolatry",
-        sub="Refined Grip +1",
         head="Nyame Helm",
         body="Adamantite Armor",
         hands="Nyame Gauntlets",
@@ -926,10 +917,12 @@ function job_aftercast(spell)
     end
     if spell.name == 'Rayke' and not spell.interrupted then
         send_command('@timers c "Rayke ['..spell.target.name..']" '..rayke_duration..' down spells/00136.png')
-        send_command('wait '..rayke_duration..';input /echo [Rayke just wore off!];')
+        send_command('wait '..rayke_duration..';input /p <t> [Rayke just wore off!];')
+        send_command('@input /p  >>> Rayke on ['..spell.target.name..']. Second left: '..rayke_duration..'')
     elseif spell.name == 'Gambit' and not spell.interrupted then
         send_command('@timers c "Gambit ['..spell.target.name..']" '..gambit_duration..' down spells/00136.png')
-        send_command('wait '..gambit_duration..';input /echo [Gambit just wore off!];')
+        send_command('wait '..gambit_duration..';input /p <t> [Gambit just wore off!];')
+        send_command('@input /p  >>> Gambit on ['..spell.target.name..']. Second left: '..gambit_duration..'')
     end
 end
 function job_buff_change(buff,gain)
@@ -966,13 +959,6 @@ function job_buff_change(buff,gain)
             enable('ring1','ring2','waist','neck')
             send_command('input /p Doom removed.')
             handle_equipping_gear(player.status)
-        end
-    end
-    if buff == "Charm" then
-        if gain then  			
-           send_command('input /p Charmd, please Sleep me.')		
-        else	
-           send_command('input /p '..player.name..' is no longer Charmed, please wake me up!')
         end
     end
     if buff == "petrification" then
@@ -1215,6 +1201,51 @@ function job_state_change(stateField, newValue, oldValue)
         disable('main','sub')
     else
         enable('main','sub')
+    end
+    if stateField == 'Runes' then
+        local msg = ''
+        if newValue == 'Ignis' then
+            msg = msg .. 'Increasing resistence against ICE and deals FIRE damage.'
+            add_to_chat(167, msg)
+        elseif newValue == 'Gelus' then
+            msg = msg .. 'Increasing resistence against WIND and deals ICE damage.'
+            add_to_chat(210, msg)
+        elseif newValue == 'Flabra' then
+            msg = msg .. 'Increasing resistence against EARTH and deals WIND damage.'
+            add_to_chat(215, msg)
+        elseif newValue == 'Tellus' then
+            msg = msg .. 'Increasing resistence against LIGHTNING and deals EARTH damage.'
+            add_to_chat(206, msg)
+        elseif newValue == 'Sulpor' then
+            msg = msg .. 'Increasing resistence against WATER and deals LIGHTNING damage.'
+            add_to_chat(050, msg)
+        elseif newValue == 'Unda' then
+            msg = msg .. 'Increasing resistence against FIRE and deals WATER damage.'
+            add_to_chat(207, msg)
+        elseif newValue == 'Lux' then
+            msg = msg .. 'Increasing resistence against DARK and deals LIGHT damage.'
+            add_to_chat(001, msg)
+        elseif newValue == 'Tenebrae' then
+            msg = msg .. 'Increasing resistence against LIGHT and deals DARK damage.'
+            add_to_chat(160, msg)
+        end
+    -- elseif stateField == 'moving' then
+    --     if state.Moving.value then
+    --         local res = require('resources')
+    --         local info = windower.ffxi.get_info()
+    --         local zone = res.zones[info.zone].name
+    --         if zone:match('Adoulin') then
+    --             equip(sets.Adoulin)
+    --         end
+    --         equip(select_movement())
+    --     end
+        
+    elseif stateField == 'Use Rune' then
+        send_command('@input /ja '..state.Runes.value..' <me>')
+    elseif stateField == 'Use Warp' then
+        add_to_chat(8, '------------WARPING-----------')
+        --equip({ring1="Warp Ring"})
+        send_command('input //gs equip sets.Warp;@wait 10.0;input /item "Warp Ring" <me>;')
     end
     if state.BrachyuraEarring .value == true then
         equip({left_ear="Brachyura Earring"})
@@ -1488,11 +1519,12 @@ function select_default_macro_book()
     elseif player.sub_job == 'SCH' then
         set_macro_page(6, 19) 
     elseif player.sub_job == 'BLU' then
-        set_macro_page(1, 37)
+        set_macro_page(3, 19)
+        send_command('input //blupldsets set pld')
 	elseif player.sub_job == 'NIN' then
 		set_macro_page(3, 19)
 	elseif player.sub_job == 'SAM' then
-		set_macro_page(3, 19)
+		set_macro_page(1, 19)
 	else
 		set_macro_page(3, 19)
 	end

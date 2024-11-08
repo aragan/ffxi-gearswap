@@ -36,6 +36,10 @@ function get_sets()
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
+    include('resources')
+
+    res = require 'resources'
+
 end
 --================================================--
 --                                                --
@@ -57,11 +61,53 @@ function job_setup()
     state.Buff['Unbridled Learning'] = buffactive['Unbridled Learning'] or false
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
-    state.phalanxset = M(true,false)
+    state.phalanxset = M(false,true)
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
     blue_magic_maps = {}
-    
+    include('caster_buffWatcher.lua')
+
+    buffWatcher.watchList = 
+    {
+        ["Occultation "]="Occultation",
+
+                           ["Protect"]="Protect III",
+                           ["Shell"]="Shell II",  
+                           --["Cocoon"]="Cocoon",
+                           ["Diamondhide "]="Diamondhide",
+                           --["Diffusion"]="Diffusion",
+                           --["Phalanx"]="Phalanx",
+                           --["Aquaveil"]="Aquaveil",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Barrier Tusk"]="Barrier Tusk",
+                           ["Reactor Cool"]="Reactor Cool",
+                           ["Erratic Flutter"]="Erratic Flutter",
+                           ["Plenilune Embrace"]="Plenilune Embrace ",
+                           ["Diamondhide"]="Diamondhide",
+                           --["Diamondhide "]="Diamondhide",
+                           --["Diamondhide "]="Diamondhide",
+                           --["Magic Barrier"]="Magic Barrier",
+                           --["Refueling"]="Refueling",
+                           ["Diffusion"]="Diffusion",
+                           ["Unbridled Learning"]="Unbridled Learning",
+                           ["Carcharian Verve"]="Carcharian Verve",
+                           ["Unbridled Learning"]="Unbridled Learning",
+                           ["Mighty Guard"]="Mighty Guard",
+
+                           --["Aquaveil"]="Aquaveil",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Aquaveil"]="Aquaveil",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Aquaveil"]="Aquaveil",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Aquaveil"]="Aquaveil",
+                           --["Stoneskin"]="Stoneskin",
+                           --["Stoneskin"]="Stoneskin",
+
+    }
+    include('common_info.status.lua') 
     -- Mappings for gear sets to use for various blue magic spells.
     -- While Str isn't listed for each, it's generally assumed as being at least
     -- moderately signficant, even for spells with other mods.
@@ -253,6 +299,7 @@ function user_setup()
     state.PhysicalDefenseMode:options('PDT', 'Evasion', 'Enmity')
     state.MagicalDefenseMode:options('MDT')
     state.HippoMode = M(false, "hippoMode")
+    state.Moving  = M(false, "moving")
 
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Naegling', 'Naegling2', 'Maxentius', 'Nuking', 'Learn'}
 
@@ -277,7 +324,7 @@ function user_setup()
     send_command('bind f4 input //fillmode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
-    send_command('bind !p gs c toggle phalanxset')
+    send_command('bind ^p gs c toggle phalanxset')
 
     select_default_macro_book()
 
@@ -300,7 +347,6 @@ function user_setup()
     Haste = 0
     DW_needed = 0
     DW = false
-    moving = false
     update_combat_form()
     determine_haste_group()
     if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode"},{"IdleMode","OffenseMode","WeaponskillMode","CastingMode","WeaponSet","TreasureMode"}) 
@@ -406,7 +452,6 @@ function init_gear_sets()
         back="Reiki Cloak",
         }
     sets.precast.JA['Sublimation'] = {
-        waist="Embla Sash",
     }
     sets.precast.JA['Provoke'] = sets.Enmity
     -- Precast sets to enhance JAs
@@ -1320,7 +1365,8 @@ sets.idle.Learning = set_combine(sets.idle, sets.Learning, {
 sets.Kiting = {ammo="Staunch Tathlum +1",
 legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
 sets.Adoulin = {body="Councilor's Garb",}
-
+sets.MoveSpeed = {ammo="Staunch Tathlum +1",
+legs={ name="Carmine Cuisses +1", augments={'Accuracy+20','Attack+12','"Dual Wield"+6',}},}
     -- Engaged sets
 
     -- Variations for TP weapon and (optional) offense/defense modes.  Code will fall back on previous
@@ -1760,6 +1806,26 @@ function job_pretarget(spell, action, spellMap, eventArgs)
         eventArgs.cancel = true
         send_command('input /item "Remedy" <me>')
     end
+    if spell.english == 'Searing Tempest' or spell.english == 'Spectral Floe' 
+	or spell.english == 'Anvil Lightning' or spell.english == 'Scouring Spate' 
+    or spell.english == 'Nectarous Deluge' or spell.english == 'Rending Deluge' 
+	or spell.english == 'Droning Whirlwind' or spell.english == 'Gates of Hades' 
+	or spell.english == 'Thunderbolt' or spell.english == 'Rail Cannon' or spell.english == 'Atra. Libations' 
+	or spell.english == 'Entomb' or spell.english == 'Tenebral Crush' 
+	or spell.english == 'Palling Salvo' or spell.english == 'Blinding Fulgor' then
+
+        local allRecasts = windower.ffxi.get_ability_recasts()
+        local Burst_AffinityCooldown = allRecasts[182]
+        
+        
+        if player.main_job_level >= 25 and Burst_AffinityCooldown < 3 then
+            cast_delay(1.1)
+            send_command('@input /ja "Burst Affinity" <me>')
+        end
+        if not midaction() then
+            job_update()
+        end
+    end
 end
 function job_precast(spell, action, spellMap, eventArgs)
     if spell.type == "WeaponSkill" then
@@ -1844,13 +1910,7 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
             end
         end
     end
-    if state.CastingMode.value == 'SIRD' then
-        equip(sets.SIRD)
-    elseif state.CastingMode.value == 'ConserveMP' then
-        equip(sets.ConserveMP)
-    elseif state.CastingMode.value == 'DT' then
-        equip(sets.DT)
-    end
+
     if spell.skill == 'Enhancing Magic' and classes.NoSkillSpells:contains(spell.english) then
         if state.CastingMode.value == 'Duration' then
             equip(sets.midcast.Duration)
@@ -1914,6 +1974,12 @@ function job_buff_change(buff, gain)
     if state.Buff[buff] ~= nil then
         state.Buff[buff] = gain
     end
+     for index,value in pairs(buffWatcher.watchList) do
+        if index==buff then
+          buffWatch()
+          break
+        end
+      end
     if buff == "phalanx" or "Phalanx II" then
         if gain then
             state.phalanxset:set(false)
@@ -2059,7 +2125,6 @@ end
 function job_handle_equipping_gear(playerStatus, eventArgs)
     check_gear()
     update_combat_form()
-    check_moving()
     determine_haste_group()
     if state.HippoMode.value == true then 
         equip({feet="Hippo. Socks +1"})
@@ -2094,7 +2159,7 @@ function job_state_change(stateField, newValue, oldValue)
         send_command('gs equip sets.midcast.Phalanx')
         send_command('input /p Phalanx set equiped [ON] PLZ GIVE ME PHALANX')		
     else 
-        state.phalanxset:set(false)
+        state.phalanxset:reset()
     end
     if update_job_states then update_job_states() 
     end
@@ -2143,7 +2208,6 @@ end
 -- Called by the 'update' self-command, for common needs.
 -- Set eventArgs.handled to true if we don't want automatic equipping of gear.
 function job_update(cmdParams, eventArgs)
-    check_moving()
 
 end
 
@@ -2212,6 +2276,12 @@ function job_self_command(cmdParams, eventArgs)
     if cmdParams[1]:lower() == 'storms' then
         send_command('@input /ma "'..state.Storms.value..'" <stpc>')
     end
+    if cmdParams[1] == 'buffWatcher' then
+        buffWatch(cmdParams[2],cmdParams[3])
+    end
+    if cmdParams[1] == 'stopBuffWatcher' then
+        stopBuffWatcher()
+    end
 end
 
 function gearinfo(cmdParams, eventArgs)
@@ -2232,13 +2302,6 @@ function gearinfo(cmdParams, eventArgs)
                 Haste = tonumber(cmdParams[3])
             end
         end
-        if type(cmdParams[4]) == 'string' then
-            if cmdParams[4] == 'true' then
-                moving = true
-            elseif cmdParams[4] == 'false' then
-                moving = false
-            end
-        end
         if not midaction() then
             job_update()
         end
@@ -2249,20 +2312,6 @@ function sub_job_change(new,old)
     if user_setup then
         user_setup()
         send_command('wait 6;input /lockstyleset 152')
-    end
-end
-
-function check_moving()
-    if state.DefenseMode.value == 'None'  and state.Kiting.value == false then
-        if state.Auto_Kite.value == false and moving then
-            state.Auto_Kite:set(true)
-            send_command('gs c update')
-
-        elseif state.Auto_Kite.value == true and moving == false then
-            state.Auto_Kite:set(false)
-            send_command('gs c update')
-
-        end
     end
 end
 
@@ -2298,6 +2347,46 @@ windower.register_event('zone change',
         end
     end
 )
+
+mov = {counter=0}
+if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
+    mov.x = windower.ffxi.get_mob_by_index(player.index).x
+    mov.y = windower.ffxi.get_mob_by_index(player.index).y
+    mov.z = windower.ffxi.get_mob_by_index(player.index).z
+end
+
+moving = false
+windower.raw_register_event('prerender',function()
+    mov.counter = mov.counter + 1;
+    if mov.counter>15 then
+        local pl = windower.ffxi.get_mob_by_index(player.index)
+        if pl and pl.x and mov.x then
+            dist = math.sqrt( (pl.x-mov.x)^2 + (pl.y-mov.y)^2 + (pl.z-mov.z)^2 )
+            if dist > 1 and not moving then
+                state.Moving.value = true
+                send_command('gs c update')
+				if world.area:contains("Adoulin") then
+                send_command('gs equip sets.Adoulin')
+				else
+                send_command('gs equip sets.MoveSpeed')
+                end
+
+        moving = true
+
+            elseif dist < 1 and moving then
+                state.Moving.value = false
+                send_command('gs c update')
+                moving = false
+            end
+        end
+        if pl and pl.x then
+            mov.x = pl.x
+            mov.y = pl.y
+            mov.z = pl.z
+        end
+        mov.counter = 0
+    end
+end)
 
 --=-----------------------------=--
 --          __   __   __   __    --
