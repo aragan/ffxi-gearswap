@@ -4,6 +4,14 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
+
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
+
+
 -- Initialization function for this job file.
 function get_sets()
     mote_include_version = 2
@@ -57,7 +65,6 @@ organizer_items = {
     "Shinobi-Tabi",
     "Shihei",
     "Remedy",
-    "Wh. Rarab Cap +1",
     "Emporox's Ring",
     "Red Curry Bun",
     "Instant Reraise",
@@ -132,26 +139,31 @@ function job_setup()
     -- Set the default to false if you'd rather SE always stay acitve
     state.SouleaterMode = M(true, 'Soul Eater Mode')
     state.LastResortMode = M(true,false)
-    state.BrachyuraEarring = M(true,false)
 
     -- Use Gavialis helm?
     use_gavialis = true
 
-
+    elemental_ws = S{"Flash Nova", "Sanguine Blade","Seraph Blade","Burning Blade","Red Lotus Blade"
+    , "Shining Strike", "Aeolian Edge", "Gust Slash", "Cyclone","Energy Steal","Energy Drain"
+    , "Leaden Salute", "Wildfire", "Hot Shot", "Flaming Arrow", "Trueflight", "Blade: Teki", "Blade: To"
+    , "Blade: Chi", "Blade: Ei", "Blade: Yu", "Frostbite", "Freezebite", "Herculean Slash", "Cloudsplitter"
+    , "Primal Rend", "Dark Harvest", "Shadow of Death", "Infernal Scythe", "Thunder Thrust", "Raiden Thrust"
+    , "Tachi: Goten", "Tachi: Kagero", "Tachi: Jinpu", "Tachi: Koki", "Rock Crusher", "Earth Crusher", "Starburst"
+    , "Sunburst", "Omniscience", "Garland of Bliss"}
     -- Weaponskills you want Gavialis helm used with (only considered if use_gavialis = true)
     wsList = S{}
     -- Greatswords you use. 
     gsList = S{'Ragnarok','Caladbolg','Nandaka','Foreshock Sword','Agwu\'s Claymore'}
     scytheList = S{'Apocalypse', 'Anguta'}
-    remaWeapons = S{'Caladbolg', 'Apocalypse','Ragnarok','Nandaka', 'Anguta'}
+    remaWeapons = S{'Caladbolg', 'Liberator', 'Apocalypse','Ragnarok','Nandaka', 'Anguta'}
   
     shields = S{'Blurred Shield +1'}
     -- Mote has capitalization errors in the default Absorb mappings, so we use our own
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     -- Offhand weapons used to activate DW mode
     swordList = S{"Naegling", "Sangarius +1", "Reikiko", "Perun +1", "Tanmogayi", "Loxotic Mace +1", "Ternion Dagger +1", "Zantetsuken"}
-    sets.weaponList = {"Caladbolg", "Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Lycurgos', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Naegling', 'Loxotic', 'TernionDagger'}
+    sets.weaponList = {"Caladbolg", "Liberator", "Apocalypse", "Nandaka", "Blurred Shield +1", "Naegling", "Sangarius +1", "Usonmunku", "Perun +1", "Tanmogayi", "Loxotic Mace +1"}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Caladbolg', 'Lycurgos', 'Liberator', 'Anguta', 'Apocalypse', 'AgwuClaymore', 'Naegling', 'Loxotic', 'TernionDagger'}
     state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
 
     get_combat_form()
@@ -211,7 +223,6 @@ function user_setup()
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind !- gs c toggle RP')  
-    send_command('bind delete gs c toggle BrachyuraEarring')
 	--send_command('bind f12 gs c cycle IdleMode')
 
     select_default_macro_book()
@@ -235,6 +246,7 @@ function init_gear_sets()
 --Weaponsets
 sets.Normal = {}
 sets.Caladbolg = {main="Caladbolg", sub="Utu Grip"}
+sets.Liberator = {main="Liberator", sub="Utu Grip"}
 sets.Anguta = {main="Anguta", sub="Utu Grip"}
 sets.Apocalypse = {main="Apocalypse", sub="Utu Grip"}
 sets.AgwuClaymore = {main="Agwu's Claymore", sub="Utu Grip"}
@@ -301,17 +313,16 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
     
     sets.precast.RA = { ammo=empty,
         range="Trollbane",  
-        head="Nyame Helm",
-        body="Nyame Mail",
-        hands="Nyame Gauntlets",
-        legs="Nyame Flanchard",
-        feet="Nyame Sollerets",
+        head={ name="Nyame Helm", augments={'Path: B',}},
+        body={ name="Nyame Mail", augments={'Path: B',}},
+        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
+        feet={ name="Nyame Sollerets", augments={'Path: B',}},
         waist="Yemaya Belt",
         left_ear="Crep. Earring",
         right_ear="Telos Earring",
         left_ring="Purity Ring",
         right_ring="Ilabrat Ring",
-
     }
     sets.midcast.RA = { ammo=empty,
         range="Trollbane",  
@@ -607,7 +618,7 @@ sets.precast.WS['Entropy'] = {
     right_ear="Balder Earring +1",
     left_ring="Regal Ring",
     right_ring="Niqmaddu Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
 } 
 sets.precast.WS['Entropy'].Mid = set_combine(sets.precast.WS['Entropy'], {})
 
@@ -645,9 +656,7 @@ back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10
 }
 sets.precast.WS['Infernal Scythe'].Dread  = sets.defense['Dread Spikes']
 sets.precast.WS['Infernal Scythe'].Mid = set_combine(sets.precast.WS['Infernal Scythe'], {})
-
-sets.precast.WS['Infernal Scythe'].PDL = set_combine(sets.precast.WS['Infernal Scythe'], {
-})
+sets.precast.WS['Infernal Scythe'].PDL = set_combine(sets.precast.WS['Infernal Scythe'], {})
 sets.precast.WS['Infernal Scythe'].SC = set_combine(sets.precast.WS['Infernal Scythe'], {
     head="Nyame Helm",
     body="Nyame Mail",
@@ -683,7 +692,7 @@ sets.precast.WS['Nightmare Scythe'] = {
     hands="Flam. Manopolas +2",
     legs="Ig. Flanchard +3",
     feet="Flam. Gambieras +2",
-    neck="Subtlety Spec.",
+    neck="Abyssal Beads +2",
     waist="Olseni Belt",
     left_ear="Crep. Earring",
     right_ear="Telos Earring",
@@ -706,7 +715,7 @@ sets.precast.WS['Nightmare Scythe'] = {
     right_ear="Schere Earring",
     left_ring="Niqmaddu Ring",
     right_ring="Regal Ring",
-    back="Bleating Mantle",
+    back="Annealed Mantle",
 }
   
     sets.precast.WS['Resolution'].Dread  = sets.defense['Dread Spikes']
@@ -842,7 +851,32 @@ sets.precast.WS['Spinning Slash'].PDL = set_combine(sets.precast.WS['Spinning Sc
     right_ear="Heathen's Earring",
     right_ring="Sroda Ring",
 })
-sets.precast.WS['Aeolian Edge'] = {   
+ 
+-- Elemental Weapon Skill --elemental_ws-- get from Mote-Mappings
+
+-- SANGUINE BLADE
+-- 50% MND / 50% STR Darkness Elemental
+sets.precast.WS['Sanguine Blade'] = set_combine(sets.precast.WS, {
+    ammo="Pemphredo Tathlum",
+    head="Pixie Hairpin +1",
+    body="Nyame Mail",
+    hands="Nyame Gauntlets",
+    legs="Nyame Flanchard",
+    feet="Nyame Sollerets",
+    neck="Sibyl Scarf",
+    waist="Orpheus's Sash",
+    left_ear="Friomisi Earring",
+    right_ear="Malignance Earring",
+    left_ring="Archon Ring",
+    right_ring="Cornelia's Ring",
+    back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
+})
+
+sets.precast.WS["Energy Steal"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS["Energy Drain"] = set_combine(sets.precast.WS["Sanguine Blade"], {})
+sets.precast.WS.Cataclysm = sets.precast.WS["Sanguine Blade"]
+
+sets.precast.WS["Burning Blade"] = set_combine(sets.precast.WS, {
     ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
     head="Nyame Helm",
     body="Nyame Mail",
@@ -856,15 +890,28 @@ sets.precast.WS['Aeolian Edge'] = {
     left_ring={ name="Metamor. Ring +1", augments={'Path: A',}},
     right_ring="Cornelia's Ring",
     back={ name="Ankou's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
- }	
- sets.precast.WS['Aeolian Edge'].None = {}
- 
-sets.precast.WS['Fast Blade'] = sets.precast.WS
-sets.precast.WS['Fast Blade'].None = {}
-sets.precast.WS['Burning Blade'] = sets.precast.WS
-sets.precast.WS['Burning Blade'].None = {}
-sets.precast.WS['Red Lotus Blade'] = sets.precast.WS
-sets.precast.WS['Red Lotus Blade'].None = {}
+})
+
+sets.precast.WS["Red Lotus Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Blade"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cloudsplitter"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Primal Rend"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Aeolian Edge"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Cyclone"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Gust Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Shining Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Seraph Strike"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flash Nova"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Thunder Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Raiden Thrust"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Herculean Slash"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Earth Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Rock Crusher"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Starburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Sunburst"] = set_combine(sets.precast.WS["Burning Blade"],{})
+sets.precast.WS["Flaming Arrow"] = set_combine(sets.precast.WS["Burning Blade"],{})
+
 
     --------------------------------------
     -- Midcast sets
@@ -1378,7 +1425,7 @@ sets.engaged.CRIT = set_combine(sets.engaged, {
     legs={ name="Zoar Subligar +1", augments={'Path: A',}},
     feet="Thereoid Greaves",
     neck="Nefarious Collar +1",
-    waist="Ioskeha Belt +1",
+    waist={ name="Sailfi Belt +1", augments={'Path: A',}},
     left_ear="Schere Earring",
     right_ear="Brutal Earring",
     left_ring="Hetairoi Ring",
@@ -1425,7 +1472,6 @@ sets.engaged.SubtleBlow = set_combine(sets.engaged, {
     hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
     legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
     feet={ name="Sakpata's Leggings", augments={'Path: A',}},
-    neck={ name="Bathy Choker +1", augments={'Path: A',}},
     waist={ name="Sailfi Belt +1", augments={'Path: A',}},
     left_ear="Digni. Earring",
     right_ear="Telos Earring",
@@ -1452,7 +1498,6 @@ sets.engaged.SubtleBlow = set_combine(sets.engaged, {
     })
     sets.engaged.Haste.CRIT = set_combine(sets.engaged.CRIT, {
         ammo={ name="Coiste Bodhar", augments={'Path: A',}},
-        waist="Ioskeha Belt +1",
     })
     sets.engaged.Haste.PD = set_combine(sets.engaged.PD, {
         ammo={ name="Coiste Bodhar", augments={'Path: A',}},
@@ -1549,7 +1594,6 @@ sets.engaged.Hybrid = {
     hands={ name="Sakpata's Gauntlets", augments={'Path: A',}},
     legs={ name="Sakpata's Cuisses", augments={'Path: A',}},
     feet={ name="Sakpata's Leggings", augments={'Path: A',}},
-    left_ring="Niqmaddu Ring",
 }
 
 sets.engaged.DT = set_combine(sets.engaged, sets.engaged.Hybrid)
@@ -1557,7 +1601,10 @@ sets.engaged.MaxAcc.DT = set_combine(sets.engaged.MaxAcc, sets.engaged.Hybrid)
 sets.engaged.STP.DT = set_combine(sets.engaged.STP, sets.engaged.Hybrid)
 sets.engaged.DA.DT = set_combine(sets.engaged.DA, sets.engaged.Hybrid)
 sets.engaged.CRIT.DT = set_combine(sets.engaged.CRIT, sets.engaged.Hybrid)
-
+sets.engaged.SubtleBlow.DT = set_combine(sets.engaged.SubtleBlow, sets.engaged.Hybrid, {
+    body="Dagon Breast.",
+    left_ring="Defending Ring",
+})
 sets.engaged.DW.DT = set_combine(sets.engaged.DW, sets.engaged.Hybrid)
 sets.engaged.DW.MaxAcc.DT = set_combine(sets.engaged.DW.MaxAcc, sets.engaged.Hybrid)
 sets.engaged.DW.STP.DT = set_combine(sets.engaged.DW.STP, sets.engaged.Hybrid)
@@ -1730,7 +1777,10 @@ sets.engaged.DW.CRIT.DT = set_combine(sets.engaged.DW.CRIT, sets.engaged.Hybrid)
     sets.engaged.Haste.Apocalypse.CRIT = set_combine(sets.engaged.CRIT, {
         ammo={ name="Coiste Bodhar", augments={'Path: A',}},})
     sets.engaged.Haste.Apocalypse.MaxAcc = set_combine(sets.engaged.MaxAcc, {})
-    sets.engaged.Haste.Apocalypse.SubtleBlow = set_combine(sets.engaged.Apocalypse.SubtleBlow, {})
+    sets.engaged.Haste.Apocalypse.SubtleBlow = set_combine(sets.engaged.Apocalypse.SubtleBlow, {
+        body="Dagon Breast.",
+        left_ring="Defending Ring",
+    })
 
 
 -- Apocalypse
@@ -1776,6 +1826,26 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             equip({ear1="Lugra Earring +1"})
         end
     end]]
+    if spell.type == 'WeaponSkill' then
+        if elemental_ws:contains(spell.name) then
+            -- Matching double weather (w/o day conflict).
+            if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 1.7 yalms.
+            elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Matching day and weather.
+            elseif spell.element == world.day_element and spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 8 yalms.
+            elseif spell.target.distance < (8 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Match day or weather.
+            elseif spell.element == world.day_element or spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            end
+        end
+    end
 end
   
 function job_pretarget(spell, action, spellMap, eventArgs)
@@ -1812,6 +1882,12 @@ function job_precast(spell, action, spellMap, eventArgs)
     if spell.name == 'Impact' then
 		equip(sets.precast.FC.Impact)
 	end
+    if spell.english == 'Warcry' then
+        if buffactive['Warcry'] then
+            cancel_spell()
+            add_to_chat(123, spell.name..' Canceled: Warcry its up [active]')
+        end
+    end
 end
   
   
@@ -1838,7 +1914,7 @@ function job_post_midcast(spell, action, spellMap, eventArgs)
             equip({left_ear="Lugra Earring +1"})
 		end
 	end
-    if (state.HybridMode.current == 'PDT' and state.PhysicalDefenseMode.current == 'Reraise') then
+    if (state.HybridMode.current == 'DT' and state.PhysicalDefenseMode.current == 'Reraise') then
         equip(sets.Reraise)
     end
     if spell.skill == 'Elemental Magic' and (state.MagicBurst.value or AEBurst) then
@@ -1899,13 +1975,6 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
-    end
     if update_job_states then update_job_states() 
     end
 
@@ -1947,7 +2016,7 @@ function job_self_command(cmdParams, eventArgs)
 
 end
 
-windower.register_event('hpp change',
+windower.register_event('hpp change', -- code add from Aragan Asura
 function(new_hpp,old_hpp)
     if new_hpp < 5 then
         equip(sets.Reraise)
@@ -2057,12 +2126,6 @@ function job_buff_change(buff, gain)
   
     if state.Buff[buff] ~= nil then
         handle_equipping_gear(player.status)
-    end
-    if buff == "Protect" then
-        if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
-        end
     end
     if not buffactive['Scarlet Delirium'] then
         if player.status == 'Engaged' then

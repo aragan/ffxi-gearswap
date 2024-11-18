@@ -4,6 +4,11 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
 
 -------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job.  Generally should not be modified.
@@ -16,8 +21,7 @@ function get_sets()
     -- Load and initialize the include file.
     include('Mote-Include.lua')
     include('organizer-lib')
-    include('Mote-TreasureHunter')
- 
+
 end
 
  
@@ -28,7 +32,8 @@ end
 -------------------------------------------------------------------------------------------------------------------
 -- User setup functions for this job.  Recommend that these be overridden in a sidecar file.
 -------------------------------------------------------------------------------------------------------------------
- 
+ -- ucan use addon automb or autoburst for mage job
+
 -- Setup vars that are user-dependent.  Setup which sets you want to contain which sets of gear. 
 -- By default my sets are: Normal is bursting gear, Occult_Acumen is Conserve MP/MP return body, FreeNuke_Effect self explanatory.
 -- If you're new to gearswap, the F9~12 keys and CTRL keys in combination is how you activate this stuff.
@@ -49,11 +54,14 @@ function user_setup()
     state.AutoEquipBurst = M(true)
     state.DeathMode = M(false, 'Death Mode')
 
-    --state.RP = M(false, "Reinforcement Points Mode")
+
+    state.CapacityMode = M(false, 'Capacity Point Mantle')
+    state.RP = M(false, "Reinforcement Points Mode")
     send_command('wait 6;input /lockstyleset 174')
     state.HippoMode = M(false, "hippoMode")
     state.WeaponSet = M{['description']='Weapon Set', 'normal','Mpaca', 'Marin', 'Drepanum', 'Maliya', 'club'} 
-
+    include('Mote-TreasureHunter')
+    state.TreasureMode:set('None')
 	Elemental_Aja = S{'Stoneja', 'Waterja', 'Aeroja', 'Firaja', 'Blizzaja', 'Thundaja', 'Comet'}
 	Elemental_Debuffs = S {'Shock', 'Rasp', 'Choke', 'Frost', 'Burn', 'Drown'}
     element_table = L{'Earth','Wind','Ice','Fire','Water','Lightning'}
@@ -85,14 +93,15 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
-    --send_command('bind !- gs c toggle RP')  
+    send_command('bind @x gs c toggle RP')  
+    send_command('bind @c gs c toggle CapacityMode')
     send_command('bind f1 gs c cycle HippoMode')
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind f4 gs c toggle DeathMode')
 
     select_default_macro_book()
-    if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode"},{"IdleMode","OffenseMode","CastingMode","WeaponSet","DeathMode","Enfeebling"}) 
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode"},{"IdleMode","OffenseMode","CastingMode","WeaponSet","DeathMode","Enfeebling","TreasureMode"}) 
     end
 end
  
@@ -100,21 +109,16 @@ end
 function user_unload()
     send_command('unbind ^`')
     send_command('unbind @`')
-	--send_command('unbind f10')
+	send_command('unbind f11')
 	send_command('unbind ^`f11')
 	send_command('unbind @`f11')
 	send_command('unbind ^f11')
 end
 organizer_items = {
+    "Airmid's Gorget",
     "Grape Daifuku",
     "Moogle Amp.",
     "Pear Crepe",
-    "Prime Sword",
-    "Marin Staff +1",
-    "Drepanum",
-    "Lentus Grip",
-    "Mafic Cudgel",
-    "Maliya Sickle +1",
     "Gyudon",
     "Reraiser",
     "Hi-Reraiser",
@@ -136,14 +140,11 @@ organizer_items = {
     "Shinobi-Tabi",
     "Shihei",
     "Remedy",
-    "Wh. Rarab Cap +1",
     "Emporox's Ring",
     "Red Curry Bun",
     "Instant Reraise",
     "Black Curry Bun",
     "Rolan. Daifuku",
-    "Qutrub Knife",
-    "Wind Knife +1",
     "Reraise Earring",}
  
 -- Define sets and vars used by this job file.
@@ -158,7 +159,11 @@ function init_gear_sets()
     sets.Drepanum = {main="Drepanum",sub="Alber Strap"}
     sets.Maliya = {main="Maliya Sickle +1",sub="Alber Strap"}
 
-
+     -- neck JSE Necks Reinf
+     sets.RP = {}
+     -- Capacity Points Mode
+     sets.CapacityMantle = {}
+     
     ---- Precast Sets ----
      
     -- Precast sets to enhance JAs
@@ -1123,7 +1128,6 @@ waist="Gishdubar Sash",
 left_ring="Purity Ring",
 right_ring="Blenmot's Ring +1",}
 
-    --sets.RP = {neck="Src. Stole +2"}
 
 end
 -------------------------------------------------------------------------------------------------------------------
@@ -1677,12 +1681,15 @@ function customize_idle_set(idleSet)
     if state.DeathMode.value then
         idleSet = sets.idle.DeathMode
     end
-    --[[if state.RP.current == 'on' then
+    if state.CapacityMode.value then
+        equip(sets.CapacityMantle)
+    end
+    if state.RP.current == 'on' then
         equip(sets.RP)
         disable('neck')
     else
         enable('neck')
-    end]]
+    end
     if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
     end
@@ -1693,12 +1700,18 @@ function customize_melee_set(meleeSet)
     if buffactive['Mana Wall'] then
         meleeSet = set_combine(meleeSet, sets.buff['Mana Wall'])
     end
-    --[[if state.RP.current == 'on' then
+    if state.TreasureMode.value == 'Fulltime' then
+        meleeSet = set_combine(meleeSet, sets.TreasureHunter)
+    end
+    if state.CapacityMode.value then
+        equip(sets.CapacityMantle)
+    end
+    if state.RP.current == 'on' then
         equip(sets.RP)
         disable('neck')
     else
         enable('neck')
-    end]]
+    end
 
     check_weaponset()
 

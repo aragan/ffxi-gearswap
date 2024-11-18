@@ -4,8 +4,6 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
-
-
 -------------------------------------------------------------------------------------------------------------------
 --  Keybinds
 -------------------------------------------------------------------------------------------------------------------
@@ -39,12 +37,7 @@
 --
 --
 --           
-
-
 -------------------------------------------------------------------------------------------------------------------
--- Setup functions for this job.  Generally should not be modified.
--------------------------------------------------------------------------------------------------------------------
-
 --              Addendum Commands:
 --              Shorthand versions for each strategem type that uses the version appropriate for
 --              the current Arts.
@@ -66,6 +59,98 @@
 -------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job.  Generally should not be modified.
 -------------------------------------------------------------------------------------------------------------------
+
+--info.skillchain.tier1 =
+
+--{'Transfixion','Compression','Liquefaction','Scission',
+--'Reverberation','Detonation','Induration','Impaction'}
+
+--info.skillchain.tier2 = {'Gravitation','Distortion','Fusion','Fragmentation'}
+--info.skillchain.tier3 = {'Dark','Light'}
+
+--[[
+use for auto solo skillchain 
+SCH_soloSC.lua and addon schskillchain
+
+SCH_soloSC.lua command :
+
+Usage example : 
+/console gs c soloSC 1 Fusion
+=> will do 1 skillchain, ending with Fusion : Fire, Thunder. Equivalent to /console gs c soloSC 1 Fusion false false
+/console gs c soloSC 3 Fragmentation
+=> will do 3 skillchains, ending with Fragmentation : Stone, Water, Blizzard, Water
+/console gs c soloSC max Fusion
+=> will spend all stratagems to perform skillchains, ending with Fusion
+/console gs c soloSC 1 Fusion true
+=> will do 1 SC Fusion, and cast Fire V for magic burst
+/console gs c soloSC 1 Fusion true true
+=> will do 1 SC Fusion and cast Fire V for magic burst, with no information displayed in party chat
+
+/console gs c soloSC 1 Induration true
+/console gs c soloSC 1 Scission true
+/console gs c soloSC 2 Fusion true
+/console gs c soloSC 1 Fragmentation true
+
+
+NOTE: for sortie NM Triboulex use this command for 2step fusion open close close2 ;
+for macro 
+/console gs c soloSC 2 Fusion true
+
+in chat command:  //gs c soloSC 2 Fusion true
+--------------
+
+addon schskillchain command :
+
+# schskillchain(ssc)
+- usage example
+
+  Open Liquefacrion(溶解)
+
+        //ssc fire open
+
+  Close Liquefacrion(溶解) (settable the first letter of parameter)
+
+        //ssc f c
+
+  Close Liquefacrion(溶解) and Magic Burst Pyrohelix II (火門の計II)
+
+        //ssc f c mb h2 
+
+  Open and Close Fragmentation(分解) (Closing Spell Helix) and Magic Burst Thunder V (サンダーV)
+
+        //ssc t2 a h mb 5
+
+  Open and Close Fragmentation T1 and Magic Burst Thunder V
+
+          //ssc t2 a h mb 5
+  
+  Perform a 6 step skillchain. (For things like Vagary and Omen)
+  
+		//ssc 6step
+		
+for macro solo skillchain and Magic Burst 
+fusion
+/console input //ssc f2 a mb 5
+Fragmentation close with helix
+/console input //ssc t2 a h mb 5
+Induration
+/console input //ssc b a mb 4
+Scission 
+/console input //ssc s a mb 5
+Scission close with helix
+/console input //ssc s a h mb 5
+Gravitation
+/console input //ssc s2 a
+for more info go README.txt for addons
+Distortion
+/console input //ssc b2 a
+]]
+
+
+-------------------------------------------------------------------------------------------------------------------
+-- Setup functions for this job.  Generally should not be modified.
+-------------------------------------------------------------------------------------------------------------------
+
 
 -- Initialization function for this job file.
 function get_sets()
@@ -106,8 +191,6 @@ function get_sets()
         "Instant Reraise",
         "Black Curry Bun",
         "Rolan. Daifuku",
-        "Qutrub Knife",
-        "Wind Knife +1",
         "Reraise Earring",}
 end
 
@@ -118,7 +201,8 @@ function job_setup()
     state.Buff['Sublimation: Activated'] = buffactive['Sublimation: Activated'] or false
     state.HelixMode = M{['description']='Helix Mode', 'Duration', 'Potency'}
     state.RegenMode = M{['description']='Regen Mode', 'Duration', 'Potency'}
-    --state.RP = M(false, "Reinforcement Points Mode")
+    state.RP = M(false, "Reinforcement Points Mode")
+    state.CP = M(false, "Capacity Points Mode")
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
     state.StormSurge = M(false, 'Stormsurge')
@@ -143,7 +227,6 @@ function job_setup()
         [11] = 1.490909,
         [12] = 1.70,
     }
-    -- state.CP = M(false, "Capacity Points Mode")
 -- Mote has capitalization errors in the default Absorb mappings, so we use our own
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     state.Storms =  M{['description']='storms', 'Aurorastorm II', 'Voidstorm II', 'Firestorm II', 'Sandstorm II', 'Rainstorm II', 'Windstorm II', 'Hailstorm II', 'Thunderstorm II',
@@ -157,8 +240,6 @@ function job_setup()
     degrade_array = {
         ['Aspirs'] = {'Aspir','Aspir II'}
         }
-
-
 end
 
 -------------------------------------------------------------------------------------------------------------------
@@ -169,12 +250,13 @@ end
 function user_setup()
     state.OffenseMode:options('None', 'Normal', 'Acc', 'DT')
     state.CastingMode:options('Normal', 'magicburst', 'Enmity', 'ConserveMP' , 'Sird', 'SubtleBlow', 'Proc')
-    state.IdleMode:options('Normal', 'DT', 'Resist','BoostMB', 'vagary', 'Sphere')
-    state.PhysicalDefenseMode:options('PDT')
+    state.IdleMode:options('Normal', 'DT', 'Resist','BoostHP','BoostMB', 'Evasion', 'EnemyCritRate','vagary','Sphere')
+    state.PhysicalDefenseMode:options('PDT','BoostHP', 'Evasion', 'Resist')
     state.MagicalDefenseMode:options('MDT')
 
     send_command('wait 6;input /lockstyleset 173')
 
+    --use //listbinds    .. to show command keys
     -- Additional local binds
     --send_command('bind f4 @input /ja "Sublimation" <me>')
     send_command('bind f7 input //Sublimator')
@@ -193,12 +275,12 @@ function user_setup()
     send_command('bind ![ gs c scholar aoe')
     send_command('bind !] gs c scholar duration')
     send_command('bind !; gs c scholar cost')
-    -- send_command('bind @c gs c toggle CP')
+    send_command('bind @c gs c toggle CP')
+    send_command('bind @x gs c toggle RP')  
     send_command('bind f5 gs c cycle HelixMode')
     send_command('bind @r gs c cycle RegenMode')
     send_command('bind !s gs c toggle StormSurge')
     send_command('bind !w gs c toggle WeaponLock')
-    --send_command('bind !- gs c toggle RP')  
     send_command('bind ^numpad0 input /Myrkr')
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
@@ -214,7 +296,7 @@ function user_setup()
 
     state.Auto_Kite = M(false, 'Auto_Kite')
     --hippoMode = false
-    if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode"},{"IdleMode","OffenseMode","CastingMode","WeaponSet","Storms","StormSurge","HelixMode"}) 
+    if init_job_states then init_job_states({"RP","CP","WeaponLock","MagicBurst","HippoMode"},{"IdleMode","OffenseMode","CastingMode","WeaponSet","Storms","StormSurge","HelixMode"}) 
     end
 end
 
@@ -268,6 +350,11 @@ function init_gear_sets()
     sets.normal = {}
     sets.Marin = {main="Marin Staff +1",sub="Enki Strap"}
     sets.Mpaca = {main="Mpaca's Staff",sub="Enki Strap"}
+
+-- neck JSE Necks Reinforcement Points Mode add u neck here 
+    sets.RP = {}
+-- Capacity Points Mode back
+    sets.CP = {}
 
     -- Precast sets to enhance JAs
     sets.precast.JA['Tabula Rasa'] = {legs="Peda. Pants +3"}
@@ -940,21 +1027,60 @@ right_ear="Telos Earring",
     right_ring="Defending Ring",
     back="Moonlight Cape",})
 
-    sets.idle.BoostMB = set_combine(sets.idle, {
+    sets.idle.BoostHP = {        
         ammo="Homiliary",
-        head="Befouled Crown",
+        head={ name="Nyame Helm", augments={'Path: B',}},
+        body={ name="Nyame Mail", augments={'Path: B',}},
+        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
+        feet={ name="Nyame Sollerets", augments={'Path: B',}},
+        neck={ name="Unmoving Collar +1", augments={'Path: A',}},
+        waist="Plat. Mog. Belt",
+        left_ear="Tuisto Earring",
+        right_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        left_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+        right_ring="Eihwaz Ring",
+        back="Moonlight Cape",}
+    sets.idle.BoostMB = set_combine(sets.idle, {
+        ammo={ name="Ghastly Tathlum +1", augments={'Path: A',}},
+        head="Arbatel Bonnet +2",
         body="Arbatel Gown +3",
         hands={ name="Kaykaus Cuffs +1", augments={'MP+80','MND+12','Mag. Acc.+20',}},
-        legs={ name="Assid. Pants +1", augments={'Path: A',}},
+        legs={ name="Psycloth Lappas", augments={'MP+80','Mag. Acc.+15','"Fast Cast"+7',}},
         feet="Arbatel Loafers +3",
         neck="Sanctity Necklace",
         waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
         left_ear="Etiolation Earring",
         right_ear="Evans Earring",
-        left_ring="Stikini Ring +1",
+        left_ring="Defending Ring",
         right_ring={ name="Mephitas's Ring +1", augments={'Path: A',}},
         back={ name="Aurist's Cape +1", augments={'Path: A',}},
     })
+    sets.idle.EnemyCritRate = set_combine(sets.idle.DT, { 
+        ammo="Eluder's Sachet",
+        body={ name="Nyame Mail", augments={'Path: B',}},
+        left_ear="Tuisto Earring",
+        left_ring="Warden's Ring",
+        right_ring="Fortified Ring",
+        neck={ name="Loricate Torque +1", augments={'Path: A',}},
+        waist="Plat. Mog. Belt",
+        back="Reiki Cloak",
+        })
+    sets.idle.Evasion = {
+        ammo="Amar Cluster",
+        head={ name="Nyame Helm", augments={'Path: B',}},
+        body={ name="Nyame Mail", augments={'Path: B',}},
+        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
+        feet={ name="Nyame Sollerets", augments={'Path: B',}},
+        neck={ name="Bathy Choker +1", augments={'Path: A',}},
+        waist="Plat. Mog. Belt",
+        left_ear="Infused Earring",
+        right_ear="Eabani Earring",
+        left_ring="Defending Ring",
+        right_ring="Vengeful Ring",
+        back="Moonlight Cape",
+    }
 
     sets.idle.vagary =  {
     main={ name="Musa", augments={'Path: C',}},
@@ -1028,8 +1154,13 @@ sets.idle.Sphere = set_combine(sets.idle, {
     right_ring="Shadow Ring",
     back="Moonlight Cape",
 }
-sets.Adoulin = {body="Councilor's Garb", feet="Herald's Gaiters"}
 
+sets.defense.Resist = sets.idle.Resist
+sets.defense.BoostHP = sets.idle.BoostHP
+sets.defense.Evasion = sets.idle.Evasion
+sets.defense.MEVA = sets.defense.MDT
+
+sets.Adoulin = {body="Councilor's Garb", feet="Herald's Gaiters"}
 sets.MoveSpeed = {feet="Herald's Gaiters"}
     sets.Kiting = {feet="Herald's Gaiters"}
     sets.latent_refresh = {waist="Fucho-no-obi",}
@@ -1148,10 +1279,8 @@ sets.MoveSpeed = {feet="Herald's Gaiters"}
 
     sets.LightArts = {body="Arbatel Gown +3",}
     sets.DarkArts = {body="Arbatel Gown +3",}
-    --sets.RP = {neck="Argute Stole +2"}
     sets.Obi = {waist="Hachirin-no-Obi"}
     sets.Bookworm = {back="Bookworm's Cape",}
-    -- sets.CP = {back="Mecisto. Mantle"}
 
 end
 
@@ -1491,15 +1620,18 @@ function job_get_spell_map(spell, default_spell_map)
 end
 -- Modify the default melee set after it was constructed.
 function customize_melee_set(meleeSet)
-    --[[if state.CapacityMode.value then
-        meleeSet = set_combine(meleeSet, sets.CapacityMantle)
-    end]]
-    --[[if state.RP.current == 'on' then
+    if state.CP.current == 'on' then
+        equip(sets.CP)
+        disable('back')
+    else
+         enable('back')
+    end
+    if state.RP.current == 'on' then
         equip(sets.RP)
         disable('neck')
     else
         enable('neck')
-    end]]  
+    end
     check_weaponset()
 
     return meleeSet
@@ -1511,24 +1643,24 @@ function customize_idle_set(idleSet)
     if player.mpp < 51 then
         idleSet = set_combine(idleSet, sets.latent_refresh)
     end
-    -- if state.CP.current == 'on' then
-    --     equip(sets.CP)
-    --     disable('back')
-    -- else
-    --     enable('back')
-    -- end
+    if state.CP.current == 'on' then
+        equip(sets.CP)
+        disable('back')
+    else
+         enable('back')
+    end
     if state.Auto_Kite.value == true then
        idleSet = set_combine(idleSet, sets.Kiting)
     end
     if world.area:contains("Adoulin") then
         idleSet = set_combine(idleSet, {body="Councilor's Garb"})
     end
-    --[[if state.RP.current == 'on' then
+    if state.RP.current == 'on' then
         equip(sets.RP)
         disable('neck')
     else
         enable('neck')
-    end]]
+    end
     if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
     end
@@ -1827,7 +1959,7 @@ function sub_job_change(new,old)
         send_command('wait 6;input /lockstyleset 173')
     end
 end
-
+    
 mov = {counter=0}
 if player and player.index and windower.ffxi.get_mob_by_index(player.index) then
     mov.x = windower.ffxi.get_mob_by_index(player.index).x

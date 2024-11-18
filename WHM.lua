@@ -4,6 +4,19 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
+
+-- use addon curepleas or healbot or addon trust for help  u 
+--use f2 f3 f3 for switch barstatus barelement boostspell
+--this makw whm  easy and help u 
+--add macro 
+-- /console gs c barelement
+-- /console gs c barstatus
+-- /console gs c boostspell
 
 -- Initialization function for this job file.
 function get_sets()
@@ -65,9 +78,16 @@ function job_setup()
     state.Buff['Afflatus Solace'] = buffactive['Afflatus Solace'] or false
     state.Buff['Afflatus Misery'] = buffactive['Afflatus Misery'] or false
     state.Moving  = M(false, "moving")
-    state.BrachyuraEarring = M(true,false)
+    state.RP = M(false, "Reinforcement Points Mode")
+    state.CP = M(false, "Capacity Points Mode")
     barStatus = S{'Barpoison','Barparalyze','Barvirus','Barsilence','Barpetrify','Barblind','Baramnesia','Barsleep','Barpoisonra','Barparalyzra','Barvira','Barsilencera','Barpetra','Barblindra','Baramnesra','Barsleepra'}
-
+    elemental_ws = S{"Flash Nova", "Sanguine Blade","Seraph Blade","Burning Blade","Red Lotus Blade"
+    , "Shining Strike", "Aeolian Edge", "Gust Slash", "Cyclone","Energy Steal","Energy Drain"
+    , "Leaden Salute", "Wildfire", "Hot Shot", "Flaming Arrow", "Trueflight", "Blade: Teki", "Blade: To"
+    , "Blade: Chi", "Blade: Ei", "Blade: Yu", "Frostbite", "Freezebite", "Herculean Slash", "Cloudsplitter"
+    , "Primal Rend", "Dark Harvest", "Shadow of Death", "Infernal Scythe", "Thunder Thrust", "Raiden Thrust"
+    , "Tachi: Goten", "Tachi: Kagero", "Tachi: Jinpu", "Tachi: Koki", "Rock Crusher", "Earth Crusher", "Starburst"
+    , "Sunburst", "Omniscience", "Garland of Bliss"}
     send_command('wait 2;input /lockstyleset 178')
 end
 
@@ -81,9 +101,9 @@ function user_setup()
     state.HybridMode:options('Normal', 'SubtleBlow' , 'PDT')
     state.CastingMode:options( 'Duration', 'Normal', 'ConserveMP', 'SIRD', 'Enmity')
     state.WeaponskillMode:options('Normal', 'PDL')
-    state.IdleMode:options('Normal', 'PDT', 'Refresh', 'Sphere')
+    state.IdleMode:options('Normal', 'PDT', 'PDT', 'MDT', 'DT', 'HP', 'Evasion', 'MP', 'Refresh', 'Sphere')
     state.PhysicalDefenseMode:options('PDT','DT','HP', 'Evasion', 'MP')
-    state.HippoMode = M{['description']='Hippo Mode', 'normal','Hippo'}
+    state.HippoMode = M(false, "hippoMode")
     state.CapacityMode = M(false, 'Capacity Point Mantle')
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
@@ -95,12 +115,15 @@ function user_setup()
     state.BarStatus = M{['description']='BarStatus', 'Baramnesra', 'Barvira', 'Barparalyzra', 'Barsilencera', 'Barpetra', 'Barpoisonra', 'Barblindra', 'Barsleepra'}
     state.BoostSpell = M{['description']='BoostSpell', 'Boost-STR', 'Boost-INT', 'Boost-AGI', 'Boost-VIT', 'Boost-DEX', 'Boost-MND', 'Boost-CHR'}
 
+    --use //listbinds    .. to show command keys
+    -- Additional local binds
     --send_command('bind f3 @input /ja "Sublimation" <me>')
     send_command('bind f7 input //Sublimator')
     send_command('bind !` gs c toggle MagicBurst')
     send_command('bind !s gs c toggle SrodaNecklace')
     send_command('bind @q gs c toggle AutoEquipBurst')
-    send_command('bind !c gs c toggle CapacityMode')
+    send_command('bind @c gs c toggle CP')
+    send_command('bind @x gs c toggle RP')  
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('wait 6;input /lockstyleset 178')
@@ -111,7 +134,6 @@ function user_setup()
     send_command('bind !f3 gs c BarElement')
     send_command('bind f4 gs c cycle BarStatus')
     send_command('bind !f4 gs c BarStatus')
-    send_command('bind delete gs c toggle BrachyuraEarring')
     send_command('bind ^/ gs disable all')
     send_command('bind !/ gs enable all')
     -- 'Out of Range' distance; WS will auto-cancel
@@ -130,7 +152,7 @@ function user_setup()
         [12] = 1.70,
     }
     select_default_macro_book()
-    if init_job_states then init_job_states({"WeaponLock","MagicBurst"},{"IdleMode","OffenseMode","CastingMode","SrodaNecklace","BarElement","BarStatus","HippoMode"}) 
+    if init_job_states then init_job_states({"WeaponLock","MagicBurst","HippoMode","SrodaNecklace"},{"IdleMode","OffenseMode","CastingMode","BarElement","BarStatus","BoostSpell"}) 
     end
 end
 
@@ -140,10 +162,14 @@ function init_gear_sets()
     -- Start defining the sets
     --------------------------------------
 
+    -- neck JSE Necks Reinforcement Points Mode add u neck here 
+    sets.RP = {}
+    -- Capacity Points Mode back
+    sets.CP = {}
     -- Precast Sets
 
     -- Fast cast sets for spells
-    sets.CapacityMantle  = { }
+
 
     sets.precast.FC = {
     main={ name="Queller Rod", augments={'Healing magic skill +15','"Cure" potency +10%','"Cure" spellcasting time -7%',}},
@@ -195,6 +221,16 @@ function init_gear_sets()
     -- Waltz set (chr and vit)
     sets.precast.Waltz = {}
     
+    sets.precast.RA = {ammo=empty,
+	head={ name="Nyame Helm", augments={'Path: B',}},
+	body={ name="Nyame Mail", augments={'Path: B',}},
+	hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+	legs={ name="Nyame Flanchard", augments={'Path: B',}},
+	feet={ name="Nyame Sollerets", augments={'Path: B',}},
+	left_ear="Crep. Earring",
+	right_ear="Telos Earring",
+	}
+
     -- Weaponskill sets
 
     -- Default set for any weaponskill that isn't any more specifically defined
@@ -422,6 +458,22 @@ function init_gear_sets()
         neck={ name="Loricate Torque +1", augments={'Path: A',}},
         left_ring="Mephitas's Ring +1",
     }
+    sets.SIRDT = {
+        ammo="Staunch Tathlum +1",
+        head={ name="Nyame Helm", augments={'Path: B',}},
+        body={ name="Ros. Jaseran +1", augments={'Path: A',}},
+        hands={ name="Chironic Gloves", augments={'Mag. Acc.+11','Spell interruption rate down -10%','MND+8',}},
+        legs={ name="Nyame Flanchard", augments={'Path: B',}},
+        feet="Theo. Duckbills +3",
+        neck={ name="Loricate Torque +1", augments={'Path: A',}},
+        waist={ name="Shinjutsu-no-Obi +1", augments={'Path: A',}},
+        left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        right_ear="Halasz Earring",
+        left_ring={ name="Mephitas's Ring +1", augments={'Path: A',}},
+        right_ring="Defending Ring",
+        back={ name="Alaunus's Cape", augments={'MND+20','Eva.+20 /Mag. Eva.+20','MP+20','"Cure" potency +10%','Phys. dmg. taken-10%',}},
+    }
+
     sets.ConserveMP = {     main={ name="Queller Rod", augments={'Healing magic skill +15','"Cure" potency +10%','"Cure" spellcasting time -7%',}},
     sub="Sors Shield",
     ammo="Pemphredo Tathlum",
@@ -440,6 +492,7 @@ function init_gear_sets()
     
     -- Cure sets
     sets.Obi = {waist="Hachirin-no-Obi", back="Twilight Cape"}
+    sets.Srodanecklace = {neck="Sroda necklace"}
 
     sets.midcast.CureSolace = {main={ name="Queller Rod", augments={'Healing magic skill +15','"Cure" potency +10%','"Cure" spellcasting time -7%',}},
     sub="Sors Shield",
@@ -674,7 +727,7 @@ function init_gear_sets()
         waist="Gishdubar Sash",
         right_ear="Ebers Earring",
         left_ring="Haoma's Ring",
-        right_ring="Haoma's Ring",
+        right_ring="Menelaus's Ring",
         back="Alaunus's Cape",
     }
 
@@ -688,7 +741,7 @@ function init_gear_sets()
         feet={ name="Vanya Clogs", augments={'"Cure" potency +5%','"Cure" spellcasting time -15%','"Conserve MP"+6',}},
         neck={ name="Clr. Torque +2", augments={'Path: A',}},
         left_ring="Haoma's Ring",
-        right_ring="Haoma's Ring",
+        right_ring="Menelaus's Ring",
         back="Alaunus's Cape",    }
         sets.midcast.StatusRemoval.SIRD = set_combine(sets.midcast.StatusRemoval,sets.SIRD) 
 
@@ -972,78 +1025,6 @@ function init_gear_sets()
 		right_ring="Inyanga Ring",
     }
     
-
-    -- Idle sets (default idle set not needed since the other three are defined, but leaving for testing purposes)
-    sets.idle = {
-        ammo="Homiliary",
-        head="Befouled Crown",
-        body="Shamash Robe",
-        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
-        legs="Assid. Pants +1",
-        feet="Inyan. Crackows +2",
-        neck={ name="Loricate Torque +1", augments={'Path: A',}},
-        waist="Carrier's Sash",
-        left_ear="Genmei Earring",
-        right_ear="Etiolation Earring",
-        left_ring="Stikini Ring +1",
-        right_ring="Inyanga Ring",
-        back="Alaunus's Cape",
-    }
-    
-    sets.idle.PDT = {
-        ammo="Homiliary",
-        head="Befouled Crown",
-        body="Shamash Robe",
-        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-        legs="Assid. Pants +1",
-        feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        neck={ name="Loricate Torque +1", augments={'Path: A',}},
-        waist="Carrier's Sash",
-        left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
-        right_ear="Etiolation Earring",
-        left_ring="Stikini Ring +1",
-        right_ring="Stikini Ring +1",
-        back="Alaunus's Cape",}
-    
-    sets.idle.Refresh = {
-    ammo="Homiliary",
-    head="Befouled Crown",
-    body="Shamash Robe",
-    hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
-    legs="Assid. Pants +1",
-    feet="Nyame Sollerets",
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
-    waist="Carrier's Sash",
-    left_ear="Andoaa Earring",
-    right_ear="Etiolation Earring",
-    left_ring="Stikini Ring +1",
-    right_ring="Stikini Ring +1",
-    back="Alaunus's Cape",}
-
-
-    sets.idle.Sphere = set_combine(sets.idle, {
-        body="Annoint. Kalasiris",
-    })
-    sets.idle.Town = {
-    feet="Herald's Gaiters",
-    left_ear="Infused Earring",
-    }
-    
-    sets.idle.Weak = {
-    ammo="Homiliary",
-    head="Befouled Crown",
-    body="Shamash Robe",
-    hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
-    legs="Assid. Pants +1",
-    feet="Nyame Sollerets",
-    neck={ name="Loricate Torque +1", augments={'Path: A',}},
-    waist="Carrier's Sash",
-    left_ear="Andoaa Earring",
-    right_ear="Etiolation Earring",
-    left_ring="Defending Ring",
-    right_ring="Inyanga Ring",
-    back="Alaunus's Cape",}
-    
     -- Defense sets
 
     sets.defense.PDT = {
@@ -1124,22 +1105,99 @@ function init_gear_sets()
     }
     sets.defense.MDT = {
     ammo="Staunch Tathlum +1",
-    head={ name="Nyame Helm", augments={'Path: B',}},
+    head={ name="Bunzi's Hat", augments={'Path: A',}},
     body="Shamash Robe",
-    hands={ name="Nyame Gauntlets", augments={'Path: B',}},
-    legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet={ name="Nyame Sollerets", augments={'Path: B',}},
+    hands={ name="Bunzi's Gloves", augments={'Path: A',}},
+    legs={ name="Bunzi's Pants", augments={'Path: A',}},
+    feet={ name="Bunzi's Sabots", augments={'Path: A',}},
     neck={ name="Warder's Charm +1", augments={'Path: A',}},
+    waist="Plat. Mog. Belt",
+    left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+    right_ear="Etiolation Earring",
+    left_ring="Inyanga Ring",
+    right_ring="Shadow Ring",
+    back="Alaunus's Cape",}
+
+    -- Idle sets (default idle set not needed since the other three are defined, but leaving for testing purposes)
+    sets.idle = {
+        ammo="Homiliary",
+        head="Befouled Crown",
+        body="Shamash Robe",
+        hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
+        legs="Assid. Pants +1",
+        feet="Inyan. Crackows +2",
+        neck={ name="Loricate Torque +1", augments={'Path: A',}},
+        waist="Carrier's Sash",
+        left_ear="Genmei Earring",
+        right_ear="Etiolation Earring",
+        left_ring="Stikini Ring +1",
+        right_ring="Inyanga Ring",
+        back="Alaunus's Cape",
+    }
+    
+    sets.idle.PDT = {
+        ammo="Homiliary",
+        head={ name="Nyame Helm", augments={'Path: B',}},
+        body="Shamash Robe",
+        hands={ name="Nyame Gauntlets", augments={'Path: B',}},
+        legs={ name="Assid. Pants +1", augments={'Path: A',}},
+        feet={ name="Nyame Sollerets", augments={'Path: B',}},
+        neck={ name="Loricate Torque +1", augments={'Path: A',}},
+        waist="Plat. Mog. Belt",
+        left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
+        right_ear="Etiolation Earring",
+        left_ring="Stikini Ring +1",
+        right_ring={ name="Gelatinous Ring +1", augments={'Path: A',}},
+        back="Alaunus's Cape",}
+    
+    sets.idle.Refresh = {
+    ammo="Homiliary",
+    head="Befouled Crown",
+    body="Shamash Robe",
+    hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
+    legs="Assid. Pants +1",
+    feet="Nyame Sollerets",
+    neck={ name="Loricate Torque +1", augments={'Path: A',}},
     waist="Carrier's Sash",
     left_ear={ name="Odnowa Earring +1", augments={'Path: A',}},
     right_ear="Etiolation Earring",
     left_ring="Stikini Ring +1",
-    right_ring="Shadow Ring",
+    right_ring="Stikini Ring +1",
     back="Alaunus's Cape",}
+
+
+    sets.idle.Sphere = set_combine(sets.idle.PDT , {
+    body="Annoint. Kalasiris"})
+
+    sets.idle.MDT = set_combine(sets.defense.MDT , {})    
+    sets.idle.DT = set_combine(sets.defense.DT , {})
+    sets.idle.HP = set_combine(sets.defense.HP , {})
+    sets.idle.Evasion = set_combine(sets.defense.Evasion , {})
+    sets.idle.MP = set_combine(sets.defense.MP , {})
+    sets.idle.Town = {
+    feet="Herald's Gaiters",
+    left_ear="Infused Earring",}
+    
+    sets.idle.Weak = {
+    ammo="Homiliary",
+    head="Befouled Crown",
+    body="Shamash Robe",
+    hands={ name="Chironic Gloves", augments={'VIT+4','"Waltz" potency +2%','"Refresh"+2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
+    legs="Assid. Pants +1",
+    feet="Nyame Sollerets",
+    neck={ name="Loricate Torque +1", augments={'Path: A',}},
+    waist="Carrier's Sash",
+    left_ear="Andoaa Earring",
+    right_ear="Etiolation Earring",
+    left_ring="Defending Ring",
+    right_ring="Inyanga Ring",
+    back="Alaunus's Cape",}
+
 
     sets.Kiting = {feet="Herald's Gaiters"}
     sets.MoveSpeed = {feet="Herald's Gaiters"}
     sets.Adoulin = {body="Councilor's Garb",}
+    sets.raise = sets.SIRDT
 
     sets.latent_refresh = {waist="Fucho-no-obi",}
 
@@ -1312,8 +1370,32 @@ function job_post_precast(spell, action, spellMap, eventArgs)
     if spell.name == 'Impact' then
 		equip(sets.precast.FC.Impact)
 	end
+    if spell.type == 'WeaponSkill' then
+        if elemental_ws:contains(spell.name) then
+            -- Matching double weather (w/o day conflict).
+            if spell.element == world.weather_element and (get_weather_intensity() == 2 and spell.element ~= elements.weak_to[world.day_element]) then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 1.7 yalms.
+            elseif spell.target.distance < (1.7 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Matching day and weather.
+            elseif spell.element == world.day_element and spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            -- Target distance under 8 yalms.
+            elseif spell.target.distance < (8 + spell.target.model_size) then
+                equip({waist="Orpheus's Sash"})
+            -- Match day or weather.
+            elseif spell.element == world.day_element or spell.element == world.weather_element then
+                equip({waist="Hachirin-no-Obi"})
+            end
+        end
+    end
 end
 function job_post_midcast(spell, action, spellMap, eventArgs)
+    RaiseSpells = S{'Raise','Raise II','Raise III','Arise','Reraise','Reraise II','Reraise III','Reraise IV'}
+	if RaiseSpells:contains(spell.english) then
+		equip(sets.raise)
+	end
     -- Apply Divine Caress boosting items as highest priority over other gear, if applicable.
     if (spell.skill == 'Elemental Magic' or spell.skill == 'Divine Magic') and (state.MagicBurst.value or AEBurst) then
         equip(sets.magic_burst)
@@ -1376,12 +1458,6 @@ end
 -- buff == buff gained or lost
 -- gain == true if the buff was gained, false if it was lost.
 function job_buff_change(buff, gain)
-    if buff == "Protect" then
-        if gain then
-            enable('ear1')
-            state.BrachyuraEarring:set(false)
-        end
-    end
     if buff == "doom" then
         if gain then
             equip(sets.Doom)
@@ -1510,13 +1586,6 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
-    if state.BrachyuraEarring .value == true then
-        equip({left_ear="Brachyura Earring"})
-        disable('ear1')
-    else 
-        enable('ear1')
-        state.BrachyuraEarring:set(false)
-    end
     if update_job_states then update_job_states() 
     end
     handle_equipping_gear(player.status)
@@ -1578,10 +1647,20 @@ function customize_idle_set(idleSet)
     if player.mpp < 51 then
         idleSet = set_combine(idleSet, sets.latent_refresh)
     end
-    if state.HippoMode.value == "Hippo" then
+    if state.CP.current == 'on' then
+        equip(sets.CP)
+        disable('back')
+    else
+         enable('back')
+    end
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
+    end
+    if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
-    elseif state.HippoMode.value == "normal" then
-       equip({})
     end
     return idleSet
 end
@@ -1658,7 +1737,7 @@ end
 moving = false
 windower.raw_register_event('prerender',function()
     mov.counter = mov.counter + 1;
-	if state.HippoMode.value == "Hippo" then
+    if state.HippoMode.value == true then 
 		moving = false
     elseif mov.counter>15 then
         local pl = windower.ffxi.get_mob_by_index(player.index)
