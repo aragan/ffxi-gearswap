@@ -4,6 +4,11 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
 
 --[[     
  === Notes ===
@@ -80,7 +85,8 @@ end
 function job_setup()
     send_command('wait 2;input /lockstyleset 152')
     state.WeaponLock = M(false, 'Weapon Lock')
-    state.CapacityMode = M(false, 'Capacity Point Mantle')
+    state.CapacityMode = M(false, 'CP')
+    state.RP = M(false, "Reinforcement Points Mode")
     state.Moving  = M(false, "moving")
     include('Mote-TreasureHunter')
     state.TreasureMode:set('None')
@@ -89,6 +95,13 @@ function job_setup()
     state.Buff.Berserk = buffactive.berserk or false
     state.Buff.Retaliation = buffactive.retaliation or false
     
+    elemental_ws = S{"Flash Nova", "Sanguine Blade","Seraph Blade","Burning Blade","Red Lotus Blade"
+    , "Shining Strike", "Aeolian Edge", "Gust Slash", "Cyclone","Energy Steal","Energy Drain"
+    , "Leaden Salute", "Wildfire", "Hot Shot", "Flaming Arrow", "Trueflight", "Blade: Teki", "Blade: To"
+    , "Blade: Chi", "Blade: Ei", "Blade: Yu", "Frostbite", "Freezebite", "Herculean Slash", "Cloudsplitter"
+    , "Primal Rend", "Dark Harvest", "Shadow of Death", "Infernal Scythe", "Thunder Thrust", "Raiden Thrust"
+    , "Tachi: Goten", "Tachi: Kagero", "Tachi: Jinpu", "Tachi: Koki", "Rock Crusher", "Earth Crusher", "Starburst"
+    , "Sunburst", "Omniscience", "Garland of Bliss"}
     wsList = S{ 'Savage Blade', 'Impulse Drive', 'Torcleaver', 'Ukko\'s Fury', 'Upheaval'}
     swordList = S{"Naegling", "Sangarius +1", "Perun +1", "Tanmogayi +1", "Loxotic Mace +1", "Reikiko", "Firetongue", "Demers. Degen +1", "Zantetsuken", "Excalipoor II"}
     gsList = S{'Macbain', 'Nandaka', 'Agwu\'s Claymore'}
@@ -101,8 +114,8 @@ function job_setup()
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
               "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Thr. Tomahawk",}
-    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Naegling', 'Loxotic', 'Shining','Chango', 'AgwuClaymore', 'Drepanum', 'TernionDagger','IkengaAxe'}
-    state.shield = M{['description']='Weapon Set', 'Normal', 'shield'}
+    state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Naegling', 'Loxotic', 'Shining','Chango', 'AgwuClaymore', 'Drepanum', 'Malevolence','IkengaAxe'}
+    state.Shield = M{['description']='Weapon Set', 'Normal', 'Shield'}
     get_combat_form()
     get_combat_weapon()
     update_combat_form()
@@ -117,7 +130,7 @@ function user_setup()
     state.HybridMode:options('Normal', 'PDT')
     state.WeaponskillMode:options('Normal', 'SC', 'PDL')
     state.CastingMode:options('Normal', 'sird', 'ConserveMP')
-    state.IdleMode:options('Normal', 'PDT', 'MDT', 'HP', 'Regen', 'Evasion', 'EnemyCritRate', 'Refresh')
+    state.IdleMode:options('Normal', 'PDT', 'MDT', 'HP', 'Regen', 'Evasion', 'EnemyCritRate', 'Enmity', 'Refresh')
     --state.RestingMode:options('Normal')
     state.PhysicalDefenseMode:options('PDT', 'HP','Evasion', 'Enmity', 'MP', 'Reraise')
     state.MagicalDefenseMode:options('MDT')
@@ -142,10 +155,11 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind f5 gs c cycle WeaponskillMode')
     send_command('bind !w gs c toggle WeaponLock')
-    send_command('bind !f7 gs c cycle shield')
+    send_command('bind !f7 gs c cycle Shield')
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
-    send_command('bind != gs c toggle CapacityMode')
+    send_command('bind @x gs c toggle RP')  
+    send_command('bind @c gs c toggle CapacityMode')
     send_command('bind ^` input /ja "Hasso" <me>')
     send_command('bind !` input /ja "Seigan" <me>')
     send_command('bind ^/ gs disable all')
@@ -154,7 +168,7 @@ function user_setup()
     select_default_macro_book()
     state.Auto_Kite = M(false, 'Auto_Kite')
 
-    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","WeaponSet","shield","TreasureMode"}) 
+    if init_job_states then init_job_states({"WeaponLock"},{"IdleMode","OffenseMode","WeaponskillMode","WeaponSet","Shield","TreasureMode"}) 
     end
 end
  
@@ -182,20 +196,24 @@ sets.AgwuClaymore = {main="Agwu's Claymore", sub="Utu Grip"}
 sets.Shining = {main="Shining One", sub="Utu Grip"}
 sets.Naegling = {main="Naegling", sub="Demers. Degen +1",}
 sets.Loxotic = {main="Loxotic Mace +1", sub="Demers. Degen +1",}
-sets.TernionDagger = {main="Ternion Dagger +1", sub="Demers. Degen +1",}
+sets.Malevolence = {main="Malevolence", sub="Malevolence",}
 sets.Drepanum = {main="Drepanum", sub="Utu Grip",}
 sets.IkengaAxe = {main="Ikenga's Axe", sub="Demers. Degen +1",}
 
 sets.Normal = {}
-sets.shield = {sub="Blurred Shield +1"}
+sets.Shield = {sub="Blurred Shield +1"}
 sets.DefaultShield = {sub="Blurred Shield +1"}
 
+ -- neck JSE Necks Reinforcement Points Mode add u neck here 
+ sets.RP = {}
+ -- Capacity Points Mode back
+sets.CapacityMantle = {}
 
-    sets.TreasureHunter = { 
+sets.TreasureHunter = { 
         ammo="Per. Lucky Egg",
         head="White rarab cap +1", 
         waist="Chaac Belt",
-     }
+}
      sets.Enmity = {
         ammo="Iron Gobbet",
         head={ name="Souv. Schaller +1", augments={'HP+105','Enmity+9','Potency of "Cure" effect received +15%',}},
@@ -339,10 +357,9 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         body="Shab. Cuirass +1",
         neck="Incanter's Torque",
         waist="Olympus Sash",
-        left_ear="Brachyura Earring",
+        ring2="Sheltered Ring",
         right_ear="Andoaa Earring",
         left_ring="Stikini Ring +1",
-        right_ring="Stikini Ring +1",
         back="Moonlight Cape",
 	}
     sets.midcast.Phalanx = {
@@ -1063,7 +1080,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
         back="Reiki Cloak",
     }
 
-    sets.defense.Reraise = sets.idle.Weak
+    sets.defense.Reraise =  sets.Reraise
  
     sets.defense.MDT = set_combine(sets.defense.PDT, {
         ammo="Staunch Tathlum +1",
@@ -1130,6 +1147,7 @@ sets.DefaultShield = {sub="Blurred Shield +1"}
      sets.idle.MDT = sets.defense.MDT
      sets.idle.Evasion = sets.defense.Evasion
      sets.idle.HP = sets.defense.HP
+     sets.idle.Enmity = sets.defense.Enmity
 
      sets.idle.EnemyCritRate = set_combine(sets.idle.PDT, { 
         ammo="Eluder's Sachet",
@@ -1513,7 +1531,12 @@ function customize_idle_set(idleSet)
     if world.area:contains("Adoulin") then
         idleSet = set_combine(idleSet, {body="Councilor's Garb"})
     end
-
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
+    end
     return idleSet
 end
  
@@ -1531,7 +1554,12 @@ function customize_melee_set(meleeSet)
     if state.HybridMode.current == 'ressistwater' then
         meleeSet = set_combine(meleeSet, sets.engaged.ressistwater)
     end
-
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
+    end 
     --[[if state.buff.sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
         meleeSet = set_combine(meleeSet, sets.buff.Sleep)
     end]]
@@ -1574,7 +1602,7 @@ function job_status_change(newStatus, oldStatus, eventArgs)
 end
 function check_weaponset()
     equip(sets[state.WeaponSet.current])
-    equip(sets[state.shield.current])
+    equip(sets[state.Shield.current])
     if (player.sub_job ~= 'NIN' and player.sub_job ~= 'DNC' and Hand_weapon:contains(player.equipment.main) ) then
         equip(sets.DefaultShield)
     elseif (player.sub_job == 'NIN' and player.sub_job_level < 10 or player.sub_job == 'DNC' and player.sub_job_level < 20 and Hand_weapon:contains(player.equipment.main) ) then

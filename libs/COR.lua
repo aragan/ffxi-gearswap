@@ -5,7 +5,11 @@
 --                                                                             --
 ---------------------------------------------------------------------------------
 -- Haste/DW Detection Requires Gearinfo Addon
-
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
 -------------------------------------------------------------------------------------------------------------------
 -- Setup functions for this job.  Generally should not be modified.
 -------------------------------------------------------------------------------------------------------------------
@@ -94,6 +98,7 @@ function job_setup()
     state.Moving  = M(false, "moving")
     state.RP = M(false, "Reinforcement Points Mode")  
     state.CapacityMode = M(false, 'Capacity Point Mantle') 
+    state.phalanxset = M(false,true)
 
     -- Whether a warning has been given for low ammo
     state.warned = M(false)
@@ -103,7 +108,14 @@ function job_setup()
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
     "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Wh. Rarab Cap +1",
     "Dev. Bul. Pouch", "Chr. Bul. Pouch", "Liv. Bul. Pouch", "Cumulus Masque +1", "Airmid's Gorget",}
-    elemental_ws = S{"Aeolian Edge", "Leaden Salute", "Wildfire"}
+
+    elemental_ws = S{"Flash Nova", "Sanguine Blade","Seraph Blade","Burning Blade","Red Lotus Blade"
+    , "Shining Strike", "Aeolian Edge", "Gust Slash", "Cyclone","Energy Steal","Energy Drain"
+    , "Leaden Salute", "Wildfire", "Hot Shot", "Flaming Arrow", "Trueflight", "Blade: Teki", "Blade: To"
+    , "Blade: Chi", "Blade: Ei", "Blade: Yu", "Frostbite", "Freezebite", "Herculean Slash", "Cloudsplitter"
+    , "Primal Rend", "Dark Harvest", "Shadow of Death", "Infernal Scythe", "Thunder Thrust", "Raiden Thrust"
+    , "Tachi: Goten", "Tachi: Kagero", "Tachi: Jinpu", "Tachi: Koki", "Rock Crusher", "Earth Crusher", "Starburst"
+    , "Sunburst", "Omniscience", "Garland of Bliss"}
     no_shoot_ammo = S{"Animikii Bullet", "Hauksbok Bullet"}
     absorbs = S{'Absorb-STR', 'Absorb-DEX', 'Absorb-VIT', 'Absorb-AGI', 'Absorb-INT', 'Absorb-MND', 'Absorb-CHR', 'Absorb-Attri', 'Absorb-MaxAcc', 'Absorb-TP'}
     state.QDMode = M{['description']='Quick Draw Mode', 'STP', 'Enhance', 'TH'}
@@ -157,6 +169,9 @@ function user_setup()
             [11] = 1.490909,
             [12] = 1.70,
         }
+
+    --keyboard buttons bind
+    --use //listbinds    .. to show command keys
     -- Additional local binds
     send_command('bind ^` input /ja "Double-up" <me>')
     send_command('bind !` input /ja "Bolter\'s Roll" <me>')
@@ -171,7 +186,9 @@ function user_setup()
     send_command('bind !f7 gs c cycleback Weapongun')
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
-    send_command('bind !- gs c toggle RP')  
+    send_command('bind @c gs c toggle CapacityMode')
+    send_command('bind @x gs c toggle RP')  
+    send_command('bind ^p gs c toggle phalanxset') 
     send_command('@wait 6;input /lockstyleset 151')
 
     state.Auto_Kite = M(false, 'Auto_Kite')
@@ -222,6 +239,12 @@ function init_gear_sets()
     sets.DefaultShield = {sub="Nusku Shield"}
     sets.FullTP = {ear1="Crematio Earring"}
 
+
+     -- neck JSE Necks Reinforcement Points Mode add u neck here 
+     sets.RP = {}
+     -- Capacity Points Mode back
+    sets.CapacityMantle = {}
+    
     -- Precast Sets
 
     -- Precast sets to enhance JAs
@@ -315,10 +338,23 @@ sets.precast.JA['High Jump'] = set_combine(sets.precast.JA.Jump, {
     back={ name="Camulus's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Dbl.Atk."+10','Phys. dmg. taken-10%',}},}) 
 sets.precast.JA['Super Jump'] = sets.precast.JA.Jump
 
-    sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {body="Passion Jacket",})
+sets.precast.FC.Utsusemi = set_combine(sets.precast.FC, {body="Passion Jacket",})
 
-
-    sets.precast.RA = {
+sets.midcast['Enhancing Magic'] = {
+    neck="Incanter's Torque",
+    waist="Olympus Sash",
+    left_ear="Brachyura Earring",
+    right_ear="Andoaa Earring",
+    left_ring="Stikini Ring +1",
+    right_ring="Stikini Ring +1",
+    back="Moonlight Cape",
+}
+sets.midcast.Phalanx = set_combine(sets.midcast['Enhancing Magic'], {
+    body={ name="Herculean Vest", augments={'Phys. dmg. taken -1%','Accuracy+11 Attack+11','Phalanx +2','Mag. Acc.+18 "Mag.Atk.Bns."+18',}},
+    hands={ name="Herculean Gloves", augments={'Accuracy+11','Pet: Phys. dmg. taken -5%','Phalanx +4',}},
+    feet={ name="Herculean Boots", augments={'Accuracy+8','Pet: Attack+28 Pet: Rng.Atk.+28','Phalanx +4','Mag. Acc.+12 "Mag.Atk.Bns."+12',}},
+})
+sets.precast.RA = {
         hands={ name="Lanun Gants +3", augments={'Enhances "Fold" effect',}},
         head="Chass. Tricorne +2",
         body="Oshosi Vest +1",
@@ -1260,7 +1296,6 @@ sets.buff.Doom = {    neck="Nicander's Necklace",
    waist="Gishdubar Sash",
    left_ring="Purity Ring",
    right_ring="Blenmot's Ring +1",}
-   sets.RP = {neck="Comm. Charm +2"}
 
 end
 
@@ -1409,6 +1444,11 @@ function job_buff_change(buff,gain)
         end
         if not midaction() then
             handle_equipping_gear(player.status)
+        end
+    end
+    if buff == "phalanx" or "Phalanx II" then
+        if gain then
+            state.phalanxset:set(false)
         end
     end
     if buff == "Charm" then
@@ -1597,6 +1637,13 @@ function job_state_change(stateField, newValue, oldValue)
     else
         enable('main','sub')
     end
+    if state.phalanxset .value == true then
+        --equip(sets.midcast.Phalanx)
+        send_command('gs equip sets.midcast.Phalanx')
+        send_command('input /p Phalanx set equiped [ON] PLZ GIVE ME PHALANX')		
+    else 
+        state.phalanxset:reset()
+    end
     if update_job_states then update_job_states() 
     end
     check_weaponset()
@@ -1668,8 +1715,7 @@ function job_update(cmdParams, eventArgs)
     --end
     --handle_equipping_gear(player.status)
     check_moving()
-    check_weaponset()
-    job_state_change()
+    --check_weaponset()
 end
 
 function determine_haste_group()

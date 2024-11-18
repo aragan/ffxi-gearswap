@@ -4,6 +4,12 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
+
 --Ionis Zones
 --Anahera Blade (4 hit): 52
 --Tsurumaru (4 hit): 49
@@ -85,10 +91,18 @@ function job_setup()
     send_command('wait 2;input /lockstyleset 172')
     state.Moving  = M(false, "moving")
     state.CapacityMode = M(false, 'Capacity Point Mantle')
+    state.RP = M(false, "Reinforcement Points Mode")
     state.YoichiAM = M(false, 'Cancel Yoichi AM Mode')
     -- list of weaponskills that make better use of Gavialis Helm in WSDayBonus
     wsList = S{'Tachi: Goten', 'Tachi: Jinpu', 'Tachi: Kagero', 'Tachi: Koki'}
     gear.RAarrow = {name="Eminent Arrow"}
+    elemental_ws = S{"Flash Nova", "Sanguine Blade","Seraph Blade","Burning Blade","Red Lotus Blade"
+    , "Shining Strike", "Aeolian Edge", "Gust Slash", "Cyclone","Energy Steal","Energy Drain"
+    , "Leaden Salute", "Wildfire", "Hot Shot", "Flaming Arrow", "Trueflight", "Blade: Teki", "Blade: To"
+    , "Blade: Chi", "Blade: Ei", "Blade: Yu", "Frostbite", "Freezebite", "Herculean Slash", "Cloudsplitter"
+    , "Primal Rend", "Dark Harvest", "Shadow of Death", "Infernal Scythe", "Thunder Thrust", "Raiden Thrust"
+    , "Tachi: Goten", "Tachi: Kagero", "Tachi: Jinpu", "Tachi: Koki", "Rock Crusher", "Earth Crusher", "Starburst"
+    , "Sunburst", "Omniscience", "Garland of Bliss"}
     LugraWSList = S{'Tachi: Fudo', 'Tachi: Shoha', 'Namas Arrow', 'Impulse Drive', 'Stardiver'}
     no_swap_gear = S{"Warp Ring", "Dim. Ring (Dem)", "Dim. Ring (Holla)", "Dim. Ring (Mea)",
     "Trizek Ring", "Echad Ring", "Facility Ring", "Capacity Ring", "Cumulus Masque +1", "Reraise Earring", "Reraise Gorget", "Airmid's Gorget",}
@@ -133,7 +147,8 @@ function user_setup()
     send_command('bind ^= gs c cycle treasuremode')
     send_command('bind ^[ input /lockstyle on')
     send_command('bind ![ input /lockstyle off')
-    send_command('bind != gs c toggle CapacityMode')
+    send_command('bind @x gs c toggle RP')  
+    send_command('bind @c gs c toggle CapacityMode')
     send_command('bind !w gs c toggle WeaponLock')
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
@@ -176,6 +191,11 @@ function init_gear_sets()
     sets.TernionDagger = {main="Ternion Dagger +1"}
     sets.Club = {main="Mafic Cudgel"}
 
+         -- neck JSE Necks Reinf
+ sets.RP = {}
+ -- Capacity Points Mode
+ sets.CapacityMantle = {}
+ 
     sets.TreasureHunter = { 
         ammo="Per. Lucky Egg",
         head="White rarab cap +1", 
@@ -223,7 +243,7 @@ function init_gear_sets()
         right_ring="Ilabrat Ring",
         back={ name="Smertrios's Mantle", augments={'DEX+20','Accuracy+20 Attack+20','Accuracy+10','"Store TP"+10','Phys. dmg. taken-10%',}},
     }
-    sets.midcast.RA = { ammo=empty,
+    sets.midcast.RA = { 
         range="Trollbane",  
         head={ name="Sakonji Kabuto +3", augments={'Enhances "Ikishoten" effect',}},
 	body={ name="Nyame Mail", augments={'Path: B',}},
@@ -272,7 +292,7 @@ function init_gear_sets()
         body={ name="Nyame Mail", augments={'Path: B',}},
         hands={ name="Nyame Gauntlets", augments={'Path: B',}},
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         left_ring="Sroda Ring",
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -302,7 +322,7 @@ function init_gear_sets()
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     }
     sets.precast.WS['Namas Arrow'].PDL = set_combine(sets.precast.WS['Namas Arrow'], {
-        feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         left_ring="Sroda Ring", 
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -324,7 +344,7 @@ function init_gear_sets()
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
     sets.precast.WS['Apex Arrow'].PDL = set_combine(sets.precast.WS['Apex Arrow'], {
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
     left_ring="Sroda Ring", 
     back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -346,7 +366,7 @@ function init_gear_sets()
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
     sets.precast.WS['Empyreal Arrow'].PDL = set_combine(sets.precast.WS['Apex Arrow'], {
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
     left_ring="Sroda Ring", 
     back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -373,7 +393,7 @@ function init_gear_sets()
         body={ name="Nyame Mail", augments={'Path: B',}},
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
     left_ring="Sroda Ring", 
     back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -399,7 +419,7 @@ function init_gear_sets()
 	body={ name="Nyame Mail", augments={'Path: B',}},
 	hands={ name="Nyame Gauntlets", augments={'Path: B',}},
 	legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         ear1="Lugra Earring +1", 
         left_ring="Niqmaddu Ring",
         right_ring="Regal Ring",
@@ -428,7 +448,7 @@ function init_gear_sets()
     body={ name="Nyame Mail", augments={'Path: B',}},
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
     left_ring="Sroda Ring", 
     back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -458,7 +478,7 @@ function init_gear_sets()
             body={ name="Nyame Mail", augments={'Path: B',}},
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
     left_ring="Sroda Ring", 
     back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -472,7 +492,7 @@ function init_gear_sets()
             body={ name="Nyame Mail", augments={'Path: B',}},
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
     left_ring="Sroda Ring", 
     back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -498,7 +518,7 @@ function init_gear_sets()
             body={ name="Nyame Mail", augments={'Path: B',}},
     hands={ name="Nyame Gauntlets", augments={'Path: B',}},
     legs={ name="Nyame Flanchard", augments={'Path: B',}},
-    feet="Kas. Sune-Ate +2",
+    feet="Kas. Sune-Ate +3",
         left_ring="Sroda Ring",
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -512,7 +532,7 @@ function init_gear_sets()
         body="Kasuga Domaru +2",
         hands="Flam. Manopolas +2",
         legs="Kasuga Haidate +2",
-        feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         neck={ name="Sam. Nodowa +2", augments={'Path: A',}},
         waist="Eschan Stone",
         left_ear="Digni. Earring",
@@ -526,7 +546,7 @@ function init_gear_sets()
 	body={ name="Nyame Mail", augments={'Path: B',}},
 	hands={ name="Nyame Gauntlets", augments={'Path: B',}},
 	legs={ name="Nyame Flanchard", augments={'Path: B',}},
-        feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         left_ring="Sroda Ring",
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -552,7 +572,7 @@ function init_gear_sets()
         body={ name="Nyame Mail", augments={'Path: B',}},
       hands={ name="Nyame Gauntlets", augments={'Path: B',}},
       legs={ name="Nyame Flanchard", augments={'Path: B',}},
-      feet="Kas. Sune-Ate +2",
+      feet="Kas. Sune-Ate +3",
         left_ring="Sroda Ring",
         back={ name="Smertrios's Mantle", augments={'STR+20','Accuracy+20 Attack+20','STR+10','Weapon skill damage +10%','Phys. dmg. taken-10%',}},
     })
@@ -613,7 +633,7 @@ function init_gear_sets()
         hands={ name="Nyame Gauntlets", augments={'Path: B',}},
         legs={ name="Nyame Flanchard", augments={'Path: B',}},
         feet={ name="Nyame Sollerets", augments={'Path: B',}},
-        feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         neck={ name="Sam. Nodowa +2", augments={'Path: A',}},
         waist="Orpheus's Sash",
         right_ear="Friomisi Earring",
@@ -876,6 +896,7 @@ sets.idle.Town = {
 --     body="Councilor's Garb"
 -- })
     sets.idle.Regen = set_combine(sets.idle, { 
+    range="Trollbane", 
         neck={ name="Bathy Choker +1", augments={'Path: A',}},
         right_ear="Infused Earring",
         left_ring="Chirich Ring +1",
@@ -1105,7 +1126,7 @@ sets.idle.Town = {
         body="Kasuga Domaru +2",
         hands="Wakido Kote +3",
         legs="Kasuga Haidate +2",
-        feet="Kas. Sune-Ate +2",
+        feet="Kas. Sune-Ate +3",
         neck={ name="Sam. Nodowa +2", augments={'Path: A',}},
         waist="Gerdr Belt",
         left_ear="Dedition Earring",
@@ -1140,7 +1161,7 @@ sets.idle.Town = {
     body="Crepuscular Mail",})
     
     sets.buff.Sekkanoki = {hands="unkai kote +2"}
-    sets.buff.Sengikori = {feet="Kas. Sune-Ate +2",}
+    sets.buff.Sengikori = {feet="Kas. Sune-Ate +3",}
     sets.buff['Meikyo Shisui'] = {feet="Sakonji Sune-ate +3"}
     
     sets.thirdeye = {head="Kasuga Kabuto +2", legs="Sakonji Haidate +3"}
@@ -1316,10 +1337,16 @@ function customize_idle_set(idleSet)
     --if player.hpp < 90 then
         --idleSet = set_combine(idleSet, sets.idle.Regen)
     --end
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
+    end
     if world.area:contains("Adoulin") then
         idleSet = set_combine(idleSet, {body="Councilor's Garb"})
     end
-    --[[if player.hpp < 5 then --if u hp 10% or down click f12 to change to sets.Reraise this code add from Aragan Asura
+    --[[if player.hpp < 5 then --code add from Aragan Asura
         idleSet = set_combine(idleSet, sets.Reraise)
         send_command('input //gs equip sets.Reraise')
     end]]
@@ -1351,6 +1378,12 @@ function customize_melee_set(meleeSet)
     end
     if state.Buff.Sleep and player.hp > 120 and player.status == "Engaged" then -- Equip Vim Torque When You Are Asleep
         meleeSet = set_combine(meleeSet,{neck="Vim Torque +1"})
+    end
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
     end
     check_weaponset()
 

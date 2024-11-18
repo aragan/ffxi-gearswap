@@ -4,6 +4,13 @@
 --	  Aragan (Asura) --------------- [Author Primary]                          -- 
 --                                                                             --
 ---------------------------------------------------------------------------------
+-- IMPORTANT: This include requires supporting include files:
+-- from my web :
+-- Mote-include
+-- Mote-Mappings
+-- Mote-Globals
+
+
 --[[
     Custom commands:
     
@@ -88,6 +95,13 @@ function job_setup()
     state.TreasureMode:set('None')
     state.Buff['Pianissimo'] = buffactive['pianissimo'] or false
     send_command('wait 6;input /lockstyleset 168')
+    elemental_ws = S{"Flash Nova", "Sanguine Blade","Seraph Blade","Burning Blade","Red Lotus Blade"
+    , "Shining Strike", "Aeolian Edge", "Gust Slash", "Cyclone","Energy Steal","Energy Drain"
+    , "Leaden Salute", "Wildfire", "Hot Shot", "Flaming Arrow", "Trueflight", "Blade: Teki", "Blade: To"
+    , "Blade: Chi", "Blade: Ei", "Blade: Yu", "Frostbite", "Freezebite", "Herculean Slash", "Cloudsplitter"
+    , "Primal Rend", "Dark Harvest", "Shadow of Death", "Infernal Scythe", "Thunder Thrust", "Raiden Thrust"
+    , "Tachi: Goten", "Tachi: Kagero", "Tachi: Jinpu", "Tachi: Koki", "Rock Crusher", "Earth Crusher", "Starburst"
+    , "Sunburst", "Omniscience", "Garland of Bliss"}
     -- For tracking current recast timers via the Timers plugin.
     custom_timers = {}
     staff = S{"Xoanon"}
@@ -154,6 +168,8 @@ function user_setup()
     state.WeaponLock = M(false, 'Weapon Lock')
     state.MagicBurst = M(false, 'Magic Burst')
     state.HippoMode = M(false, "hippoMode")
+    state.RP = M(false, "Reinforcement Points Mode")
+    state.CapacityMode = M(false, 'Capacity Point Mantle')
 
     state.WeaponSet = M{['description']='Weapon Set', 'Normal', 'Twashtar', 'TwashtarCrepuscular', 'Tauret', 'Naegling', 'NaeglingCrepuscular','Carnwenhan', 'Aeneas', 'Xoanon'}
     --state.Moving = M(false, "moving")
@@ -180,6 +196,8 @@ function user_setup()
     send_command('bind f6 gs c cycle WeaponSet')
     send_command('bind !f6 gs c cycleback WeaponSet')
     send_command('bind @` gs c cycle LullabyMode')
+    send_command('bind @c gs c toggle CapacityMode')
+    send_command('bind @x gs c toggle RP')  
 
     select_default_macro_book()
     update_combat_form()
@@ -220,6 +238,11 @@ function init_gear_sets()
     sets.Xoanon = {main="Xoanon", sub="Alber Strap"}
 
     sets.DefaultShield = {sub="Genmei Shield"}
+
+ -- neck JSE Necks Reinf
+ sets.RP = {}
+ -- Capacity Points Mode
+ sets.CapacityMantle = {}
 
     -- Precast Sets
 
@@ -1145,6 +1168,10 @@ function job_post_precast(spell, action, spellMap, eventArgs)
             equip({left_ear="Ishvara Earring"})
 		end
 	end
+    -- CP mantle must be worn when a mob dies, so make sure it's equipped for WS.
+    if state.CapacityMode.value then
+        equip(sets.CapacityMantle)
+    end
     if spell.type == 'WeaponSkill' then
         if elemental_ws:contains(spell.name) then
             -- Matching double weather (w/o day conflict).
@@ -1428,7 +1455,15 @@ function customize_melee_set(meleeSet)
     if state.TreasureMode.value == 'Fulltime' then
         meleeSet = set_combine(meleeSet, sets.TreasureHunter)
     end
-
+    if state.CapacityMode.value then
+        meleeSet = set_combine(meleeSet, sets.CapacityMantle)
+    end
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
+    end
     check_weaponset()
 
     return meleeSet
@@ -1436,9 +1471,7 @@ end
 function check_buff(buff_name, eventArgs)
     if state.Buff[buff_name] then
         equip(sets.buff[buff_name] or {})
-        if state.TreasureMode.value == 'SATA' or state.TreasureMode.value == 'Fulltime' then
-            equip(sets.TreasureHunter)
-        end
+
         eventArgs.handled = true
     end
 end
@@ -1448,6 +1481,12 @@ end
 function customize_idle_set(idleSet)
     if state.HippoMode.value == true then 
         idleSet = set_combine(idleSet, {feet="Hippo. Socks +1"})
+    end
+    if state.RP.current == 'on' then
+        equip(sets.RP)
+        disable('neck')
+    else
+        enable('neck')
     end
     --[[if state.Auto_Kite.value == true then
 		idleSet = set_combine(idleSet, sets.Kiting)
